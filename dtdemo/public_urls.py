@@ -21,6 +21,7 @@ from dtdemo.views import create_tenant, root_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', root_view, name='root'),
+    path('asd', create_tenant, name='create'),
+    path('', root_view, name='root public'),
     url('', root_view, name='root'),
 ]

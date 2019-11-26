@@ -45,11 +45,13 @@ DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
 
-
+PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(PROJECT_ROOT, '..', 'dtdemo/templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -101,14 +103,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
-
-
 DATABASES = {
     "default": {
         "ENGINE": "django_tenants.postgresql_backend",
         "NAME": "dtdemo",
-        "USER": "postgres",
+        "USER": "odoo",
         "PASSWORD": "123",
     }
 }
@@ -135,7 +134,11 @@ TENANT_APPS = (
 
 INSTALLED_APPS = list(set(SHARED_APPS + TENANT_APPS))
 
-
+PUBLIC_SCHEMA_URLCONF = 'dtdemo.public_urls'
 ROOT_URLCONF = 'dtdemo.urls'
 TENANT_MODEL = "customer.Client" # app.Model
 TENANT_DOMAIN_MODEL = "customer.Domain" # app.Model
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, '..', 'static'),
+)
+STATIC_URL = '/static/'
