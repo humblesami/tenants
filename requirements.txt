@@ -4,3 +4,4 @@ django-rest-swagger
 coreapi
 django-tenant-schemas
 django-tenants
+django-tenant-users

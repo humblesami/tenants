@@ -17,10 +17,10 @@ from django.conf.urls import include,url
 from django.contrib import admin
 from django.urls import path
 
-from dtdemo.views import create_tenant, root_view
+from dtdemo.views import tenant_root
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', root_view, name='root'),
-    url('', root_view, name='root'),
+    path('',  tenant_root),
+    url(r'^a/', include('myclientapp.urls')),
 ]

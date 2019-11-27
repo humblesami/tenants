@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 MIDDLEWARE = [
+    'middlewares.middleware.CustomTenantMiddleware',
     'django_tenants.middleware.main.TenantMainMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -113,22 +114,23 @@ DATABASES = {
 }
 
 SHARED_APPS = (
-    'django_tenants',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'django.contrib.auth', # Defined in both shared apps and tenant apps
+    'django.contrib.contenttypes', # Defined in both shared apps and tenant apps
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'customer'
+    'django.contrib.sessions',
+    'tenant_users.permissions', # Defined in both shared apps and tenant apps
+    # 'django.contrib.sites',
+    'tenant_users.tenants', # defined only in shared apps
+    'customers', # Custom defined app that contains the TenantModel. Must NOT exist in TENANT_APPS
+    'users',
 )
 
 TENANT_APPS = (
+    'django.contrib.auth', # Defined in both shared apps and tenant apps\
+    'django.contrib.contenttypes', # Defined in both shared apps and tenant apps
+    'tenant_users.permissions',
+    # 'django.contrib.site',
     'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
     'myclientapp'
 )
 
@@ -136,8 +138,18 @@ INSTALLED_APPS = list(set(SHARED_APPS + TENANT_APPS))
 
 PUBLIC_SCHEMA_URLCONF = 'dtdemo.public_urls'
 ROOT_URLCONF = 'dtdemo.urls'
-TENANT_MODEL = "customer.Client" # app.Model
-TENANT_DOMAIN_MODEL = "customer.Domain" # app.Model
+
+AUTH_USER_MODEL = 'users.TenantUser'
+AUTHENTICATION_BACKENDS = (
+    'tenant_users.permissions.backend.UserBackend',
+)
+
+TENANT_USERS_DOMAIN = "dtdemo.local"
+SESSION_COOKIE_DOMAIN = '.dtdemo.local'
+
+TENANT_MODEL = "customers.Client" # app.Model
+TENANT_DOMAIN_MODEL = "customers.Domain" # app.Model
+
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, '..', 'static'),
 )

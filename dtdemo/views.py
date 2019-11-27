@@ -1,10 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from customer.models import Client, Domain
+from customers.models import Client, Domain
 
 
-def root_view(request):
-    return HttpResponse('Hoello Root')
+def tenant_root(request):
+    return HttpResponse('Tenant Root')
+
+def public_root(request):
+    return HttpResponse('Public Root')
 
 def create_tenant(request):
     # create your public tenant
