@@ -1,0 +1,4 @@
+/**/migrations
+/**/migrations/*
+.idea
+db.*
