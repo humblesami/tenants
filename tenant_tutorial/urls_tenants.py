@@ -1,10 +1,8 @@
-from customers.views import TenantView, TenantViewRandomForm, TenantViewFileUploadCreate
-from django.contrib import admin
 from django.urls import path
+from django.contrib import admin
+from django.conf.urls import include, url
 
 urlpatterns = [
-    path('', TenantView.as_view(), name="index"),
-    path('sample-random/', TenantViewRandomForm.as_view(), name="random_form"),
-    path('upload-file/', TenantViewFileUploadCreate.as_view(), name="upload_file"),
+    url('', include('tenant_only.urls')),
     path('admin/', admin.site.urls),
 ]

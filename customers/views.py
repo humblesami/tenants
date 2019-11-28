@@ -1,15 +1,7 @@
 import sys
 import traceback
-from random import choice
-
-from tenant_only.models import UploadFile
 from customers.models import Client, Domain
-from customers.forms import GenerateUsersForm
-
-from django.db.utils import DatabaseError
-from django.contrib.auth.models import User
-from django_tenants.urlresolvers import reverse_lazy
-from django.views.generic import FormView, TemplateView, CreateView
+from django.views.generic import TemplateView
 
 
 def produce_exception():
@@ -25,7 +17,7 @@ def produce_exception():
 
 def create_public_tenant():
     domain_url = 'domain.local'
-    tenant = Client(schema_name='public',name='Schemas Inc.')
+    tenant = Client(schema_name='public',name='Public')
     tenant.save()
 
     # Add one or more domains for the tenant
@@ -42,7 +34,7 @@ def create_real_tenant(t_name):
     if Client.objects.filter(schema_name=t_name):
         return 'Customer '+t_name+' Already exists'
     domain_url = t_name + '.localhost'
-    tenant = Client(schema_name=t_name, name='Schemas '+t_name)
+    tenant = Client(schema_name=t_name, name=t_name)
     tenant.save()
 
     # Add one or more domains for the tenant
@@ -51,79 +43,34 @@ def create_real_tenant(t_name):
     domain.tenant = tenant
     domain.is_primary = True
     domain.save()
-    return ' Created customer '+t_name+' successfully '
+    return { 'done': True, 'url': domain_url }
 
 
 class Create(TemplateView):
-    template_name = "page1.html"
+    template_name = "new_customer.html"
 
     def get_context_data(self, **kwargs):
-        tenant_name = self.request.GET['name']
         res = 'Unknown status'
+        tenant_name = 'Untitiled'
+        context = {}
         try:
+            tenant_name = self.request.GET['name']
             res = create_real_tenant(tenant_name)
+            if type(res) is str:
+                context = {'message': res, 'domain_url': tenant_name + '.localhost'}
+            else:
+                message = 'You have successfully created customer "' + tenant_name + '"'
+                context = {'name': tenant_name, 'done': 1, 'domain_url': res['url'], 'message': message}
         except:
             res = produce_exception()
-        context = {'p1': res}
         return context
 
 
 class TenantView(TemplateView):
-    template_name = "index_tenant.html"
+    template_name = "tenant_list.html"
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['tenants_list'] = Client.objects.all()
+        tenants_list = Client.objects.all().values('id', 'name')
+        tenants_list = list(tenants_list)
+        context = {'list': tenants_list}
         return context
-
-
-class TenantViewRandomForm(FormView):
-    form_class = GenerateUsersForm
-    template_name = "random_form.html"
-    success_url = reverse_lazy('random_form')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['tenants_list'] = Client.objects.all()
-        context['users'] = User.objects.all()
-        return context
-
-    def form_valid(self, form):
-        User.objects.all().delete()  # clean current users
-
-        # generate five random users
-        users_to_generate = 5
-        first_names = ["Aiden", "Jackson", "Ethan", "Liam", "Mason", "Noah",
-                       "Lucas", "Jacob", "Jayden", "Jack", "Sophia", "Emma",
-                       "Olivia", "Isabella", "Ava", "Lily", "Zoe", "Chloe",
-                       "Mia", "Madison"]
-        last_names = ["Smith", "Brown", "Lee", "Wilson", "Martin", "Patel",
-                      "Taylor", "Wong", "Campbell", "Williams"]
-
-        while User.objects.count() != users_to_generate:
-            first_name = choice(first_names)
-            last_name = choice(last_names)
-            try:
-                user = User(username=(first_name+last_name).lower(),
-                            email="%s@%s.com" % (first_name, last_name),
-                            first_name=first_name,
-                            last_name=last_name)
-                user.save()
-            except DatabaseError:
-                pass
-
-        return super().form_valid(form)
-
-
-class TenantViewFileUploadCreate(CreateView):
-    template_name = "upload_file.html"
-    model = UploadFile
-    fields = ['filename']
-    success_url = reverse_lazy('upload_file')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['tenants_list'] = Client.objects.all()
-        context['upload_files'] = UploadFile.objects.all()
-        return context
-

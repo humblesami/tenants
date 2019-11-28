@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}{{ tenant.name }}{% endblock %}
+
+{% block summary %}
+  <h1>{{ request.tenant.name }}</h1>
+  <h2>{{ request.tenant.description }}</h2>
+{% endblock %}
+
+{% block instructions %}
+    <h3>Customers list</h3>
+    {% for customer in list %}
+    <ul>
+        <li>{{customer.id }} -- {{customer.name }}</li>
+    </ul>
+{% endfor %}
+
+<hr style="margin-top:10px">
+
+<h3>Create New Customer</h3>
+
+<form action="/customers/new">
+        New Customer Name: <input name="name" /> <button type="submit">Create Customer</button>
+    </form>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.urls import path
-
-from customers.views import Create
+from customers.views import Create, TenantView
 
 urlpatterns = [
-    path('create', Create.as_view())
+    path('new', Create.as_view()),
+    path('', TenantView.as_view(), name="index"),
 ]
