@@ -6,4 +6,5 @@ from django.contrib import admin
 urlpatterns = [
     path('', HomeView.as_view()),
     path('admin/', admin.site.urls),
-    ]
+    url('customer/', include('customers.urls')),
+]

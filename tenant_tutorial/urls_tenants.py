@@ -7,4 +7,4 @@ urlpatterns = [
     path('sample-random/', TenantViewRandomForm.as_view(), name="random_form"),
     path('upload-file/', TenantViewFileUploadCreate.as_view(), name="upload_file"),
     path('admin/', admin.site.urls),
-    ]
+]
