@@ -4,13 +4,12 @@ from random import choice
 
 from tenant_only.models import UploadFile
 from customers.models import Client, Domain
+from customers.forms import GenerateUsersForm
 
 from django.db.utils import DatabaseError
 from django.contrib.auth.models import User
-from customers.forms import GenerateUsersForm
 from django_tenants.urlresolvers import reverse_lazy
 from django.views.generic import FormView, TemplateView, CreateView
-
 
 
 def produce_exception():
@@ -42,7 +41,7 @@ def create_real_tenant(t_name):
         create_public_tenant()
     if Client.objects.filter(schema_name=t_name):
         return 'Customer '+t_name+' Already exists'
-    domain_url = t_name + '.domain.local'
+    domain_url = t_name + '.localhost'
     tenant = Client(schema_name=t_name, name='Schemas '+t_name)
     tenant.save()
 
@@ -52,7 +51,7 @@ def create_real_tenant(t_name):
     domain.tenant = tenant
     domain.is_primary = True
     domain.save()
-    return 'Saved Successfully'
+    return ' Created customer '+t_name+' successfully '
 
 
 class Create(TemplateView):
