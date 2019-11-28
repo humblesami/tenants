@@ -2,6 +2,11 @@ import sys
 import traceback
 from customers.models import Client, Domain
 from django.views.generic import TemplateView
+from tenant_users.tenants.tasks import provision_tenant
+from tenant_users.tenants.utils import create_public_tenant
+from users.models import TenantUser
+from tenant_users.tenants.tasks import provision_tenant
+from django.db import transaction
 
 
 def produce_exception():
@@ -14,8 +19,23 @@ def produce_exception():
             errorMessage += "==================" + er
     return errorMessage
 
+class CreateCustomer(TemplateView):
+    template_name = "abc.html"
 
-def create_public_tenant():
+    def get_context_data(self, **kwargs):
+        res = 'Unknown status'    
+        try:
+            with transaction.atomic():
+                create_public_tenant("t1.localhost", "abc@gmail.com")
+                user = TenantUser.objects.create_user(email="abc@gmail.com", password='123', is_active=True)
+                user.save()
+                fqdn = provision_tenant("T1", "t1", "abc@gmail.com")
+                res = "Created"
+        except:
+            res = produce_exception()
+        return {'res': res}
+
+def create_public_tenant1():
     domain_url = 'domain.local'
     tenant = Client(schema_name='public',name='Public',domain_url='localhost')
     tenant.save()
@@ -30,7 +50,7 @@ def create_public_tenant():
 
 def create_real_tenant(t_name):
     if not Client.objects.filter(schema_name='public'):
-        create_public_tenant()
+        create_public_tenant1()
     if Client.objects.filter(schema_name=t_name):
         return 'Customer '+t_name+' Already exists'
     domain_url = t_name + '.localhost'

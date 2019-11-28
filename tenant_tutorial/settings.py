@@ -142,20 +142,23 @@ WSGI_APPLICATION = 'tenant_tutorial.wsgi.application'
 
 
 SHARED_APPS = (
-    'django_tenants',  # mandatory
-    'customers',  # you must list the app where your tenant model resides in
-
     'django.contrib.admin',
     'django.contrib.auth',
+    'tenant_users.permissions',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_tenants',  # mandatory
+    'tenant_users.tenants',
+    'customers',  # you must list the app where your tenant model resides in
+    'users',
 )
 
 TENANT_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.auth',
+    'tenant_users.permissions',
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -201,6 +204,14 @@ LOGGING = {
         },
     }
 }
+TENANT_USERS_DOMAIN = "localhost"
+AUTH_USER_MODEL = 'users.TenantUser'
+AUTHENTICATION_BACKENDS = (
+    'tenant_users.permissions.backend.UserBackend',
+)
+SESSION_COOKIE_DOMAIN = '.localhost'
+
+
 
 DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
 MULTITENANT_RELATIVE_MEDIA_ROOT = "uploaded_files"
