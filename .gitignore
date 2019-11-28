@@ -1,4 +1,5 @@
 /**/migrations
 /**/migrations/*
+*.pyc
 .idea
 db.*
