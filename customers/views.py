@@ -17,7 +17,7 @@ def produce_exception():
 
 def create_public_tenant():
     domain_url = 'domain.local'
-    tenant = Client(schema_name='public',name='Public')
+    tenant = Client(schema_name='public',name='Public',domain_url='localhost')
     tenant.save()
 
     # Add one or more domains for the tenant
@@ -34,7 +34,7 @@ def create_real_tenant(t_name):
     if Client.objects.filter(schema_name=t_name):
         return 'Customer '+t_name+' Already exists'
     domain_url = t_name + '.localhost'
-    tenant = Client(schema_name=t_name, name=t_name)
+    tenant = Client(schema_name=t_name, name=t_name, domain_url=domain_url)
     tenant.save()
 
     # Add one or more domains for the tenant
@@ -66,11 +66,33 @@ class Create(TemplateView):
         return context
 
 
+def get_customer_list():
+    tenants_list = Client.objects.all().values('id', 'name', 'domain_url')
+    tenants_list = list(tenants_list)
+    return tenants_list
+
+class Delete(TemplateView):
+    template_name = "tenant_list.html"
+
+    def get_context_data(self, **kwargs):
+        res = 'Unknown status'
+        customer_id = self.request.GET['id']
+        context = {}
+        try:
+            customer = Client.objects.get(pk=customer_id)
+            if customer.schema_name == 'public':
+                context = {'message': 'Can not delete public schema', 'list': get_customer_list()}
+            customer.delete()
+            context = {'list': get_customer_list()}
+        except:
+            res = produce_exception()
+            context = {'message': res, 'list': get_customer_list()}
+        return context
+
+
 class TenantView(TemplateView):
     template_name = "tenant_list.html"
 
     def get_context_data(self, **kwargs):
-        tenants_list = Client.objects.all().values('id', 'name')
-        tenants_list = list(tenants_list)
-        context = {'list': tenants_list}
+        context = {'list': get_customer_list()}
         return context
