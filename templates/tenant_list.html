@@ -30,8 +30,7 @@
 
 <h3>Create New Customer</h3>
 
-<form id="create-customer" action="/abcg" method="post">
-    {% csrf_token %}
+<form id="create-customer" action="/customers/new">
     New Customer Name: <input name="name" /> <button type="submit">Create Customer</button>
 </form>
 <script>

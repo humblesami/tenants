@@ -25,7 +25,7 @@ def produce_exception():
     return errorMessage
 
 
-class CreateCustomer(TemplateView):
+class Create(TemplateView):
     template_name = "tenant_list.html"
 
     def get_context_data(self, **kwargs):
@@ -38,14 +38,16 @@ class CreateCustomer(TemplateView):
                 context ['error'] = 'No name provided'
                 return context
             with transaction.atomic():
-                super_user = "superuser@"+tenant_name
+
+                public_admin = "admin@local"
                 if not get_tenant_model().objects.filter(schema_name = 'public'):
-                    create_public_tenant("localhost:8000", "admin@localhost")
-                    TenantUser.objects.create_superuser(email=super_user, password='123', is_active=True)
+                    create_public_tenant("localhost", public_admin)
+                    # TenantUser.objects.create_superuser(email=public_admin, password='123', is_active=True)
 
                 if not get_tenant_model().objects.filter(name=tenant_name):
-                    TenantUser.objects.create_user(email=super_user, password='123', is_active=True)
-                    provision_tenant(tenant_name, tenant_name, super_user)
+                    # tenant_super_user = "superuser@" + tenant_name
+                    # TenantUser.objects.create_user(email=tenant_super_user, password='123', is_active=True)
+                    provision_tenant(tenant_name, tenant_name, public_admin)
                     context['message'] = tenant_name + ' created successfully'
                 else:
                     context['error'] = 'Already exists'
@@ -75,7 +77,7 @@ class Delete(TemplateView):
             context = {'list': get_customer_list()}
         except:
             res = produce_exception()
-            context = {'message': res, 'list': get_customer_list()}
+            context = {'error': res, 'list': get_customer_list()}
         context['port'] = SERVER_PORT_STR
         return context
 
