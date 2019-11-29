@@ -26,10 +26,13 @@ class CreateCustomer(TemplateView):
         res = 'Unknown status'    
         try:
             with transaction.atomic():
-                create_public_tenant("t1.localhost", "abc@gmail.com")
-                user = TenantUser.objects.create_user(email="abc@gmail.com", password='123', is_active=True)
-                user.save()
-                fqdn = provision_tenant("T1", "t1", "abc@gmail.com")
+                try:
+                    create_public_tenant("localhost:8000", "admin@localhost")
+                    TenantUser.objects.create_superuser(email="superuser@localhost", password='123', is_active=True)
+                except:
+                    pass
+                TenantUser.objects.create_user(email="tenant2@localhost", password=123, is_active=True, is_staff=True)
+                provision_tenant("Tenant2", "tenant2", "tenant2@localhost", is_staff=True)
                 res = "Created"
         except:
             res = produce_exception()
