@@ -1,22 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base_public.html' %}
+{% block title %}Tenant Tutorial{% endblock %}
 
-<h3>
-    {{ message }}
-</h3>
+{% block summary %}
+    <h3>
+        {{ message }}
+    </h3>
 
-<h3>
-     <a href="http://{{domain_url}}:8000">Click here to user this customer domain</a>
-</h3>
+    <h3>
+         <a href="http://{{domain_url}}{{port}}">Click here to user this customer domain</a>
+    </h3>
 
-<a href="/customers">
-    <h3>Go to customer list</h3>
-</a>
-
-</body>
-</html>
+    <a href="/customers">
+        <h3>Go to customer list</h3>
+    </a>
+{% endblock %}

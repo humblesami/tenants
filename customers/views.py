@@ -1,12 +1,17 @@
 import sys
 import traceback
-from customers.models import Client, Domain
+
+from django.contrib.auth.models import User
+from django.db import transaction
 from django.views.generic import TemplateView
+from django_tenants.utils import get_tenant_model
+
+from users.models import TenantUser
+from customers.models import Client, Domain
+from tenant_tutorial.settings import SERVER_PORT_STR
+
 from tenant_users.tenants.tasks import provision_tenant
 from tenant_users.tenants.utils import create_public_tenant
-from users.models import TenantUser
-from tenant_users.tenants.tasks import provision_tenant
-from django.db import transaction
 
 
 def produce_exception():
@@ -16,81 +21,43 @@ def produce_exception():
     for er in eg:
         cnt += 1
         if not 'lib/python' in er and not 'lib\\' in er:
-            errorMessage += "==================" + er
+            errorMessage += er + '<br><br>'
     return errorMessage
 
+
 class CreateCustomer(TemplateView):
-    template_name = "abc.html"
+    template_name = "tenant_list.html"
 
     def get_context_data(self, **kwargs):
-        res = 'Unknown status'    
-        try:
-            with transaction.atomic():
-                try:
-                    create_public_tenant("localhost:8000", "admin@localhost")
-                    TenantUser.objects.create_superuser(email="superuser@localhost", password='123', is_active=True)
-                except:
-                    pass
-                TenantUser.objects.create_user(email="tenant2@localhost", password=123, is_active=True, is_staff=True)
-                provision_tenant("Tenant2", "tenant2", "tenant2@localhost", is_staff=True)
-                res = "Created"
-        except:
-            res = produce_exception()
-        return {'res': res}
-
-def create_public_tenant1():
-    domain_url = 'domain.local'
-    tenant = Client(schema_name='public',name='Public',domain_url='localhost')
-    tenant.save()
-
-    # Add one or more domains for the tenant
-    domain = Domain()
-    domain.domain = domain_url  # don't add your port or www here! on a local server you'll want to use localhost here
-    domain.tenant = tenant
-    domain.is_primary = True
-    domain.save()
-
-
-def create_real_tenant(t_name):
-    if not Client.objects.filter(schema_name='public'):
-        create_public_tenant1()
-    if Client.objects.filter(schema_name=t_name):
-        return 'Customer '+t_name+' Already exists'
-    domain_url = t_name + '.localhost'
-    tenant = Client(schema_name=t_name, name=t_name, domain_url=domain_url)
-    tenant.save()
-
-    # Add one or more domains for the tenant
-    domain = Domain()
-    domain.domain = domain_url  # don't add your port or www here!
-    domain.tenant = tenant
-    domain.is_primary = True
-    domain.save()
-    return { 'done': True, 'url': domain_url }
-
-
-class Create(TemplateView):
-    template_name = "new_customer.html"
-
-    def get_context_data(self, **kwargs):
-        res = 'Unknown status'
-        tenant_name = 'Untitiled'
         context = {}
         try:
-            tenant_name = self.request.GET['name']
-            res = create_real_tenant(tenant_name)
-            if type(res) is str:
-                context = {'message': res, 'domain_url': tenant_name + '.localhost'}
-            else:
-                message = 'You have successfully created customer "' + tenant_name + '"'
-                context = {'name': tenant_name, 'done': 1, 'domain_url': res['url'], 'message': message}
+            tenant_name = self.request.POST.get('name')
+            if not tenant_name:
+                tenant_name = self.request.GET.get('name')
+            if not tenant_name:
+                context ['error'] = 'No name provided'
+                return context
+            with transaction.atomic():
+                super_user = "superuser@"+tenant_name
+                if not get_tenant_model().objects.filter(schema_name = 'public'):
+                    create_public_tenant("localhost:8000", "admin@localhost")
+                    TenantUser.objects.create_superuser(email=super_user, password='123', is_active=True)
+
+                if not get_tenant_model().objects.filter(name=tenant_name):
+                    TenantUser.objects.create_user(email=super_user, password='123', is_active=True)
+                    provision_tenant(tenant_name, tenant_name, super_user)
+                    context['message'] = tenant_name + ' created successfully'
+                else:
+                    context['error'] = 'Already exists'
         except:
-            res = produce_exception()
+            context['error'] = produce_exception()
+        context['list'] = get_customer_list()
+        context['port'] = SERVER_PORT_STR
         return context
 
-
 def get_customer_list():
-    tenants_list = Client.objects.all().values('id', 'name', 'domain_url')
+    tenants_list = get_tenant_model().objects.prefetch_related('domains').all()
+    tenants_list = list(tenants_list.values('id', 'name', 'domains__domain'))
     tenants_list = list(tenants_list)
     return tenants_list
 
@@ -102,14 +69,14 @@ class Delete(TemplateView):
         customer_id = self.request.GET['id']
         context = {}
         try:
-            customer = Client.objects.get(pk=customer_id)
-            if customer.schema_name == 'public':
-                context = {'message': 'Can not delete public schema', 'list': get_customer_list()}
-            customer.delete()
+            TenantModel = get_tenant_model()
+            self.request.user = TenantUser.objects.filter(pk=1)
+            TenantModel.objects.get(pk = customer_id).delete_tenant()
             context = {'list': get_customer_list()}
         except:
             res = produce_exception()
             context = {'message': res, 'list': get_customer_list()}
+        context['port'] = SERVER_PORT_STR
         return context
 
 
@@ -118,4 +85,5 @@ class TenantView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = {'list': get_customer_list()}
+        context['port'] = SERVER_PORT_STR
         return context

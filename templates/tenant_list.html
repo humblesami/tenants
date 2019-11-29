@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_public.html' %}
 {% block title %}{{ tenant.name }}{% endblock %}
 
 {% block summary %}
@@ -7,16 +7,19 @@
 {% endblock %}
 
 {% block instructions %}
+
+    <div class="error text-success">{{message | safe}}</div>
+    <div class="error text-danger">{{error | safe}}</div>
     <h3>Customers list</h3>
     {% for customer in list %}
     <ul>
         <li>
             {{customer.id }} -- {{customer.name }}
             {% if customer.id == 1 %}
-                <a href="http://localhost:8000">Link</a>
+                <a href="http://{{customer.domains__domain}}{{port}}">Link</a>
             {% endif %}
             {% if customer.id != 1 %}
-                <a href="http://{{customer.domain_url}}:8000">Link</a>  |
+                <a href="http://{{customer.domains__domain}}{{port}}">Link</a>  |
                 <a href="/customers/delete?id={{customer.id}}">Delete</a>
             {% endif %}
         </li>
@@ -27,7 +30,13 @@
 
 <h3>Create New Customer</h3>
 
-<form action="/customers/new">
-        New Customer Name: <input name="name" /> <button type="submit">Create Customer</button>
-    </form>
+<form id="create-customer" action="/abcg" method="post">
+    {% csrf_token %}
+    New Customer Name: <input name="name" /> <button type="submit">Create Customer</button>
+</form>
+<script>
+$('#create-customer').submit(function(){
+    $(this).find('button[type="submit"]').attr('disabled', 'disabled');
+});
+</script>
 {% endblock %}

@@ -67,7 +67,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -78,6 +78,10 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+)
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, '..', 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -142,22 +146,22 @@ WSGI_APPLICATION = 'tenant_tutorial.wsgi.application'
 
 
 SHARED_APPS = (
+    'django_tenants',
     'django.contrib.admin',
-    'django.contrib.auth',
-    'tenant_users.permissions',
-    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
     'django.contrib.staticfiles',
-    'django_tenants',  # mandatory
+    'tenant_users.permissions',
     'tenant_users.tenants',
     'customers',  # you must list the app where your tenant model resides in
     'users',
 )
 
 TENANT_APPS = (
-    'django.contrib.contenttypes',
     'django.contrib.auth',
+    'django.contrib.contenttypes',
     'tenant_users.permissions',
     'django.contrib.admin',
     'django.contrib.sessions',
@@ -204,14 +208,16 @@ LOGGING = {
         },
     }
 }
+
 TENANT_USERS_DOMAIN = "localhost"
 AUTH_USER_MODEL = 'users.TenantUser'
-AUTHENTICATION_BACKENDS = (
-    'tenant_users.permissions.backend.UserBackend',
-)
-SESSION_COOKIE_DOMAIN = '.localhost'
+# AUTHENTICATION_BACKENDS = (
+#     'tenant_users.permissions.backend.UserBackend',
+# )
+SESSION_COOKIE_DOMAIN = '.' + TENANT_USERS_DOMAIN
 
-
+SERVER_PORT = 8001
+SERVER_PORT_STR = ':' + str(SERVER_PORT)
 
 DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
 MULTITENANT_RELATIVE_MEDIA_ROOT = "uploaded_files"
