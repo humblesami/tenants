@@ -1,0 +1,2 @@
+django-tenants
+django-tenant-users

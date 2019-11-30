@@ -148,10 +148,11 @@ WSGI_APPLICATION = 'tenant_tutorial.wsgi.application'
 SHARED_APPS = (
     'django_tenants',
     'django.contrib.admin',
-    'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
     'django.contrib.staticfiles',
     'tenant_users.permissions',
     'tenant_users.tenants',
@@ -160,6 +161,7 @@ SHARED_APPS = (
 )
 
 TENANT_APPS = (
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'tenant_users.permissions',

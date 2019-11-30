@@ -20,7 +20,7 @@
             {% endif %}
             {% if customer.id != 1 %}
                 <a href="http://{{customer.domains__domain}}{{port}}">Link</a>  |
-                <a href="/customers/delete?id={{customer.id}}">Delete</a>
+                <a href="/delete-tenant?id={{customer.id}}">Delete</a>
             {% endif %}
         </li>
     </ul>
@@ -30,7 +30,7 @@
 
 <h3>Create New Customer</h3>
 
-<form id="create-customer" action="/customers/new">
+<form id="create-customer" action="/new-tenant">
     New Customer Name: <input name="name" /> <button type="submit">Create Customer</button>
 </form>
 <script>

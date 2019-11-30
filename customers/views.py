@@ -1,28 +1,13 @@
-import sys
-import traceback
-
-from django.contrib.auth.models import User
 from django.db import transaction
 from django.views.generic import TemplateView
 from django_tenants.utils import get_tenant_model
 
 from users.models import TenantUser
-from customers.models import Client, Domain
+from tenant_tutorial import ws_methods
 from tenant_tutorial.settings import SERVER_PORT_STR
 
 from tenant_users.tenants.tasks import provision_tenant
 from tenant_users.tenants.utils import create_public_tenant
-
-
-def produce_exception():
-    eg = traceback.format_exception(*sys.exc_info())
-    errorMessage = ''
-    cnt = 0
-    for er in eg:
-        cnt += 1
-        if not 'lib/python' in er and not 'lib\\' in er:
-            errorMessage += er + '<br><br>'
-    return errorMessage
 
 
 class Create(TemplateView):
@@ -40,9 +25,9 @@ class Create(TemplateView):
             with transaction.atomic():
 
                 public_admin = "admin@local"
-                if not get_tenant_model().objects.filter(schema_name = 'public'):
-                    create_public_tenant("localhost", public_admin)
-                    # TenantUser.objects.create_superuser(email=public_admin, password='123', is_active=True)
+                if not get_tenant_model().objects.filter(schema_name='public'):
+                    extra = {'is_superuser': True, 'password': '123'}
+                    create_public_tenant("localhost", public_admin,  password='123')
 
                 if not get_tenant_model().objects.filter(name=tenant_name):
                     # tenant_super_user = "superuser@" + tenant_name
@@ -52,7 +37,7 @@ class Create(TemplateView):
                 else:
                     context['error'] = 'Already exists'
         except:
-            context['error'] = produce_exception()
+            context['error'] = ws_methods.produce_exception()
         context['list'] = get_customer_list()
         context['port'] = SERVER_PORT_STR
         return context
@@ -76,7 +61,7 @@ class Delete(TemplateView):
             TenantModel.objects.get(pk = customer_id).delete_tenant()
             context = {'list': get_customer_list()}
         except:
-            res = produce_exception()
+            res = ws_methods.produce_exception()
             context = {'error': res, 'list': get_customer_list()}
         context['port'] = SERVER_PORT_STR
         return context
