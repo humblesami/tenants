@@ -1,6 +1,7 @@
 from django.db import transaction
 from django.views.generic import TemplateView
 from django_tenants.utils import get_tenant_model
+from tenant_users.permissions.models import UserTenantPermissions
 
 from users.models import TenantUser
 from tenant_tutorial import ws_methods
@@ -23,16 +24,26 @@ class Create(TemplateView):
                 context ['error'] = 'No name provided'
                 return context
             with transaction.atomic():
-
-                public_admin = "admin@local"
                 if not get_tenant_model().objects.filter(schema_name='public'):
-                    extra = {'is_superuser': True, 'password': '123'}
-                    create_public_tenant("localhost", public_admin,  password='123')
-
+                    public_owner = "owner@local"
+                    create_public_tenant("localhost", public_owner)
+                    tenant_admin_email = "admin@local"
+                    TenantUser.objects.create_superuser('123', tenant_admin_email)
+                    user = TenantUser.objects.get(email=tenant_admin_email)
+                    UserTenantPermissions.objects.get_or_create(profile=user, is_staff=True)
+                    user_tenant = user.usertenantpermissions
+                    user_tenant.is_superuser = True
+                    user_tenant.save()
+                    
                 if not get_tenant_model().objects.filter(name=tenant_name):
-                    # tenant_super_user = "superuser@" + tenant_name
-                    # TenantUser.objects.create_user(email=tenant_super_user, password='123', is_active=True)
-                    provision_tenant(tenant_name, tenant_name, public_admin)
+                    tenant_admin_email = "admin@" + tenant_name
+                    TenantUser.objects.create_superuser('123', tenant_admin_email)
+                    provision_tenant(tenant_name, tenant_name, tenant_admin_email)
+                    user = TenantUser.objects.get(email=tenant_admin_email)
+                    UserTenantPermissions.objects.get_or_create(profile=user, is_staff=True)
+                    user_tenant = user.usertenantpermissions
+                    user_tenant.is_superuser = True
+                    user_tenant.save()
                     context['message'] = tenant_name + ' created successfully'
                 else:
                     context['error'] = 'Already exists'
