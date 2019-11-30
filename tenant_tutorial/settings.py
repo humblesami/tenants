@@ -144,43 +144,7 @@ PUBLIC_SCHEMA_URLCONF = 'tenant_tutorial.urls_public'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'tenant_tutorial.wsgi.application'
 
-
-SHARED_APPS = (
-    'django_tenants',
-    'django.contrib.admin',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'tenant_users.permissions',
-    'tenant_users.tenants',
-    'customers',  # you must list the app where your tenant model resides in
-    'users',
-)
-
-TENANT_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'tenant_users.permissions',
-    'django.contrib.admin',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'tenant_only',
-)
-
-TENANT_MODEL = "customers.Client"  # app.Model
-
-TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
-
-TEST_RUNNER = 'django.test.runner.DiscoverRunner'
-
-INSTALLED_APPS = list(set(TENANT_APPS + SHARED_APPS))
-
-
-SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -211,12 +175,43 @@ LOGGING = {
     }
 }
 
+TENANT_MODEL = "customers.Client"  # app.Model
+TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
 TENANT_USERS_DOMAIN = "localhost"
 AUTH_USER_MODEL = 'users.TenantUser'
-# AUTHENTICATION_BACKENDS = (
-#     'tenant_users.permissions.backend.UserBackend',
-# )
+AUTHENTICATION_BACKENDS = (
+    'tenant_users.permissions.backend.UserBackend',
+)
 SESSION_COOKIE_DOMAIN = '.' + TENANT_USERS_DOMAIN
+
+
+SHARED_APPS = (
+    'django_tenants',
+    'django.contrib.admin',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'tenant_users.permissions',
+    'tenant_users.tenants',
+    'customers',  # you must list the app where your tenant model resides in
+    'users',
+)
+
+TENANT_APPS = (
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'tenant_users.permissions',
+    'django.contrib.admin',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'tenant_only',
+)
+
+INSTALLED_APPS = list(set(TENANT_APPS + SHARED_APPS))
 
 SERVER_PORT = 8001
 SERVER_PORT_STR = ':' + str(SERVER_PORT)

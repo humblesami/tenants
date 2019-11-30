@@ -31,9 +31,6 @@ class Create(TemplateView):
                     TenantUser.objects.create_superuser('123', tenant_admin_email)
                     user = TenantUser.objects.get(email=tenant_admin_email)
                     UserTenantPermissions.objects.get_or_create(profile=user, is_staff=True)
-                    user_tenant = user.usertenantpermissions
-                    user_tenant.is_superuser = True
-                    user_tenant.save()
                     
                 if not get_tenant_model().objects.filter(name=tenant_name):
                     tenant_admin_email = "admin@" + tenant_name
@@ -41,9 +38,6 @@ class Create(TemplateView):
                     provision_tenant(tenant_name, tenant_name, tenant_admin_email)
                     user = TenantUser.objects.get(email=tenant_admin_email)
                     UserTenantPermissions.objects.get_or_create(profile=user, is_staff=True)
-                    user_tenant = user.usertenantpermissions
-                    user_tenant.is_superuser = True
-                    user_tenant.save()
                     context['message'] = tenant_name + ' created successfully'
                 else:
                     context['error'] = 'Already exists'

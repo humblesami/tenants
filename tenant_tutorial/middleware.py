@@ -12,10 +12,12 @@ class TenantTutorialMiddleware(MiddlewareMixin):
     def process_request(self, request):
         connection.set_schema_to_public()
         hostname_without_port = remove_www_and_dev(request.get_host().split(':')[0])
+        selected_schema_name = 'public'
 
         try:
             domain = get_tenant_domain_model().objects.select_related('tenant').get(domain=hostname_without_port)
             request.tenant = domain.tenant
+            selected_schema_name = request.tenant.schema_name
         except utils.DatabaseError:
             request.urlconf = settings.PUBLIC_SCHEMA_URLCONF
             return
@@ -29,5 +31,7 @@ class TenantTutorialMiddleware(MiddlewareMixin):
         connection.set_tenant(request.tenant)
         ContentType.objects.clear_cache()
 
-        if hasattr(settings, 'PUBLIC_SCHEMA_URLCONF') and request.tenant.schema_name == get_public_schema_name():
+        ps = get_public_schema_name()
+        # if hasattr(settings, 'PUBLIC_SCHEMA_URLCONF') and selected_schema_name == ps:
+        if selected_schema_name == ps:
             request.urlconf = settings.PUBLIC_SCHEMA_URLCONF
