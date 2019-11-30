@@ -1,7 +1,9 @@
-from django.conf.urls import url
 from django.urls import path
-# from customer.views import create_tenant
+
+from customers.views import TenantView, Delete, Create
 
 urlpatterns = [
-    # url('create', create_tenant, name='asa')
+    path('new-tenant', Create.as_view()),
+    path('delete-tenant', Delete.as_view()),
+    path('', TenantView.as_view(), name="index"),
 ]

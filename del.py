@@ -10,6 +10,9 @@ for file_path in res:
             os.remove(file_path)
     elif not file_path.endswith('__init__.py'):
         os.remove(file_path)
+sub_res = glob.glob('/**/*.pyc')
+for file_path in sub_res:
+    os.remove(file_path)
 print ('done')
 
 # from pathlib import Path

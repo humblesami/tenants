@@ -1,27 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="509e2ec8-a155-4a49-af71-b8f8ddb90220" name="Default Changelist" comment="pata ni">
-      <change afterPath="$PROJECT_DIR$/customers/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/middlewares/middleware.py" afterDir="false" />
+    <list default="true" id="4b5c1169-048b-4001-9cc0-ea1f2ad500c1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/customers/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/bootstrap-4.2.1.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/jquery-2.2.4.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/url_without_sub_domain.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/abc.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/admin/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/base_public.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/base_tenant.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/delete_customer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/index_public.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/index_tenant.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/new_customer.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/random_form.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/tenant_list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/upload_file.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_only/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_only/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_only/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_only/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_only/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_only/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_only/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_only/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_tutorial/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_tutorial/middleware.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_tutorial/settings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_tutorial/urls_public.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_tutorial/urls_tenants.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_tutorial/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_tutorial/ws_methods.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tenant_tutorial/wsgi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/apps.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/migrations/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/customers/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dtdemo/public_urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dtdemo/public_urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dtdemo/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/dtdemo/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dtdemo/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dtdemo/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dtdemo/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dtdemo/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myclientapp/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/myclientapp/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/myclientapp/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/myclientapp/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customers/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customers/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/customers/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customers/templates/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/customers/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/customers/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customers/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/del.py" beforeDir="false" afterPath="$PROJECT_DIR$/del.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dtdemo/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dtdemo/public_urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dtdemo/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dtdemo/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dtdemo/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dtdemo/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middlewares/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/middlewares/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/middlewares/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/middlewares/middleware.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/middlewares/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/middlewares/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/middlewares/views.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/myclientapp/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/myclientapp/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/myclientapp/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/myclientapp/migrations/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/myclientapp/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/myclientapp/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/myclientapp/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/myclientapp/views.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/admin.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/apps.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/models.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/tests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,30 +79,79 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="HTML File" />
-      </list>
-    </option>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tenant_tutorial/middleware.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="339">
+              <caret line="30" column="45" lean-forward="true" selection-start-line="30" selection-start-column="45" selection-end-line="30" selection-end-column="45" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>create_tenant</find>
+      <find>Client.</find>
+      <find>mid</find>
+      <find>data</find>
+      <find>users.TenantUser</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>Client..</replace>
+      <replace>TenantModel.</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>D:\apps\tenants</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectId" id="1U65YqMlnXUAWJhS0oPIYcAIZqU" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="PropertiesComponent">
-    <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/customers/views.py" />
+        <option value="$PROJECT_DIR$/tenant_tutorial/middleware.py" />
+        <option value="$PROJECT_DIR$/tenant_tutorial/settings.py" />
+        <option value="$PROJECT_DIR$/customers/models.py" />
+      </list>
+    </option>
   </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/customers" />
-      <recent name="$PROJECT_DIR$/middlewares" />
-      <recent name="$PROJECT_DIR$/customer" />
-    </key>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="10" />
+    <option name="y" value="20" />
+    <option name="width" value="1346" />
+    <option name="height" value="688" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="tenants" type="b2602c69:ProjectViewProjectNode" />
+              <item name="tenants" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -74,13 +173,13 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="C:\Program Files\Python35\python.exe" />
       <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/manage.py" />
-      <option name="PARAMETERS" value="runserver" />
+      <option name="PARAMETERS" value="runserver 0.0.0.0:8001" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -94,25 +193,157 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="509e2ec8-a155-4a49-af71-b8f8ddb90220" name="Default Changelist" comment="" />
-      <created>1574574933407</created>
+      <changelist id="4b5c1169-048b-4001-9cc0-ea1f2ad500c1" name="Default Changelist" comment="" />
+      <created>1575155115086</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1574574933407</updated>
+      <updated>1575155115086</updated>
     </task>
     <servers />
   </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25416037" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4091653" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32569557" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.46481177" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="10" />
+      <window_info anchor="bottom" id="Python Console" order="11" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.24962178" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.25" />
+      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="0" visible="true" weight="0.3289689" />
+      <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="2" />
+      <window_info anchor="bottom" id="Python Console" order="3" />
+      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Find" order="5" />
+      <window_info anchor="bottom" id="Run" order="6" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="10" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout-to-restore>
+  </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
+    <option name="RECENT_FILTERS">
       <map>
-        <entry key="MAIN">
+        <entry key="Branch">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
           </value>
         </entry>
       </map>
     </option>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/tenant_tutorial/urls_tenants.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#88#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/del.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="8" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/authsignup/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-394">
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tenant_tutorial/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="184" selection-start-line="184" selection-end-line="184" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/customers/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="88" selection-start-line="10" selection-start-column="88" selection-end-line="10" selection-end-column="88" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tenant_tutorial/urls_public.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/customers/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="20" lean-forward="true" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/customers/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="106">
+          <caret line="76" column="6" selection-start-line="76" selection-start-column="6" selection-end-line="76" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tenant_tutorial/middleware.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="30" column="45" lean-forward="true" selection-start-line="30" selection-start-column="45" selection-end-line="30" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

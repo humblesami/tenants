@@ -1,0 +1,12 @@
+{% extends 'base_public.html' %}
+{% block title %}Tenant Tutorial{% endblock %}
+
+{% block summary %}
+    <h3>
+        {{ message }}
+    </h3>
+
+    <h3>
+         <a href="http://{{domain_url}}{{port}}">Click here to user this customer domain</a>
+    </h3>
+{% endblock %}

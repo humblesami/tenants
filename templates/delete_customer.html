@@ -1,0 +1,12 @@
+{% extends 'base_public.html' %}
+{% block title %}{{ tenant.name }}{% endblock %}
+
+{% block summary %}
+  <h1>{{ request.tenant.name }}</h1>
+  <h2>{{ request.tenant.description }}</h2>
+{% endblock %}
+
+{% block instructions %}
+    <script>
+    </script>
+{% endfor %}
