@@ -17,6 +17,7 @@ class TenantMiddleware(MiddlewareMixin):
             domain = get_tenant_domain_model().objects.select_related('tenant').get(domain=hostname_without_port)
             request.tenant = domain.tenant
             selected_schema_name = request.tenant.schema_name
+            request.urlconf = settings.TENANT_URLCONF
         except utils.DatabaseError:
             request.urlconf = settings.PUBLIC_SCHEMA_URLCONF
             return
