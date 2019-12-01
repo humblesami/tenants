@@ -1,11 +1,10 @@
+from django.db import utils
+from django.http import Http404
+from django.db import connection
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
-from django.db import connection
-from django.http import Http404
 from django.utils.deprecation import MiddlewareMixin  # todo change
-
 from django_tenants.utils import remove_www_and_dev, get_public_schema_name, get_tenant_domain_model
-from django.db import utils
 
 
 class TenantMiddleware(MiddlewareMixin):
