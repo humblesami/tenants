@@ -2,3 +2,5 @@
 /**/migrations/*
 .idea
 db.*
+.idea/
+.idea/*
