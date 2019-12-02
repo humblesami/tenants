@@ -2,12 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30bd3be5-4155-4511-b1c2-a60c2f973650" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_stripe/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_stripe/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_stripe/apps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_stripe/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_stripe/tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_stripe/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/my_stripe/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/stripe/charge.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/stripe/layout.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/stripe/paymentlist.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/stripe/paymentpage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customers/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/tenant_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/tenant_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_tutorial/middleware.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/middleware.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base_public.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base_public.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tenant_tutorial/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tenant_tutorial/urls_public.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/urls_public.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,12 +24,20 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1UQjsBsbhxnxOZyY1ax6OgOfJWY" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
@@ -84,7 +101,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

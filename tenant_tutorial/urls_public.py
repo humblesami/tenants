@@ -4,5 +4,6 @@ from django.conf.urls import include, url
 
 urlpatterns = [
     url('', include('customers.urls')),
+    url('stripe/', include('my_stripe.urls')),
     path('admin/', admin.site.urls),
 ]
