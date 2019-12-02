@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import transaction, connection
 from django.views.generic import TemplateView
+from django.contrib.contenttypes.models import ContentType
 
 from django_tenants.utils import get_tenant_model
 
@@ -8,33 +9,13 @@ from tenant_tutorial import ws_methods
 from tenant_tutorial.settings import SERVER_PORT_STR, TENANT_DOMAIN
 
 
-def create_public_tenant(tenant_model):
-    try:
-        with transaction.atomic():
-            owner = User.objects.create(username='admin@public', is_superuser=True, is_staff=True, is_active=True)
-            owner.set_password('123')
-            owner.save()
-            t_name = 'public'
-            domain_url = TENANT_DOMAIN
-            company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
-            company.save()
-            return company
-    except:
-        return 'Web could not be initialized'
-
-
 def create_tenant(t_name, request):
     res = 'Unknown issue'
     try:
         tenant_model = get_tenant_model()
         with transaction.atomic():
-            public_tenant = tenant_model.objects.filter(schema_name='public')
-            if not public_tenant:
-                public_tenant = create_public_tenant(tenant_model)
-            else:
-                public_tenant = public_tenant[0]
             if not tenant_model.objects.filter(schema_name=t_name):
-                owner = User.objects.create(username='admin@'+t_name, is_superuser=True, is_staff=True, is_active=True)
+                owner = User.objects.create(username='admin@'+t_name, is_active=True)
                 owner.set_password('123')
                 owner.save()
                 domain_url = t_name + '.' + TENANT_DOMAIN
@@ -42,16 +23,18 @@ def create_tenant(t_name, request):
                 company.owner = owner
                 company.save()
                 company.users.add(owner)
-                company.save()
 
                 request.tenant = company
-                connection.set_tenant(company)
-                owner = User.objects.create(username='owner@' + t_name, is_superuser=True, is_staff=True,
-                                            is_active=True)
+                connection.set_tenant(request.tenant)
+                ContentType.objects.clear_cache()
+                owner = User.objects.create(username='admin@' + t_name, is_superuser=True, is_staff=True, is_active=True)
                 owner.set_password('123')
                 owner.save()
-                request.tenant = public_tenant
-                connection.set_tenant(public_tenant)
+
+                company = tenant_model.objects.get(schema_name='public')
+                request.tenant = company
+                connection.set_tenant(request.tenant)
+                ContentType.objects.clear_cache()
                 res = 'done'
             else:
                 res = 'Client with id' + t_name + ' already exists'

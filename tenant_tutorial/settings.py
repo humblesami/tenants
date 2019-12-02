@@ -135,7 +135,7 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
-SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN
+# SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN
 
 SERVER_PORT = 8001
 SERVER_PORT_STR = ':' + str(SERVER_PORT)
