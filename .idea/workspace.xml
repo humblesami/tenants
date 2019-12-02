@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="30bd3be5-4155-4511-b1c2-a60c2f973650" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/tenant_tutorial/urls.py" afterDir="false" />
+    <list default="true" id="30bd3be5-4155-4511-b1c2-a60c2f973650" name="Default Changelist" comment="now owner users added both in particular tenants and public schema">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_tutorial/middleware.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/middleware.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_tutorial/urls_public.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/urls_public.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customers/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -87,7 +86,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="41203e9c-132c-41b9-b1fe-9576652bf073" name="Default Changelist" comment="" />
+      <changelist id="30bd3be5-4155-4511-b1c2-a60c2f973650" name="Default Changelist" comment="" />
       <created>1574938917474</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -128,7 +127,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575286772944</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="unable to login with tenant users 2">
+      <created>1575288424938</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1575288424938</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -150,15 +156,21 @@
     <MESSAGE value="tenants are created but auth not" />
     <MESSAGE value="unable to login with tenant users" />
     <MESSAGE value="unable to login with tenant users 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="unable to login with tenant users 1" />
+    <MESSAGE value="unable to login with tenant users 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="unable to login with tenant users 2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file:///usr/local/lib/python3.5/dist-packages/django/contrib/auth/views.py</url>
+          <line>101</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/tenant_tutorial/middleware.py</url>
-          <line>17</line>
-          <option name="timeStamp" value="32" />
+          <line>34</line>
+          <option name="timeStamp" value="41" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

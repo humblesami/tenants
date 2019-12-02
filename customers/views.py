@@ -1,5 +1,5 @@
-from django.db import transaction
 from django.contrib.auth.models import User
+from django.db import transaction, connection
 from django.views.generic import TemplateView
 
 from django_tenants.utils import get_tenant_model
@@ -23,13 +23,16 @@ def create_public_tenant(tenant_model):
         return 'Web could not be initialized'
 
 
-def create_tenant(t_name):
+def create_tenant(t_name, request):
     res = 'Unknown issue'
     try:
         tenant_model = get_tenant_model()
         with transaction.atomic():
-            if not tenant_model.objects.filter(schema_name='public'):
-                create_public_tenant(tenant_model)
+            public_tenant = tenant_model.objects.filter(schema_name='public')
+            if not public_tenant:
+                public_tenant = create_public_tenant(tenant_model)
+            else:
+                public_tenant = public_tenant[0]
             if not tenant_model.objects.filter(schema_name=t_name):
                 owner = User.objects.create(username='admin@'+t_name, is_superuser=True, is_staff=True, is_active=True)
                 owner.set_password('123')
@@ -41,10 +44,14 @@ def create_tenant(t_name):
                 company.users.add(owner)
                 company.save()
 
-                # owner = User.objects.create(username='owner@' + t_name, is_superuser=True, is_staff=True,
-                #                             is_active=True)
-                # owner.set_password('123')
-                # owner.save()
+                request.tenant = company
+                connection.set_tenant(company)
+                owner = User.objects.create(username='owner@' + t_name, is_superuser=True, is_staff=True,
+                                            is_active=True)
+                owner.set_password('123')
+                owner.save()
+                request.tenant = public_tenant
+                connection.set_tenant(public_tenant)
                 res = 'done'
             else:
                 res = 'Client with id' + t_name + ' already exists'
@@ -65,7 +72,7 @@ class Create(TemplateView):
             if not tenant_name:
                 context ['error'] = 'No name provided'
                 return context
-            res = create_tenant(tenant_name)
+            res = create_tenant(tenant_name, self.request)
             if res != 'done':
                 context['error'] = res
             else:

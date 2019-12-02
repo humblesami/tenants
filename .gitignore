@@ -2,6 +2,6 @@
 /**/migrations/*
 .idea
 db.*
-.idea/
-.idea/*
+/.idea
 *.pyc
+/django
