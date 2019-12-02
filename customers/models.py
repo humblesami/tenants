@@ -1,19 +1,21 @@
 from django.db import models
+from django.db import transaction
 from django.contrib.auth.models import User
 from django_tenants.models import TenantMixin, DomainMixin
 
 
 class Client(TenantMixin):
     name = models.CharField(max_length=100)
-    schema = models.CharField(max_length=100)
     description = models.TextField(max_length=200, default='')
     created_on = models.DateField(auto_now_add=True)
     owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='superuser')
     users = models.ManyToManyField(User)
+    domain_url = models.CharField(max_length=64, default='')
 
     def delete_tenant(self):
+        self._drop_schema(force_drop=True)
+        self.users.all().delete()
         self.delete()
-        # drop_schema()
 
 
 class Domain(DomainMixin):

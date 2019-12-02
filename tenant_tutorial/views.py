@@ -1,9 +1,17 @@
 from django.db import utils
 from django.conf import settings
+from django.template import RequestContext
+from django.shortcuts import render_to_response
+
 from customers.models import Client
 from django.views.generic import TemplateView
 from django_tenants.utils import remove_www
+from django.views.defaults import page_not_found
 
+
+# views.py
+def custom_page_not_found(request):
+    return page_not_found(request, None)
 
 class HomeView(TemplateView):
     template_name = "index_public.html"

@@ -8,6 +8,7 @@ def produce_exception():
     cnt = 0
     for er in eg:
         cnt += 1
-        # if not 'lib/python' in er and not 'lib\\' in er:
-        error_message += er + '<br><br>'
+        if not 'lib/python' in er and not 'lib\\' in er:
+            error_message += er + '<br><br>'
     return error_message
+

@@ -4,3 +4,4 @@
 db.*
 .idea/
 .idea/*
+*.pyc

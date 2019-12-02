@@ -16,10 +16,10 @@
         <li>
             {{customer.id }} -- {{customer.name }}
             {% if customer.id == 1 %}
-                <a href="http://{{customer.domains__domain}}{{port}}">Link</a>
+                <a href="http://{{customer.domain_url}}{{port}}">Link</a>
             {% endif %}
             {% if customer.id != 1 %}
-                <a href="http://{{customer.domains__domain}}{{port}}">Link</a>  |
+                <a href="http://{{customer.domain_url}}{{port}}">Link</a>  |
                 <a href="/delete-tenant?id={{customer.id}}">Delete</a>
             {% endif %}
         </li>

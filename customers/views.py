@@ -1,28 +1,27 @@
-from django.contrib.auth.models import User
 from django.db import transaction
+from django.contrib.auth.models import User
 from django.views.generic import TemplateView
+
 from django_tenants.utils import get_tenant_model
+
 from tenant_tutorial import ws_methods
-from tenant_tutorial.settings import SERVER_PORT_STR
-
-
-def create_public_tenant(TenantModel):
-    User.objects.create(password='123', username='admin@public', is_superuser=True, is_verfied=True)
-    TenantModel.objects.create(schema='public', name='Default')
+from tenant_tutorial.settings import SERVER_PORT_STR, TENANT_DOMAIN
 
 
 def create_tenant(t_name):
     res = 'Unknown issue'
     try:
-        TenantModel = get_tenant_model()
+        tenant_model = get_tenant_model()
         with transaction.atomic():
-            if not TenantModel.objects.get(schema='public'):
-                create_public_tenant()
-            if not TenantModel.objects.get(schema=t_name):
-                user = User.objects.create(password='123', username='owner@'+t_name, is_superuser=True, is_verfied=True)
-                company = TenantModel.objects.create(schema=t_name, name=t_name)
-                company.owner = user
-                company.users.add(user)
+            if not tenant_model.objects.filter(schema_name=t_name):
+                owner = User.objects.create(username='owner@'+t_name, is_superuser=True, is_staff=True, is_active=True)
+                owner.set_password('123')
+                owner.save()
+                domain_url = t_name + '.' + TENANT_DOMAIN
+                company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
+                company.owner = owner
+                company.save()
+                company.users.add(owner)
                 res = 'done'
             else:
                 res = 'Client with id' + t_name + ' already exists'
@@ -43,18 +42,24 @@ class Create(TemplateView):
             if not tenant_name:
                 context ['error'] = 'No name provided'
                 return context
-            create_tenant(tenant_name)
+            res = create_tenant(tenant_name)
+            if res != 'done':
+                context['error'] = res
+            else:
+                context['message'] = 'Successfully created '+tenant_name
         except:
             context['error'] = ws_methods.produce_exception()
         context['list'] = get_customer_list()
         context['port'] = SERVER_PORT_STR
         return context
 
+
 def get_customer_list():
     tenants_list = get_tenant_model().objects.prefetch_related('domains').all()
-    tenants_list = list(tenants_list.values('id', 'name', 'domains__domain'))
+    tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
     tenants_list = list(tenants_list)
     return tenants_list
+
 
 class Delete(TemplateView):
     template_name = "tenant_list.html"
