@@ -5,7 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/customers/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tenant_tutorial/middleware.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/middleware.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_tutorial/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -114,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575039782357</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="unable to login with tenant users">
+      <created>1575284822853</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1575284822853</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -134,6 +140,7 @@
     <MESSAGE value="urls updated" />
     <MESSAGE value="pages linked" />
     <MESSAGE value="tenants are created but auth not" />
-    <option name="LAST_COMMIT_MESSAGE" value="tenants are created but auth not" />
+    <MESSAGE value="unable to login with tenant users" />
+    <option name="LAST_COMMIT_MESSAGE" value="unable to login with tenant users" />
   </component>
 </project>
