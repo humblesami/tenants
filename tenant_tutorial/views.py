@@ -93,7 +93,8 @@ def chargeList(request):
         name = item['billing_details']['name']
         amount = item['amount']
         currency = item['currency']
-        details[i] = {'name':name ,'amount':amount, 'currency': currency}
+        status = item['status']
+        details[i] = {'name':name ,'amount':amount, 'currency': currency, 'status': status}
         i = i + 1
 
     return render(request, 'paymentlist.html' , {'list': details})

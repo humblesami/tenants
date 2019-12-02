@@ -7,16 +7,10 @@
 <hr>
 
 <table>
-    <tr>
-        <td>currency</td>
-        
-        <td>Amount</td>
-        <td>Name</td>
-    </tr>
 {% for key, values in list.items %}
     <tr>
     {% for k, v in values.items %}
-        <td>    {{ v }} </td>
+        <td>    {{ v }} </td> 
     {% endfor %}
     </tr>
 {% endfor %}
