@@ -22,6 +22,7 @@ def create_tenant(t_name):
                 company.owner = owner
                 company.save()
                 company.users.add(owner)
+                company.save()
                 res = 'done'
             else:
                 res = 'Client with id' + t_name + ' already exists'

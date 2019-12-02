@@ -1,29 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="41203e9c-132c-41b9-b1fe-9576652bf073" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/static/error.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/error_parser.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/error.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dtdemo.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="30bd3be5-4155-4511-b1c2-a60c2f973650" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customers/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/customers/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/customers/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/abc.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/index_tenant.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index_tenant.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/tenant_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/tenant_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_only/forms.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_only/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_only/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_only/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_only/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tenant_tutorial/middleware.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/middleware.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tenant_tutorial/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_tutorial/urls_public.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/urls_public.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_tutorial/urls_tenants.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/urls_tenants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_tutorial/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_tutorial/ws_methods.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/ws_methods.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

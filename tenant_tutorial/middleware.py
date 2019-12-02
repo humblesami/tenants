@@ -22,18 +22,11 @@ def create_public_tenant(tenant_model):
     except:
         return 'Web could not be initialized'
 
-import html
 
 class TenantMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
-        error_content = ''
-        if response.status_code == 500:
+        if response.status_code != 200 and response.status_code != 302:
             error_content = response.content.decode("utf-8")
-            # error_content = html.unescape(error_content)
-            return render(request, 'error.html', {'error': error_content, 'error_code': response.status_code})
-        if response.status_code == 404:
-            error_content = response.content.decode("utf-8")
-            # error_content = html.unescape(error_content)
             return render(request, 'error.html', {'error': error_content, 'error_code': response.status_code})
         return response
 
