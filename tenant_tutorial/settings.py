@@ -21,7 +21,7 @@ sys.path.insert(0, TENANT_APPS_DIR)
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',  # Add 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'tt',                      # Or path to database file if using sqlite3.
+        'NAME': 'tenants',                      # Or path to database file if using sqlite3.
         'USER': 'odoo',
         'PASSWORD': '123',
     }
@@ -185,6 +185,8 @@ AUTHENTICATION_BACKENDS = (
 SESSION_COOKIE_DOMAIN = '.' + TENANT_USERS_DOMAIN
 
 
+# STRIPE_SECRET_KEY = 'sk_test_oDy0KPgmNmvwffLjTsFODkeH00s8C4sHpa'
+# STRIPE_PUBLISHABLE_KEY = 'pk_test_vdyQjNrpI3ZwOMGMyHFV9dhU00NA5PutJ7'
 SHARED_APPS = (
     'django_tenants',
     'django.contrib.admin',
@@ -198,6 +200,7 @@ SHARED_APPS = (
     'tenant_users.tenants',
     'customers',  # you must list the app where your tenant model resides in
     'users',
+    'stripe'
 )
 
 TENANT_APPS = (
@@ -218,3 +221,15 @@ SERVER_PORT_STR = ':' + str(SERVER_PORT)
 
 DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
 MULTITENANT_RELATIVE_MEDIA_ROOT = "uploaded_files"
+
+
+STRIPE_SECRET_KEY = 'sk_test_iXAXCCa4TeYZdfjSl0GfYjic001xWmMuDu'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_b0jaMPWTlpMV6c7HXNovbMuh00iATzbXHH'
+
+# STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY","pk_test_b0jaMPWTlpMV6c7HXNovbMuh00iATzbXHH")
+# STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_iXAXCCa4TeYZdfjSl0GfYjic001xWmMuDu")
+
+# STRIPE_LIVE_MODE = False
+DJSTRIPE_WEBHOOK_SECRET = "whsec_GZS0YLboypzBblOZoyY121KWuxzjpwdF"
+# STRIPE_LIVE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY", "<your publishable key>")
+# STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "<your secret key>")
