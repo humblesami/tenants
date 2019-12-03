@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30bd3be5-4155-4511-b1c2-a60c2f973650" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/customers/admin.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customers/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customers/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/customers/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tenant_tutorial/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/tenant_tutorial/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +87,14 @@
       <option name="project" value="LOCAL" />
       <updated>1575359129395</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="comiit files">
+      <created>1575376319481</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1575376319481</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -109,9 +113,14 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="max success" />
     <MESSAGE value="ignore updated" />
-    <option name="LAST_COMMIT_MESSAGE" value="ignore updated" />
+    <MESSAGE value="comiit files" />
+    <option name="LAST_COMMIT_MESSAGE" value="comiit files" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="327" y="24" key="CommitChangelistDialog2" timestamp="1575376319322">
+      <screen x="65" y="24" width="1301" height="744" />
+    </state>
+    <state x="327" y="24" key="CommitChangelistDialog2/65.24.1301.744@65.24.1301.744" timestamp="1575376319322" />
     <state x="165" y="96" width="1101" height="572" key="DiffContextDialog" timestamp="1575376056609">
       <screen x="65" y="24" width="1301" height="744" />
     </state>
@@ -148,5 +157,9 @@
       <screen x="65" y="24" width="1301" height="744" />
     </state>
     <state width="1278" height="257" key="GridCell.Tab.1.right/65.24.1301.744@65.24.1301.744" timestamp="1575376307767" />
+    <state x="315" y="119" key="Vcs.Push.Dialog.v2" timestamp="1575376320877">
+      <screen x="65" y="24" width="1301" height="744" />
+    </state>
+    <state x="315" y="119" key="Vcs.Push.Dialog.v2/65.24.1301.744@65.24.1301.744" timestamp="1575376320877" />
   </component>
 </project>
