@@ -1,5 +1,7 @@
 {% extends 'base_tenant.html' %}
-{% block title %}{{ tenant.name }}{% endblock %}
+{% if request.tenant and request.tenant.name %}
+  {% block title %}{{ request.tenant.name }}{% endblock %}
+{% endif %}
 
 {% block summary %}
   <h1>{{ request.tenant.name }}</h1>

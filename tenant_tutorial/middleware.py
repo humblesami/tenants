@@ -22,7 +22,7 @@ class TenantTutorialMiddleware(MiddlewareMixin):
             request.urlconf = settings.PUBLIC_SCHEMA_URLCONF
             return
         except get_tenant_domain_model().DoesNotExist:
-            if hostname_without_port in ("127.0.0.1", "localhost"):
+            if hostname_without_port in ("127.0.0.1", "abc.com"):
                 request.urlconf = settings.PUBLIC_SCHEMA_URLCONF
                 return
             else:

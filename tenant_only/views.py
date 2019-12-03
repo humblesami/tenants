@@ -11,6 +11,10 @@ from tenant_only.forms import GenerateUsersForm
 class TenantView(TemplateView):
     template_name = "index_tenant.html"
 
+    # def dispatch(self, request, *args, **kwargs):
+    #     a=1
+    #     pass
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context

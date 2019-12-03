@@ -24,20 +24,22 @@ class Create(TemplateView):
                 context ['error'] = 'No name provided'
                 return context
             with transaction.atomic():
+                # public_owner = "owner@local"
+                # create_public_tenant("abc.com", public_owner)
+                # TenantUser.objects.create_superuser(email="sa@abc.com", password='123', is_active=True)
+                # tenant_admin_email = "admin@" + tenant_name
+                # TenantUser.objects.create_user(email=tenant_admin_email, password='123', is_active=True, is_staff=True)
+                # provision_tenant(tenant_name, tenant_name, tenant_admin_email, is_staff=True)
+                # TenantUser.objects.create_user(email=tenant_admin_email, password='123', is_active=True, is_staff=True)
+                
                 if not get_tenant_model().objects.filter(schema_name='public'):
                     public_owner = "owner@local"
-                    create_public_tenant("localhost", public_owner)
-                    tenant_admin_email = "admin@local"
-                    TenantUser.objects.create_superuser('123', tenant_admin_email)
-                    user = TenantUser.objects.get(email=tenant_admin_email)
-                    UserTenantPermissions.objects.get_or_create(profile=user, is_staff=True)
-                    
+                    create_public_tenant("abc.com", public_owner)
+                    TenantUser.objects.create_superuser(email="sa@abc.com", password='123', is_active=True)
                 if not get_tenant_model().objects.filter(name=tenant_name):
                     tenant_admin_email = "admin@" + tenant_name
-                    TenantUser.objects.create_superuser('123', tenant_admin_email)
-                    provision_tenant(tenant_name, tenant_name, tenant_admin_email)
-                    user = TenantUser.objects.get(email=tenant_admin_email)
-                    UserTenantPermissions.objects.get_or_create(profile=user, is_staff=True)
+                    TenantUser.objects.create_user(email=tenant_admin_email, password='123', is_active=True, is_staff=True)
+                    pot = provision_tenant(tenant_name, tenant_name, tenant_admin_email, is_staff=True)
                     context['message'] = tenant_name + ' created successfully'
                 else:
                     context['error'] = 'Already exists'

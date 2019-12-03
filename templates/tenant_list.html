@@ -1,15 +1,22 @@
 {% extends 'base_public.html' %}
-{% block title %}{{ tenant.name }}{% endblock %}
+{% if request.tenant and request.tenant.name %}
+    {% block title %}{{ request.tenant.name }}{% endblock %}
+{% endif %}
 
 {% block summary %}
-  <h1>{{ request.tenant.name }}</h1>
-  <h2>{{ request.tenant.description }}</h2>
+    {% if request.tenant %}
+        <h1>{{ request.tenant.name }}</h1>
+        <h2>{{ request.tenant.description }}</h2>
+    {% endif %}
 {% endblock %}
 
 {% block instructions %}
-
+    {% if message %}
     <div class="error text-success">{{message | safe}}</div>
+    {% endif %}
+    {% if error %}
     <div class="error text-danger">{{error | safe}}</div>
+    {% endif %}    
     <h3>Customers list</h3>
     {% for customer in list %}
     <ul>

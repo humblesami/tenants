@@ -21,7 +21,7 @@ sys.path.insert(0, TENANT_APPS_DIR)
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',  # Add 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'tenants',                      # Or path to database file if using sqlite3.
+        'NAME': 'tt',                      # Or path to database file if using sqlite3.
         'USER': 'odoo',
         'PASSWORD': '123',
     }
@@ -177,26 +177,27 @@ LOGGING = {
 
 TENANT_MODEL = "customers.Client"  # app.Model
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
-TENANT_USERS_DOMAIN = "localhost"
+TENANT_USERS_DOMAIN = "abc.com"
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_DOMAIN = '.abc.com'
+
+DOMAIN_NAME = TENANT_USERS_DOMAIN
 AUTH_USER_MODEL = 'users.TenantUser'
 AUTHENTICATION_BACKENDS = (
     'tenant_users.permissions.backend.UserBackend',
 )
-SESSION_COOKIE_DOMAIN = '.' + TENANT_USERS_DOMAIN
-
 
 # STRIPE_SECRET_KEY = 'sk_test_oDy0KPgmNmvwffLjTsFODkeH00s8C4sHpa'
 # STRIPE_PUBLISHABLE_KEY = 'pk_test_vdyQjNrpI3ZwOMGMyHFV9dhU00NA5PutJ7'
 SHARED_APPS = (
     'django_tenants',
     'django.contrib.admin',
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'tenant_users.permissions',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tenant_users.permissions',
     'tenant_users.tenants',
     'customers',  # you must list the app where your tenant model resides in
     'users',
@@ -204,13 +205,10 @@ SHARED_APPS = (
 )
 
 TENANT_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'tenant_users.permissions',
-    'django.contrib.admin',
     'django.contrib.sessions',
-    'django.contrib.messages',
     'tenant_only',
 )
 
