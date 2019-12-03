@@ -6,4 +6,8 @@
 /.idea
 /.idea/*
 db.*
+.vscode
+.vscode/*
+/.vscode
+/.vscode/*
 
