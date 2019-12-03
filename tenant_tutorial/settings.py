@@ -1,84 +1,46 @@
 # Django settings for tenant_tutorial project.
-import sys
 import os
+import sys
 
 DEBUG = True
-
-
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
-
-MANAGERS = ADMINS
+ALLOWED_HOSTS = ['*']
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
 PROJECT_DIR = os.path.join(BASE_DIR, os.pardir)
-
 TENANT_APPS_DIR = os.path.join(PROJECT_DIR, os.pardir)
 sys.path.insert(0, TENANT_APPS_DIR)
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django_tenants.postgresql_backend',  # Add 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'tenants',                      # Or path to database file if using sqlite3.
-        'USER': 'odoo',
-        'PASSWORD': '123',
-    }
-}
-
-# Hosts/domain names that are valid for this site; required if DEBUG is False
-# See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['*']
-
-# Local time zone for this installation. Choices can be found here:
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# although not all choices may be available on all operating systems.
-# In a Windows environment this must be set to your system time zone.
 TIME_ZONE = 'America/Chicago'
-
-# Language code for this installation. All choices can be found here:
-# http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
-
 SITE_ID = 1
-
-# If you set this to False, Django will make some optimizations so as not
-# to load the internationalization machinery.
 USE_I18N = True
-
-# If you set this to False, Django will not format dates, numbers and
-# calendars according to the current locale.
 USE_L10N = True
-
-# If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
-
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/var/www/example.com/media/"
 MEDIA_ROOT = ''
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = ''
-
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/var/www/example.com/static/"
 PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
-
-# URL prefix for static files.
-# Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
+TENANT_MODEL = "customers.Client"
+TENANT_DOMAIN_MODEL = "customers.Domain"
+TENANT_USERS_DOMAIN = "localhost"
+AUTH_USER_MODEL = 'users.TenantUser'
+SERVER_PORT = 8001
+SERVER_PORT_STR = ':' + str(SERVER_PORT)
 
-# Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
+DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
+MULTITENANT_RELATIVE_MEDIA_ROOT = "uploaded_files"
+STRIPE_SECRET_KEY = 'sk_test_iXAXCCa4TeYZdfjSl0GfYjic001xWmMuDu'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_b0jaMPWTlpMV6c7HXNovbMuh00iATzbXHH'
+DJSTRIPE_WEBHOOK_SECRET = "whsec_GZS0YLboypzBblOZoyY121KWuxzjpwdF"
+ROOT_URLCONF = 'tenant_tutorial.urls_tenants'
+PUBLIC_SCHEMA_URLCONF = 'tenant_tutorial.urls_public'
+
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = 'as-%*_93v=r5*p_7cu8-%o6b&x^g+q$#*e*fl)k)x0-t=%q0qa'
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+WSGI_APPLICATION = 'tenant_tutorial.wsgi.application'
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
+# SESSION_COOKIE_DOMAIN = '.' + TENANT_USERS_DOMAIN
 
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, '..', 'static'),
@@ -91,27 +53,27 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = 'as-%*_93v=r5*p_7cu8-%o6b&x^g+q$#*e*fl)k)x0-t=%q0qa'
-
 # List of callables that know how to import templates from various sources.
-
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
 
-TEST_RUNNER = 'django.test.runner.DiscoverRunner'
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django_tenants.postgresql_backend',
+        'NAME': 'tt',
+        'USER': 'odoo',
+        'PASSWORD': '123',
+    }
+}
 
 MIDDLEWARE = (
-    'tenant_tutorial.middleware.TenantTutorialMiddleware',
+    'tenant_tutorial.middleware.TenantMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 TEMPLATES = [
@@ -124,8 +86,6 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
-                # list if you haven't customized them:
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.i18n',
@@ -138,19 +98,7 @@ TEMPLATES = [
         },
     },
 ]
-ROOT_URLCONF = 'tenant_tutorial.urls_tenants'
-PUBLIC_SCHEMA_URLCONF = 'tenant_tutorial.urls_public'
 
-# Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'tenant_tutorial.wsgi.application'
-
-# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
-
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error when DEBUG=False.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -175,61 +123,33 @@ LOGGING = {
     }
 }
 
-TENANT_MODEL = "customers.Client"  # app.Model
-TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
-TENANT_USERS_DOMAIN = "localhost"
-AUTH_USER_MODEL = 'users.TenantUser'
 AUTHENTICATION_BACKENDS = (
     'tenant_users.permissions.backend.UserBackend',
 )
-SESSION_COOKIE_DOMAIN = '.' + TENANT_USERS_DOMAIN
 
-
-# STRIPE_SECRET_KEY = 'sk_test_oDy0KPgmNmvwffLjTsFODkeH00s8C4sHpa'
-# STRIPE_PUBLISHABLE_KEY = 'pk_test_vdyQjNrpI3ZwOMGMyHFV9dhU00NA5PutJ7'
 SHARED_APPS = (
-    'django_tenants',
-    'django.contrib.admin',
-    'django.contrib.admin',
+    'django_tenants',    
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
     'tenant_users.permissions',
+    'django.contrib.messages',
+    'django.contrib.sessions',
+    'django.contrib.admin',
     'tenant_users.tenants',
-    'customers',  # you must list the app where your tenant model resides in
+    'customers',
     'users',
-    'stripe'
+    'my_stripe'
 )
 
-TENANT_APPS = (
-    'django.contrib.admin',
+TENANT_APPS = (    
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'tenant_users.permissions',
-    'django.contrib.admin',
-    'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sessions',
+    'django.contrib.admin',
     'tenant_only',
 )
 
 INSTALLED_APPS = list(set(TENANT_APPS + SHARED_APPS))
-
-SERVER_PORT = 8001
-SERVER_PORT_STR = ':' + str(SERVER_PORT)
-
-DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
-MULTITENANT_RELATIVE_MEDIA_ROOT = "uploaded_files"
-
-
-STRIPE_SECRET_KEY = 'sk_test_iXAXCCa4TeYZdfjSl0GfYjic001xWmMuDu'
-STRIPE_PUBLISHABLE_KEY = 'pk_test_b0jaMPWTlpMV6c7HXNovbMuh00iATzbXHH'
-
-# STRIPE_TEST_PUBLIC_KEY = os.environ.get("STRIPE_TEST_PUBLIC_KEY","pk_test_b0jaMPWTlpMV6c7HXNovbMuh00iATzbXHH")
-# STRIPE_TEST_SECRET_KEY = os.environ.get("STRIPE_TEST_SECRET_KEY", "sk_test_iXAXCCa4TeYZdfjSl0GfYjic001xWmMuDu")
-
-# STRIPE_LIVE_MODE = False
-DJSTRIPE_WEBHOOK_SECRET = "whsec_GZS0YLboypzBblOZoyY121KWuxzjpwdF"
-# STRIPE_LIVE_PUBLIC_KEY = os.environ.get("STRIPE_LIVE_PUBLIC_KEY", "<your publishable key>")
-# STRIPE_LIVE_SECRET_KEY = os.environ.get("STRIPE_LIVE_SECRET_KEY", "<your secret key>")

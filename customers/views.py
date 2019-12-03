@@ -24,20 +24,10 @@ class Create(TemplateView):
                 context ['error'] = 'No name provided'
                 return context
             with transaction.atomic():
-                if not get_tenant_model().objects.filter(schema_name='public'):
-                    public_owner = "owner@local"
-                    create_public_tenant("localhost", public_owner)
-                    tenant_admin_email = "admin@local"
-                    TenantUser.objects.create_superuser('123', tenant_admin_email)
-                    user = TenantUser.objects.get(email=tenant_admin_email)
-                    UserTenantPermissions.objects.get_or_create(profile=user, is_staff=True)
-                    
                 if not get_tenant_model().objects.filter(name=tenant_name):
                     tenant_admin_email = "admin@" + tenant_name
                     TenantUser.objects.create_superuser('123', tenant_admin_email)
-                    provision_tenant(tenant_name, tenant_name, tenant_admin_email)
-                    user = TenantUser.objects.get(email=tenant_admin_email)
-                    UserTenantPermissions.objects.get_or_create(profile=user, is_staff=True)
+                    provision_tenant(tenant_name, tenant_name, tenant_admin_email)                    
                     context['message'] = tenant_name + ' created successfully'
                 else:
                     context['error'] = 'Already exists'
@@ -47,11 +37,14 @@ class Create(TemplateView):
         context['port'] = SERVER_PORT_STR
         return context
 
+
 def get_customer_list():
     tenants_list = get_tenant_model().objects.prefetch_related('domains').all()
     tenants_list = list(tenants_list.values('id', 'name', 'domains__domain'))
+    ws_methods.replace_key_in_list(tenants_list, 'domains__domain', 'domain_url')
     tenants_list = list(tenants_list)
     return tenants_list
+
 
 class Delete(TemplateView):
     template_name = "tenant_list.html"

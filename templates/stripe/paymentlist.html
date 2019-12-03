@@ -1,0 +1,17 @@
+{% extends 'stripe/layout.html' %}
+{% block content %}
+<hr>
+
+<table>
+{% for key, values in list.items %}
+    <tr>
+    {% for k, v in values.items %}
+        <td>    {{ v }} </td> 
+    {% endfor %}
+    </tr>
+{% endfor %}
+
+
+</table>
+
+{% endblock %}

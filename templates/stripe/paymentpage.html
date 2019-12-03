@@ -1,0 +1,41 @@
+{% extends 'stripe/layout.html' %}
+{% block content %}
+<section class="curve-light-bg">
+    <div class="title-head">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <h2>Payment</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <div class="WhiteBox">
+                        <div class="row d-flex justify-content-center align-items-center">
+                            <div class="col-md-7 col-lg-7">
+                                <div class="PaymentCreditCardForm FaxForm">
+                                    <p>Please enter your Credit Card details to proceed.</p> 
+                                  <!--  <h2 class="pb-2">Pay $ {{amount}} </h2> -->
+                                    <form action="/stripe/callback" method="post" class="form">
+                                      {% csrf_token %}
+
+                                        <input type="hidden" name="amount" id="amount1" value="{{amount_js}}" />
+                                        <input type="text" name="amountpay" id="amount2" />
+                                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                                  data-key="{{ key }}"
+                                                  data-description="Odufax Charge"
+                                                  data-amount="{{ amount_js }}"
+                                                  data-locale="auto"></script>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  </section>
+{% endblock %}

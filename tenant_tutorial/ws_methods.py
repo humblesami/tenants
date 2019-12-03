@@ -11,3 +11,8 @@ def produce_exception():
         # if not 'lib/python' in er and not 'lib\\' in er:
         error_message += er + '<br><br>'
     return error_message
+
+
+def replace_key_in_list(values, old_key, new_key):
+    for obj in values:
+        obj[new_key] = obj.pop(old_key)
