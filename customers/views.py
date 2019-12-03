@@ -15,18 +15,20 @@ def create_tenant(t_name, request):
         tenant_model = get_tenant_model()
         with transaction.atomic():
             if not tenant_model.objects.filter(schema_name=t_name):
+
                 owner = User.objects.create(username='admin@'+t_name, is_active=True)
                 owner.set_password('123')
                 owner.save()
+
                 domain_url = t_name + '.' + TENANT_DOMAIN
                 company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
-                company.owner = owner
-                company.save()
                 company.users.add(owner)
+                company.save()
 
                 request.tenant = company
                 connection.set_tenant(request.tenant)
                 ContentType.objects.clear_cache()
+
                 owner = User.objects.create(username='admin@' + t_name, is_superuser=True, is_staff=True, is_active=True)
                 owner.set_password('123')
                 owner.save()
@@ -35,6 +37,7 @@ def create_tenant(t_name, request):
                 request.tenant = company
                 connection.set_tenant(request.tenant)
                 ContentType.objects.clear_cache()
+
                 res = 'done'
             else:
                 res = 'Client with id' + t_name + ' already exists'

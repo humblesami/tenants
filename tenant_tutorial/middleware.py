@@ -50,7 +50,7 @@ class TenantMiddleware(MiddlewareMixin):
                     'status': 'Invalid Client'
                 }
                 if hostname_without_port != settings.TENANT_DOMAIN:
-                    return render(request, '404.html', res)
+                    return render(request, 'error.html', {'error': 'Not found', 'error_code': 404})
                 tenant = tenant_model.objects.filter(schema_name='public')
                 if not tenant:
                     tenant = create_public_tenant(tenant_model)

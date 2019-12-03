@@ -132,14 +132,15 @@ WSGI_APPLICATION = 'tenant_tutorial.wsgi.application'
 TENANT_MODEL = "customers.Client"  # app.Model
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
 TENANT_DOMAIN = 'localhost'
+SERVER_PORT = 8001
+SERVER_PORT_STR = ':' + str(SERVER_PORT)
+SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN+SERVER_PORT_STR
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
-# SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN
 
-SERVER_PORT = 8001
-SERVER_PORT_STR = ':' + str(SERVER_PORT)
+
 DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
