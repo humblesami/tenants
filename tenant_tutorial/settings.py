@@ -123,7 +123,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 SECRET_KEY = 'as-%*_93v=r5*p_7cu8-%o6b&x^g+q$#*e*fl)k)x0-t=%q0qa'
-TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 ROOT_URLCONF = 'tenant_tutorial.urls_tenants'
 PUBLIC_SCHEMA_URLCONF = 'tenant_tutorial.urls_public'
@@ -134,7 +133,11 @@ TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
 TENANT_DOMAIN = 'localhost'
 SERVER_PORT = 8001
 SERVER_PORT_STR = ':' + str(SERVER_PORT)
-SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN+SERVER_PORT_STR
+# SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN + SERVER_PORT_STR
+DOMAIN_NAME = TENANT_DOMAIN + SERVER_PORT_STR
+SESSION_COOKIE_NAME = 'fdfdsedfsoodsd'
+
+
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',

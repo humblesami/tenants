@@ -22,8 +22,8 @@ def create_tenant(t_name, request):
 
                 domain_url = t_name + '.' + TENANT_DOMAIN
                 company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
-                company.users.add(owner)
                 company.save()
+                company.users.add(owner)
 
                 request.tenant = company
                 connection.set_tenant(request.tenant)
