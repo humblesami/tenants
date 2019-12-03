@@ -6,3 +6,8 @@
 /.idea/*
 db.*
 *.pyc
+.vscode
+.vscode/*
+/.vscode
+/.vscode/*
+
