@@ -16,7 +16,7 @@ def create_tenant(t_name, request):
         with transaction.atomic():
             if not tenant_model.objects.filter(schema_name=t_name):
 
-                owner = User.objects.create(username='admin@'+t_name, is_active=True)
+                owner = User.objects.create(username='admin@'+t_name, is_active=True, is_staff=True)
                 owner.set_password('123')
                 owner.save()
 
@@ -65,16 +65,28 @@ class Create(TemplateView):
                 context['message'] = 'Successfully created '+tenant_name
         except:
             context['error'] = ws_methods.produce_exception()
-        context['list'] = get_customer_list()
+        context['list'] = get_customer_list(self.request.user)
         context['port'] = SERVER_PORT_STR
         return context
 
 
-def get_customer_list():
+def get_my_tenants(user):
+    user_id = user.id
+    tenants_list = []
+    if user_id:
+        tenants_list = get_tenant_model().objects.filter(users__in=[user_id])
+        tenants_list = tenants_list.prefetch_related('domains').all()
+        tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
+        tenants_list = list(tenants_list)
+    return tenants_list
+
+
+def get_customer_list(user):
     tenants_list = get_tenant_model().objects.prefetch_related('domains').all()
     tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
     tenants_list = list(tenants_list)
-    return tenants_list
+    my_tenants = get_my_tenants(user)
+    return {'all': tenants_list, 'mine': my_tenants, 'my_count': len(my_tenants)}
 
 
 class Delete(TemplateView):
@@ -87,10 +99,10 @@ class Delete(TemplateView):
         try:
             TenantModel = get_tenant_model()
             TenantModel.objects.get(pk = customer_id).delete_tenant()
-            context = {'list': get_customer_list()}
+            context = {'list': get_customer_list(self.request.user)}
         except:
             res = ws_methods.produce_exception()
-            context = {'error': res, 'list': get_customer_list()}
+            context = {'error': res, 'list': get_customer_list(self.request.user)}
         context['port'] = SERVER_PORT_STR
         return context
 
@@ -99,6 +111,6 @@ class TenantView(TemplateView):
     template_name = "tenant_list.html"
 
     def get_context_data(self, **kwargs):
-        context = {'list': get_customer_list()}
+        context = {'list': get_customer_list(self.request.user)}
         context['port'] = SERVER_PORT_STR
         return context
