@@ -57,6 +57,9 @@ LOGGING = {
     }
 }
 
+LOGIN_REQUIRED_URLS = (
+    r'/clients/(.*)$',
+)
 
 MIDDLEWARE = (
     'tenant_tutorial.middleware.TenantMiddleware',
@@ -136,7 +139,7 @@ SERVER_PORT_STR = ':' + str(SERVER_PORT)
 # SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN + SERVER_PORT_STR
 DOMAIN_NAME = TENANT_DOMAIN + SERVER_PORT_STR
 SESSION_COOKIE_NAME = 'fdfdsedfsoodsd'
-
+LOGIN_URL = '/admin/login'
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 DATABASE_ROUTERS = (

@@ -1,8 +1,10 @@
+import re
 from django.conf import settings
 from django.db import connection
 from django.shortcuts import render
 from django.db import utils, transaction
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from django.contrib.contenttypes.models import ContentType
 from django.utils.deprecation import MiddlewareMixin  # todo change
 from django_tenants.utils import remove_www_and_dev, get_tenant_model
@@ -23,9 +25,20 @@ def create_public_tenant(tenant_model):
         return 'Web could not be initialized'
 
 
+class RequireLoginMiddleware(object):
+    def __init__(self):
+        self.urls = tuple([re.compile(url) for url in settings.LOGIN_REQUIRED_URLS])
+        self.require_login_path = getattr(settings, 'LOGIN_URL', '/accounts/login/')
+
+    def process_request(self, request):
+        for url in self.urls:
+            if url.match(request.path) and request.user.is_anonymous():
+                return HttpResponseRedirect('%s?next=%s' % (self.require_login_path, request.path))
+
+
 class TenantMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
-        if response.status_code != 200 and response.status_code != 302 and request.path != '/favicon.ico':
+        if response.status_code != 301 and response.status_code != 200 and response.status_code != 302 and request.path != '/favicon.ico':
             error_content = response.content.decode("utf-8")
             return render(request, 'error.html', {'error': error_content, 'error_code': response.status_code})
         return response

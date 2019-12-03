@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     url('', include('website.urls')),
-    url('clients/', login_required(include('customers.urls'))),
+    url('clients/', include('customers.urls')),
     url('stripe/', include('my_stripe.urls')),
     path('admin/', admin.site.urls),
 ]
