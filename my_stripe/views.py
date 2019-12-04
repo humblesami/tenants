@@ -1,7 +1,7 @@
 import stripe
 from django.shortcuts import render
 from main_app import settings
-from customers.model_files.plans import planRequest
+from customers.model_files.plans import PlanRequest
 stripe.api_key = settings.STRIPE_SECRET_KEY
 from django.http import JsonResponse
 
@@ -74,12 +74,12 @@ def chargeList(request):
 def addRequest(request):
     name = request.GET['name']
     email = request.GET['email']
-    request_obj = planRequest(name=name,email=email,plan_id = 1)
+    request_obj = PlanRequest(name=name,email=email,plan_id = 1)
     request_obj.save()
     res = { 'is': 'done' }
     return JsonResponse(res)
 
 def checkName(request):
     name = request.GET['name']
-    obj = planRequest.objects.find(name == name)
+    obj = PlanRequest.objects.find(name == name)
     return "Done"
