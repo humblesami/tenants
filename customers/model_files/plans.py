@@ -25,7 +25,7 @@ class Request(models.Model):
     name = models.CharField(max_length=64)
     email = models.EmailField()
     processed = models.BooleanField(default=False)
-    plan_id = models.ForeignKey(Plan)
+    plan_id = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True)
 
 
 class Subscription(models.Model):

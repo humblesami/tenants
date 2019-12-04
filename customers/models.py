@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_tenants.models import TenantMixin
+from .model_files import payemts, plans
 
 
 class Client(TenantMixin):
