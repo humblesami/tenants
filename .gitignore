@@ -1,13 +1,5 @@
 /**/migrations
-/**/migrations/*
 /.idea
-.idea
-.idea/*
-/.idea/*
 db.*
 *.pyc
-.vscode
-.vscode/*
 /.vscode
-/.vscode/*
-
