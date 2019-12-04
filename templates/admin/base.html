@@ -4,6 +4,7 @@
 <head>
 <title>{% block title %}{% endblock %}</title>
 <link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}">
+    <script src="/static/libs/jquery-2.2.4.js"></script>
 {% block extrastyle %}{% endblock %}
 {% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}">{% endif %}
 {% block extrahead %}{% endblock %}
@@ -86,6 +87,10 @@
         {% endblock %}
         {% block sidebar %}{% endblock %}
         <br class="clear">
+        <div>
+            <script src="/static/admin/site.js"></script>
+            <link href="/static/admin/site.css" rel="stylesheet">
+        </div>
     </div>
     <!-- END Content -->
 
