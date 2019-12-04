@@ -25,7 +25,7 @@ class PlanCost(models.Model):
             self.plan.save()
 
 
-class Request(models.Model):
+class PlanRequest(models.Model):
     name = models.CharField(max_length=64)
     email = models.EmailField()
     processed = models.BooleanField(default=False)

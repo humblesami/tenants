@@ -1,15 +1,19 @@
 $(function(){
     var curl = window.location.hostname;
-    var module_selector = '#content-main .module caption';
+    var modules = $('#content-main>.module');    
     var arr = curl.split('.');
-    // console.log(arr, 4343);
-    if(arr.length > 1){        
+    // console.log(arr);
+    if(arr.length > 1){
+        modules.show();
         $('body').addClass('tenant-app');
-        module_selector += ':not(.tenant-app)';
-        // console.log(module_selector, $(module_selector)[0]);
-        $(module_selector).closest('.module').hide();
+        var module_selector = '#content-main .module caption';
+        module_selector += ':not(.tenant-app)';        
+        $(module_selector).closest('.module').hide();        
     }
-    else{
+    else{        
         $('body').addClass('shared-app');
+        modules.hide();
+        modules.eq(0).show();
+        modules.eq(1).show();
     }
 })
