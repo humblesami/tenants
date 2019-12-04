@@ -25,16 +25,32 @@
                                   <!--  <h2 class="pb-2">Pay $ {{amount}} </h2> -->                                
                                     <form id="payement_form" action="/stripe/callback" method="post" class="form">
                                       {% csrf_token %}
-
+                                        <style>
+                                        .stripe-button-el{
+                                            display:none;
+                                        }
+                                        #comapny_name_error{
+                                            display:none;
+                                        }
+                                        #email_error{
+                                            display:none;
+                                        }
+                                        </style>
+                                        <div class="col-12">
                                         <!-- <input type="hidden" name="amount" id="amount1" value="{{amount_js}}" /> -->
-
                                         <div class="row">
                                             <label>Company</label>
                                             <input type="text" required name="comapny_name" id="comapny_name" />
+                                            <div>
+                                                <p id="comapny_name_error" class="alert alert-danger">Please Add Name</p>
+                                            </div>
+
                                         </div>
                                         <div class="row">
                                             <label>Email</label>
                                             <input type="text" required name="email" id="email" />
+                                            <div>
+                                            <p id="email_error" class="alert alert-danger">Please Add Email</p></div>
                                         </div>
                                         <div class="row">
                                             <label>Amount</label>
@@ -43,12 +59,8 @@
                                         <div class="row" >
                                             <button id="btn_add_request">submit</button>
                                         </div>
-                                        <style>
-                                        .stripe-button-el{
-                                            display:none;
-                                        }
-                                        </style>
-                                        
+
+                                        </div>
                                         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                         data-key="{{ key }}"
                                         data-description="Odufax Charge"

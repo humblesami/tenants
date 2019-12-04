@@ -81,5 +81,10 @@ def addRequest(request):
 
 def checkName(request):
     name = request.GET['name']
-    obj = PlanRequest.objects.find(name == name)
-    return "Done"
+    obj = PlanRequest.objects.filter(name = name)
+    result = {}
+    if obj:
+        result = { 'data' : "user alreay exist"}
+    else:
+        result = { 'data' : "Done" }
+    return JsonResponse(result)
