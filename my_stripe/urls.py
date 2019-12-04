@@ -6,7 +6,7 @@ urlpatterns = [
     path('pay', paymentPage, name='Payment Page'),
     path('callback', paymentCharge, name='Payment CallBack'),
     path('payments', chargeList, name='Payment List'),
-    path('addrequest', addRequest, name='Add Request'),
-    path('checkname', checkName, name='Check Name'),
+    path('add-request', addRequest, name='Add Request'),
+    path('check-name', checkName, name='Check Name'),
     
 ]

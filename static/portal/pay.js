@@ -1,7 +1,5 @@
 $(function(){
-
-    
-      $("#comapny_name" ).blur(function(e) {
+    $("#comapny_name" ).blur(function(e) {
         e.preventDefault();
         if($("#comapny_name" ).val() == ''){
             return
@@ -9,24 +7,19 @@ $(function(){
         $("#comapny_name_error").hide();
         var name = $("#comapny_name" ).val();
         var params = { 'name' : name };
-        $.ajax({
-            url:'/stripe/checkname',
+        window['ajax']({
+            url:'/stripe/check-name',
             data:params,
             dataType: 'json',
             success:function(data){
-                console.log(data, 'data in ajax');
-                if(data == 'done'){
-                    console.log(data, 'data in ajax');      
-                }
+                console.log('ok');
             },
             error:function(e){
                 console.log(e, 'err in ajax');
             }
-        })
-
+        });
     });
 
-    // $('.stripe-button-el').hide();
     $('#btn_add_request').click(function(e){
         e.preventDefault();
         if($("#comapny_name").val() == '' || $("#email").val() == ''){
@@ -43,22 +36,13 @@ $(function(){
         var name = $("#comapny_name").val();
         var email = $("#email").val();
         var params = { 'name' : name, 'email' : email}
-        $.ajax({
-            url:'/stripe/addrequest',
+        window['ajax']({
+            url:'/stripe/add-request',
             data:params,
             dataType: 'json',
             success:function(data){
-                console.log(data, 'data in ajax');
-                if(data.is == 'done')
-                {
-                    $('.stripe-button-el').click();
-                }
-            },
-            error:function(e){
-                console.log(e, 'err in ajax');
+                $('.stripe-button-el').click();
             }
         });
-        //$('.stripe-button-el').click();
     });
-
 })

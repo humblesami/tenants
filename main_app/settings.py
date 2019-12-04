@@ -93,7 +93,8 @@ TEMPLATES = [
 ]
 
 SHARED_APPS = (
-    'django_tenants',  # mandatory
+    'rest_framework',
+    'django_tenants',
     'customers',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -114,16 +115,18 @@ TENANT_APPS = (
 )
 INSTALLED_APPS = list(set(TENANT_APPS + SHARED_APPS))
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 STATIC_URL = '/static/'
 PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, '..', 'static'),
 )
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
+
 SECRET_KEY = 'as-%*_93v=r5*p_7cu8-%o6b&x^g+q$#*e*fl)k)x0-t=%q0qa'
 
 ROOT_URLCONF = 'main_app.urls_tenants'

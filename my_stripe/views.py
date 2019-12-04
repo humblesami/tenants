@@ -71,6 +71,9 @@ def chargeList(request):
         i = i + 1
 
     return render(request, 'stripe/paymentlist.html' , {'list': details})
+
+from rest_framework.decorators import api_view
+@api_view
 def addRequest(request):
     name = request.GET['name']
     email = request.GET['email']

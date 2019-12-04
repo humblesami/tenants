@@ -1,4 +1,4 @@
-{% extends 'stripe/layout.html' %}
+{% extends 'base.html' %}
 {% block head %}
     <script type="text/javascript">
     </script>
@@ -37,30 +37,29 @@
                                         }
                                         </style>
                                         <div class="col-12">
-                                        <!-- <input type="hidden" name="amount" id="amount1" value="{{amount_js}}" /> -->
-                                        <div class="row">
-                                            <label>Company</label>
-                                            <input type="text" required name="comapny_name" id="comapny_name" />
-                                            <div>
-                                                <p id="comapny_name_error" class="alert alert-danger">Please Add Name</p>
+                                            <div class="form-group">
+                                                <label>Company</label>
+                                                <input class="form-control" required name="comapny_name" id="comapny_name" />
+                                                <div>
+                                                    <p id="comapny_name_error" class="alert alert-danger">Please Add Name</p>
+                                                </div>
+
                                             </div>
-
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input class="form-control" required name="email" id="email" />
+                                                <div>
+                                                <p id="email_error" class="alert alert-danger">Please Add Email</p></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Amount</label>
+                                                <input class="form-control" class="form-control" required name="amountpay" id="amount2" />
+                                            </div>
+                                            <div class="form-group" >
+                                                <button id="btn_add_request">submit</button>
+                                            </div>
                                         </div>
-                                        <div class="row">
-                                            <label>Email</label>
-                                            <input type="text" required name="email" id="email" />
-                                            <div>
-                                            <p id="email_error" class="alert alert-danger">Please Add Email</p></div>
-                                        </div>
-                                        <div class="row">
-                                            <label>Amount</label>
-                                            <input type="text" required name="amountpay" id="amount2" />
-                                        </div>
-                                        <div class="row" >
-                                            <button id="btn_add_request">submit</button>
-                                        </div>
-
-                                        </div>
+                                        <script src="/static/portal/pay.js"></script>
                                         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                         data-key="{{ key }}"
                                         data-description="Odufax Charge"
@@ -68,7 +67,7 @@
                                         data-locale="auto"></script>                                        
 
                                     </form>
-                                    <script src="/static/pay.js"></script>
+                                    
                                 </div>
                             </div>
                         </div>
