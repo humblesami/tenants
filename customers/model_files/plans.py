@@ -7,7 +7,7 @@ class Plan(models.Model):
     cost = models.IntegerField(default=0)
     days = models.IntegerField(default=0)
 
-
+    
 class PlanCost(models.Model):
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
     cost = models.IntegerField(default=0)
@@ -29,13 +29,17 @@ class PlanRequest(models.Model):
     name = models.CharField(max_length=64)
     email = models.EmailField()
     processed = models.BooleanField(default=False)
-    plan_id = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True)
+    plan = models.ForeignKey(Plan, on_delete=models.SET_NULL, null=True)
+
+    def save(self, *args, **kwargs):
+        super(PlanRequest, self).save(*args, **kwargs)
+        
 
 
 class Subscription(models.Model):
     active = models.BooleanField(default=True)
-    plan_id = models.ForeignKey(Plan, on_delete=models.CASCADE)
-    cost_id = models.ForeignKey(PlanCost, on_delete=models.CASCADE)
-    discount = models.IntegerField()
+    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
+    plan_cost = models.ForeignKey(PlanCost, on_delete=models.CASCADE)
+    discount = models.IntegerField(default=0)
     start_date = models.DateField()
     end_data = models.DateField()
