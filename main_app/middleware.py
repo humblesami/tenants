@@ -38,7 +38,7 @@ class RequireLoginMiddleware(object):
 
 class TenantMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
-        if response.status_code != 301 and response.status_code != 200 and response.status_code != 302 and request.path != '/favicon.ico':
+        if response.status_code and response.status_code != 301 and response.status_code != 200 and response.status_code != 302 and request.path != '/favicon.ico':
             error_content = response.content.decode("utf-8")
             return render(request, 'error.html', {'error': error_content, 'error_code': response.status_code})
         return response

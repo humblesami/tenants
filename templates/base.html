@@ -8,9 +8,13 @@
 </head>
 
 <body>
-<div id="header">
-{% block header %}
-{% endblock %}
+<div id="header">    
+    {% block header %}
+        <a href="/">Home</a> | <a href="/admin/">Admin</a>
+        {% if not request.user.id %}
+            | <a href="/login">Login</a>
+        {% endif %}
+    {% endblock %}
 </div>
 <div id="summary">
 {% block summary %}
