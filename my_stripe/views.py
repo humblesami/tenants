@@ -1,6 +1,6 @@
 import stripe
 from django.shortcuts import render
-from tenant_tutorial import settings
+from main_app import settings
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 

@@ -6,8 +6,8 @@ from django.contrib.contenttypes.models import ContentType
 
 from django_tenants.utils import get_tenant_model
 
-from tenant_tutorial import ws_methods
-from tenant_tutorial.settings import SERVER_PORT_STR, TENANT_DOMAIN
+from main_app import ws_methods
+from main_app.settings import SERVER_PORT_STR, TENANT_DOMAIN
 
 
 class Create(TemplateView):

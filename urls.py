@@ -1,1 +1,0 @@
-handler404 = 'tenant_tutorial.views.handler404'

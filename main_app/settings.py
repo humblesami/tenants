@@ -1,4 +1,3 @@
-# Django settings for tenant_tutorial project.
 import sys
 import os
 
@@ -62,7 +61,7 @@ LOGIN_REQUIRED_URLS = (
 )
 
 MIDDLEWARE = (
-    'tenant_tutorial.middleware.TenantMiddleware',
+    'main_app.middleware.TenantMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -127,9 +126,9 @@ STATICFILES_FINDERS = (
 )
 SECRET_KEY = 'as-%*_93v=r5*p_7cu8-%o6b&x^g+q$#*e*fl)k)x0-t=%q0qa'
 
-ROOT_URLCONF = 'tenant_tutorial.urls_tenants'
-PUBLIC_SCHEMA_URLCONF = 'tenant_tutorial.urls_public'
-WSGI_APPLICATION = 'tenant_tutorial.wsgi.application'
+ROOT_URLCONF = 'main_app.urls_tenants'
+PUBLIC_SCHEMA_URLCONF = 'main_app.urls_public'
+WSGI_APPLICATION = 'main_app.wsgi.application'
 
 TENANT_MODEL = "customers.Client"  # app.Model
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
