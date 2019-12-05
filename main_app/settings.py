@@ -112,6 +112,7 @@ TENANT_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'tenant_only',
+    'manage_commands'
 )
 INSTALLED_APPS = list(set(TENANT_APPS + SHARED_APPS))
 
