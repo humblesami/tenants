@@ -10,6 +10,6 @@ urlpatterns = [
     path('logout', logout_user),
     path('authenticate', authenticate_user),
     url('clients/', include('customers.urls')),
-    url('stripe/', include('my_stripe.urls')),
+    url('stripe/', include('payments.urls')),
     path('admin/', admin.site.urls),
 ]

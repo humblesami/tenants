@@ -1,6 +1,6 @@
 from django.urls import path
 
-from my_stripe.views import paymentPage, paymentCharge, chargeList, addRequest,checkName
+from payments.views import paymentPage, paymentCharge, chargeList, addRequest,checkName
 
 urlpatterns = [
     path('pay', paymentPage, name='Payment Page'),
