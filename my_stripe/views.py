@@ -73,10 +73,14 @@ def chargeList(request):
     return render(request, 'stripe/paymentlist.html' , {'list': details})
 
 from rest_framework.decorators import api_view
-@api_view
+@api_view(['GET'])
 def addRequest(request):
     name = request.GET['name']
     email = request.GET['email']
+    obj = PlanRequest.objects.filter(name=name)
+    if(obj):
+        res = { 'error': 'User already Exist' }
+        return JsonResponse(res)
     request_obj = PlanRequest(name=name,email=email,plan_id = 1)
     request_obj.save()
     res = { 'is': 'done' }
@@ -87,7 +91,7 @@ def checkName(request):
     obj = PlanRequest.objects.filter(name = name)
     result = {}
     if obj:
-        result = { 'data' : "user alreay exist"}
+        result = { 'data' : obj.count() }
     else:
         result = { 'data' : "Done" }
     return JsonResponse(result)

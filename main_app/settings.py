@@ -117,7 +117,7 @@ INSTALLED_APPS = list(set(TENANT_APPS + SHARED_APPS))
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.AllowAny'
     ]
 }
 
