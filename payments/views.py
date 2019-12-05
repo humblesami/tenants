@@ -7,10 +7,6 @@ from django.http import JsonResponse
 
 def paymentPage(request):
     attachment = request.session.get('attachment')
-    # print("filess: ",attachment)
-    # pages = len(attachment)
-    # print("pages: ", pages)
-    # amount = BillCalculator(pages)
     amount = 8000
     amountforView = (amount/100)
     amountforJS = amount
@@ -23,7 +19,7 @@ def paymentPage(request):
         # 'attachments': attachments
     }
 
-    return render(request,'stripe/paymentpage.html',context)
+    return render(request, 'payments/new.html', context)
 
 def paymentCharge(request): # new
     request1 = request
@@ -44,7 +40,7 @@ def paymentCharge(request): # new
             'user' : paypaymentnow['name']
             # 'attachments': attachments,
         }
-        return render(request, 'stripe/charge.html',context)
+        return render(request, 'payments/callback.html',context)
 
 def chargePayment(amount, currency, description, token):
     charge = stripe.Charge.create(
@@ -70,28 +66,4 @@ def chargeList(request):
         details[i] = {'name':name ,'amount':amount, 'currency': currency, 'status': status}
         i = i + 1
 
-    return render(request, 'stripe/paymentlist.html' , {'list': details})
-
-from rest_framework.decorators import api_view
-@api_view(['GET'])
-def addRequest(request):
-    name = request.GET['name']
-    email = request.GET['email']
-    obj = PlanRequest.objects.filter(name=name)
-    if(obj):
-        res = { 'error': 'User already Exist' }
-        return JsonResponse(res)
-    request_obj = PlanRequest(name=name,email=email,plan_id = 1)
-    request_obj.save()
-    res = { 'is': 'done' }
-    return JsonResponse(res)
-
-def checkName(request):
-    name = request.GET['name']
-    obj = PlanRequest.objects.filter(name = name)
-    result = {}
-    if obj:
-        result = { 'data' : obj.count() }
-    else:
-        result = { 'data' : "Done" }
-    return JsonResponse(result)
+    return render(request, 'payments/list.html' , {'list': details})

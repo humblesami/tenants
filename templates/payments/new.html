@@ -23,7 +23,7 @@
                                 <div class="PaymentCreditCardForm FaxForm">
                                     <p>Please enter your Credit Card details to proceed.</p> 
                                   <!--  <h2 class="pb-2">Pay $ {{amount}} </h2> -->                                
-                                    <form id="payement_form" action="/stripe/callback" method="post" class="form">
+                                    <form id="payement_form" action="/payments/callback" method="post" class="form">
                                       {% csrf_token %}
                                         <style>
                                         .stripe-button-el{

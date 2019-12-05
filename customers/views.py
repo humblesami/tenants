@@ -1,10 +1,8 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction, connection
 from django.views.generic import TemplateView
-from django.contrib.contenttypes.models import ContentType
-
 from django_tenants.utils import get_tenant_model
+from django.contrib.contenttypes.models import ContentType
 
 from main_app import ws_methods
 from main_app.settings import SERVER_PORT_STR, TENANT_DOMAIN

@@ -8,7 +8,7 @@ $(function(){
         var name = $("#comapny_name" ).val();
         var params = { 'name' : name };
         window['ajax']({
-            url:'/stripe/check-name',
+            url:'/subscriptions/check-name',
             data:params,
             dataType: 'json',
             success:function(data){
@@ -58,7 +58,7 @@ $(function(){
         var email = $("#email").val();
         var params = { 'name' : name, 'email' : email}
         window['ajax']({
-            url:'/stripe/add-request',
+            url:'/subscription/add-request',
             data:params,
             dataType: 'json',
             success:function(data){

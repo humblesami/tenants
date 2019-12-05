@@ -1,10 +1,13 @@
-import re
-from django.conf import settings
+import sys
+import traceback
+from django.urls import resolve
 from django.db import connection
+from django.conf import settings
 from django.shortcuts import render
 from django.db import utils, transaction
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+
+from django.http import JsonResponse, HttpResponse
 from django.contrib.contenttypes.models import ContentType
 from django.utils.deprecation import MiddlewareMixin  # todo change
 from django_tenants.utils import remove_www_and_dev, get_tenant_model
@@ -25,30 +28,29 @@ def create_public_tenant(tenant_model):
         return 'Web could not be initialized'
 
 
-class RequireLoginMiddleware(object):
-    def __init__(self):
-        self.urls = tuple([re.compile(url) for url in settings.LOGIN_REQUIRED_URLS])
-        self.require_login_path = getattr(settings, 'LOGIN_URL', '/accounts/login/')
-
-    def process_request(self, request):
-        for url in self.urls:
-            if url.match(request.path) and request.user.is_anonymous():
-                return HttpResponseRedirect('%s?next=%s' % (self.require_login_path, request.path))
-
-
 class TenantMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
-        if response.status_code and response.status_code != 301 and response.status_code != 200 and response.status_code != 302 and request.path != '/favicon.ico':
+        if request.is_ajax():
+            response = response.content
+            response = response.decode("utf-8")
+            response = produce_result(response)
+        elif response.status_code and response.status_code != 301 and response.status_code != 200 and response.status_code != 302 and request.path != '/favicon.ico':
             error_content = response.content.decode("utf-8")
             return render(request, 'error.html', {'error': error_content, 'error_code': response.status_code})
         return response
 
+    def process_exception(self, request, exception):
+        res = produce_exception()
+        res = HttpResponse(res)
+        return res
+
     def process_request(self, request):
-        connection.set_schema_to_public()
-        hostname_without_port = remove_www_and_dev(request.get_host().split(':')[0])
-        selected_schema_name = 'public'
-        tenant_model = get_tenant_model()
         try:
+            connection.set_schema_to_public()
+            hostname_without_port = remove_www_and_dev(request.get_host().split(':')[0])
+            selected_schema_name = 'public'
+            tenant_model = get_tenant_model()
+
             if hostname_without_port.startswith('login.'):
                 hostname_without_port = hostname_without_port.replace('login.', '')
 
@@ -85,3 +87,40 @@ class TenantMiddleware(MiddlewareMixin):
 
         if selected_schema_name == 'public':
             request.urlconf = settings.PUBLIC_SCHEMA_URLCONF
+
+
+def produce_exception():
+    eg = traceback.format_exception(*sys.exc_info())
+    error_message = ''
+    cnt = 0
+    for er in eg:
+        cnt += 1
+        if not 'lib/python' in er and not 'lib\\' in er:
+            error_message += " " + er
+    return error_message
+
+
+def produce_result(res, args=None):
+    if isinstance(res, dict):
+        if 'error' not in res:
+            if 'data' in res:
+                res['error'] = ''
+            else:
+                res = {'data': res, 'error': ''}
+        else:
+            # Return ERROR data as it is
+            pass
+    elif type(res) == str:
+        if res == 'done':
+            res = {'error': '', 'data': 'done'}
+        else:
+            res = {'error': res}
+    elif isinstance(res, list):
+        res = {'error': '', 'data': res}
+    else:
+        if args:
+            args = ' in ' + args['app'] + '.' + args['model'] + '.' + args['method']
+        else:
+            args = ''
+        res = {'error': ' Invalid result type' + args}
+    return JsonResponse(res)
