@@ -15,6 +15,9 @@
         {% if not request.user.id %}
             | <a href="/login">Login</a>
         {% endif %}
+        {% if request.user.id %}
+            | <a href="/logout">Signout</a>
+        {% endif %}
     {% endblock %}
 </div>
 <div id="summary">
