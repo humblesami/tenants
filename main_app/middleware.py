@@ -1,6 +1,5 @@
 import sys
 import traceback
-from django.urls import resolve
 from django.db import connection
 from django.conf import settings
 from django.shortcuts import render

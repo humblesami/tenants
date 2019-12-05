@@ -39,9 +39,9 @@ class CheckName(TemplateView):
 class PlanDetails(TemplateView):
     template_name = "website/plandetail.html"
 
-    def get_context_data(self, id, request_id=None, **kwargs):
+    def get_context_data(self, plan_id, request_id=None, **kwargs):
         request = self.request
-        plan_amount = Plan.objects.filter(id = id)
+        plan_amount = Plan.objects.filter(id = plan_id)
         plan_amount = plan_amount[0]
         context = { 'plan':plan_amount }
         return context
