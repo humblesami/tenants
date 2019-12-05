@@ -16,6 +16,4 @@ class Client(TenantMixin):
         return self.domain_url + '-' + str(self.id)
 
     def delete_tenant(self):
-        self._drop_schema(force_drop=True)
-        self.users.all().delete()
-        self.delete()
+        self.delete(force_drop=True)
