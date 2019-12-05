@@ -2,6 +2,9 @@ body{
     padding :10px;
     }
     body>div { border-bottom:1px solid #ddd; }
+    input[type="button"], button, a {
+        cursor: pointer;
+    }
     h1 { font-weight:normal; }
     h2 { margin-bottom:.8em; }
     h2 span { font-size:80%; color:#666; font-weight:normal; }

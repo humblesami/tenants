@@ -1,42 +1,42 @@
 $(function(){
-    $("#comapny_name" ).blur(function(e) {
-        e.preventDefault();
-        if($("#comapny_name" ).val() == ''){
-            return
-        }
-        $("#comapny_name_error").hide();
-        var name = $("#comapny_name" ).val();
-        var params = { 'name' : name };
-        window['ajax']({
-            url:'/subscriptions/check-name',
-            data:params,
-            dataType: 'json',
-            success:function(data){
-                if(data >= 1){
-                    $("#comapny_name_error").html("Name Already Exist");
-                    $("#comapny_name_error").show();
-                }
+//    $("#comapny_name" ).blur(function(e) {
+//        e.preventDefault();
+//        if($("#comapny_name" ).val() == ''){
+//            return
+//        }
+//        $("#comapny_name_error").hide();
+//        var name = $("#comapny_name" ).val();
+//        var params = { 'name' : name };
+//        window['js_utils']['ajax']({
+//            url:'/subscriptions/check-name',
+//            data:params,
+//            dataType: 'json',
+//            success:function(data){
+//                if(data >= 1){
+//                    $("#comapny_name_error").html("Name Already Exist");
+//                    $("#comapny_name_error").show();
+//                }
+//
+//                console.log(data,'ok');
+//            },
+//            error:function(e){
+//                console.log(e, 'err in ajax');
+//            }
+//        });
+//    });
 
-                console.log(data,'ok');
-            },
-            error:function(e){
-                console.log(e, 'err in ajax');
-            }
-        });
-    });
-
-    $("#email").blur(function(e){
-        e.preventDefault();
-        var email = $("#email").val();
-        var check = ValidateEmail(email)
-        if(check){
-            $("#email_error").html("")
-            $("#email_error").hide();
-        }else{
-            $("#email_error").html("Please Enter a valid Email Address")
-            $("#email_error").show();    
-        }
-    });
+//    $("#email").blur(function(e){
+//        e.preventDefault();
+//        var email = $("#email").val();
+//        var check = ValidateEmail(email)
+//        if(check){
+//            $("#email_error").html("")
+//            $("#email_error").hide();
+//        }else{
+//            $("#email_error").html("Please Enter a valid Email Address")
+//            $("#email_error").show();
+//        }
+//    });
 
 
 
@@ -57,8 +57,8 @@ $(function(){
         var name = $("#comapny_name").val();
         var email = $("#email").val();
         var params = { 'name' : name, 'email' : email}
-        window['ajax']({
-            url:'/subscription/add-request',
+        window['js_utils']['ajax']({
+            url:'/subscriptions/save-request',
             data:params,
             dataType: 'json',
             success:function(data){

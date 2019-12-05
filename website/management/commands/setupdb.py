@@ -88,3 +88,4 @@ class Command(BaseCommand):
         importlib.import_module('del')
         call_command('makemigrations')
         call_command('migrate')
+        call_command('loaddata data')

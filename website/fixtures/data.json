@@ -1,0 +1,32 @@
+[
+    {
+        "model": "customers.Plan",
+        "pk": 1,
+        "fields": {
+            "name": "Economy",
+            "description": "Love",
+            "cost": "10",
+            "days": "30"
+        }
+    },
+    {
+        "model": "customers.Plan",
+        "pk": 2,
+        "fields": {
+            "name": "Professional",
+            "description": "Deep Love",
+            "cost": "50",
+            "days": "100"
+        }
+    },
+    {
+        "model": "customers.Plan",
+        "pk": 3,
+        "fields": {
+            "name": "Ultimate",
+            "description": "Love at full",
+            "cost": "100",
+            "days": "300"
+        }
+    }
+]

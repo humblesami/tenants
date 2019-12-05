@@ -1,7 +1,48 @@
-{% extends 'base_tenant.html' %}
-{% block title %}{{ tenant.name }}{% endblock %}
+{% extends 'base_public.html' %}
+{% block title %}
+{% endblock %}
 
 {% block summary %}
-    <h1>{{ request.tenant.name }}</h1>
-    <h2>{{ request.tenant.description }}</h2>
+{% endblock %}
+
+{% block instructions %}
+
+    {% if list.my_count %}
+        <h3>My tenants</h3>
+        {% for customer in list.mine %}
+        <ul>
+            <li>
+                {{customer.id }} -- {{customer.schema_name }} --
+                {% if customer.id == 1 %}
+                    <a href="http://{{customer.domain_url}}{{port}}">Link</a>
+                {% endif %}
+                {% if customer.id != 1 %}
+                    <a href="http://{{customer.domain_url}}{{port}}">Link</a>  |
+                    <a href="delete?id={{customer.id}}">Delete</a>
+                {% endif %}
+            </li>
+        </ul>
+        {% endfor %}
+    {% endif %}
+
+    {% if request.user.is_superuser %}
+
+    <div>
+        <h3>Customers list</h3>
+        {% for customer in list.all %}
+        <ul>
+            <li>
+                {{customer.id }} -- {{customer.schema_name }} --
+                {% if customer.id == 1 %}
+                    <a href="http://{{customer.domain_url}}{{port}}">Link</a>
+                {% endif %}
+                {% if customer.id != 1 %}
+                    <a href="http://{{customer.domain_url}}{{port}}">Link</a>  |
+                    <a href="delete?id={{customer.id}}">Delete</a>
+                {% endif %}
+            </li>
+        </ul>
+        {% endfor %}
+    </div>
+    {% endif %}
 {% endblock %}

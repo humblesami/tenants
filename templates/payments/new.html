@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_public.html' %}
 {% block head %}
     <script type="text/javascript">
     </script>
@@ -10,6 +10,9 @@
             <div class="row">
                 <div class="col-lg-12 ">
                     <h2>Payment</h2>
+                    <h6>Plan Name : {{plan.name }}</h6>
+                    <h6>Cost : {{plan.cost }}</h6>
+                    <h6>Valid for : {{plan.days }} days</h6>
                 </div>
             </div>
         </div>
@@ -21,7 +24,6 @@
                         <div class="row d-flex justify-content-center align-items-center">
                             <div class="col-md-7 col-lg-7">
                                 <div class="PaymentCreditCardForm FaxForm">
-                                    <p>Please enter your Credit Card details to proceed.</p> 
                                   <!--  <h2 class="pb-2">Pay $ {{amount}} </h2> -->                                
                                     <form id="payement_form" action="/payments/callback" method="post" class="form">
                                       {% csrf_token %}
@@ -53,7 +55,7 @@
                                             </div>
                                             <input class="form-control" type="hidden" class="form-control" required name="amountpay" id="amount2" value="{{ amount }}" />
                                             <div class="form-group" >
-                                                <button id="btn_add_request">submit</button>
+                                                <button class="btn btn-primary" id="btn_add_request">Subscribe</button>
                                             </div>
                                         </div>
                                         <script src="/static/portal/pay.js"></script>

@@ -49,6 +49,7 @@ class TenantMiddleware(MiddlewareMixin):
             hostname_without_port = remove_www_and_dev(request.get_host().split(':')[0])
             selected_schema_name = 'public'
             tenant_model = get_tenant_model()
+            request.main_url = settings.MAIN_URL
 
             if hostname_without_port.startswith('login.'):
                 hostname_without_port = hostname_without_port.replace('login.', '')
@@ -63,8 +64,9 @@ class TenantMiddleware(MiddlewareMixin):
                     'error': 'Subdomain ' + hostname_without_port + ' does not exist',
                     'status': 'Invalid Client'
                 }
+                not_found = {'error': 'Not found', 'error_code': 404}
                 if hostname_without_port != settings.TENANT_DOMAIN:
-                    return render(request, 'error.html', {'error': 'Not found', 'error_code': 404})
+                    return render(request, 'error.html', not_found)
                 tenant = tenant_model.objects.filter(schema_name='public')
                 if not tenant:
                     tenant = create_public_tenant(tenant_model)
@@ -72,7 +74,7 @@ class TenantMiddleware(MiddlewareMixin):
                         request.tenant = tenant
                         selected_schema_name = tenant.schema_name
                     else:
-                        return render(request, '404.html', res)
+                        return render(request, 'error.html', not_found)
                 else:
                     tenant = tenant[0]
                     request.tenant = tenant

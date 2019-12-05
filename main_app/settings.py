@@ -93,7 +93,6 @@ TEMPLATES = [
 ]
 
 SHARED_APPS = (
-    'rest_framework',
     'django_tenants',
     'customers',
     'django.contrib.admin',
@@ -102,7 +101,6 @@ SHARED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'payments'
 )
 
 TENANT_APPS = (
@@ -112,15 +110,8 @@ TENANT_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'tenant_only',
-    'manage_commands'
 )
 INSTALLED_APPS = list(set(TENANT_APPS + SHARED_APPS))
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-    ]
-}
 
 STATIC_URL = '/static/'
 PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
@@ -141,6 +132,7 @@ SERVER_PORT = 8001
 SERVER_PORT_STR = ':' + str(SERVER_PORT)
 # SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN + SERVER_PORT_STR
 DOMAIN_NAME = TENANT_DOMAIN
+MAIN_URL = DOMAIN_NAME + SERVER_PORT_STR
 SESSION_COOKIE_NAME = 'fdfdsedfsoodsd'
 LOGIN_URL = '/accounts/login'
 

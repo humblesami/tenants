@@ -1,7 +1,11 @@
 {% extends 'base.html' %}
 {% block header %}
-{{ block.super }}
+    {{ block.super }}
     <h4>
-        | <a href="/payments/list">Payments</a>
+        <a href="/plans">Plans</a>
+        {% if request.user.is_superuser %}
+            | <a href="/payments/list">Payments</a>
+            | <a href="/clients">Clients</a>
+        {% endif %}
     </h4>
 {% endblock %}

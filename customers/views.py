@@ -54,9 +54,9 @@ class Delete(TemplateView):
 
 class TenantView(TemplateView):
     
-    template_name = "customers/tenant_list.html"
+    template_name = "customers/index.html"
 
-    def get_context_data(self, **kwargs):        
+    def get_context_data(self, **kwargs):
         context = {'list': get_customer_list(self.request.user)}
         context['port'] = SERVER_PORT_STR
         return context

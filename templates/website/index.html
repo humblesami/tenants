@@ -1,35 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'base_public.html' %}
 
 {% block summary %}
     Home Page
-    {% if request.user.is_superuser %}
-        | <a href="/clients">Clients</a>
-        | <a href="/admin">Admin</a>
-    {% endif %}
 {% endblock %}
 {% block content %}
     <div class="container">
-        <h2>This is test area </h2>
-        <table class="table">
-            <thead>
-                <tr>
-                <th scope="col">Plan Name</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Duration</th>
-                <th scope="col">Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for plan in plans%}
-                <tr>
-                    <th scope="row" class="text-center">{{plan.name}}</th>
-                    <td>{{plan.cost}}</td>
-                    <td>{{plan.days}}</td>
-                    <td><a href="/subscriptions/plan/{{plan.id}}" class="btn btn-info">Details</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+
     </div>
 {% endblock %}
