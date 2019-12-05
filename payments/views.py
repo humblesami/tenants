@@ -6,19 +6,9 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 from django.http import JsonResponse
 
 def paymentPage(request):
-    attachment = request.session.get('attachment')
-    amount = 8000
-    amountforView = (amount/100)
-    amountforJS = amount
-    # attachments = attachment
-
     context = {
-        'key': settings.STRIPE_PUBLISHABLE_KEY,
-        'amount': amountforView,
-        'amount_js' : amountforJS,
-        # 'attachments': attachments
+        'key': settings.STRIPE_PUBLISHABLE_KEY,        
     }
-
     return render(request, 'payments/new.html', context)
 
 def paymentCharge(request): # new
@@ -26,19 +16,15 @@ def paymentCharge(request): # new
     if request.method == 'POST':
         amount = request.POST['amountpay']
         token = request.POST['stripeToken']
-        # attachments = request.POST['attachments']
-        # print("paymentChargePage: ",attachments)
         paypaymentnow = chargePayment(amount,'usd','Odufax payment recieve',token)
         chargeId = paypaymentnow['id']
 
         request.session['chargeId'] = chargeId
         amountInt = int(amount)
-        amountforJS = (amountInt/100)
-        request.session['billAmount'] = amountforJS
+        request.session['billAmount'] = amountInt
         context = {
-            'amount' : amountforJS,
+            'amount' : amountInt,
             'user' : paypaymentnow['name']
-            # 'attachments': attachments,
         }
         return render(request, 'payments/callback.html',context)
 
@@ -67,3 +53,27 @@ def chargeList(request):
         i = i + 1
 
     return render(request, 'payments/list.html' , {'list': details})
+
+# from rest_framework.decorators import api_view
+# @api_view(['GET'])
+# def addRequest(request):
+#     name = request.GET['name']
+#     email = request.GET['email']
+#     obj = PlanRequest.objects.filter(name=name)
+#     if(obj):
+#         res = { 'error': 'User already Exist' }
+#         return JsonResponse(res)
+#     request_obj = PlanRequest(name=name,email=email,plan_id = 1)
+#     request_obj.save()
+#     res = { 'is': 'done' }
+#     return JsonResponse(res)
+
+# def checkName(request):
+#     name = request.GET['name']
+#     obj = PlanRequest.objects.filter(name = name)
+#     result = {}
+#     if obj:
+#         result = { 'data' : obj.count() }
+#     else:
+#         result = { 'data' : "Done" }
+#     return JsonResponse(result)

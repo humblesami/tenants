@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-from customers.model_files.plans import PlanRequest
+from customers.model_files.plans import Plan, PlanRequest
 
 
 class AddRequest(TemplateView):
@@ -34,3 +34,14 @@ class CheckName(TemplateView):
             else:
                 res = 'done'
         return HttpResponse(res)
+
+
+class PlanDetails(TemplateView):
+    template_name = "website/plandetail.html"
+
+    def get_context_data(self, id, request_id=None, **kwargs):
+        request = self.request
+        plan_amount = Plan.objects.filter(id = id)
+        plan_amount = plan_amount[0]
+        context = { 'plan':plan_amount }
+        return context

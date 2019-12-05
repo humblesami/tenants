@@ -51,10 +51,7 @@
                                                 <div>
                                                 <p id="email_error" class="alert alert-danger">Please Add Email</p></div>
                                             </div>
-                                            <div class="form-group">
-                                                <label>Amount</label>
-                                                <input class="form-control" class="form-control" required name="amountpay" id="amount2" />
-                                            </div>
+                                            <input class="form-control" type="hidden" class="form-control" required name="amountpay" id="amount2" value="{{ amount }}" />
                                             <div class="form-group" >
                                                 <button id="btn_add_request">submit</button>
                                             </div>
@@ -63,7 +60,7 @@
                                         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                         data-key="{{ key }}"
                                         data-description="Odufax Charge"
-                                        data-amount="{{ amount_js }}"
+                                        data-amount="{{ amount }}"
                                         data-locale="auto"></script>                                        
 
                                     </form>
