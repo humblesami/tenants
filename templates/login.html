@@ -8,19 +8,28 @@
     <link rel="stylesheet" href="/static/libs/bootstrap-4.2.1.css">
     <link rel="stylesheet" href="/static/site/site.css">
     <script rel="stylesheet" src="/static/libs/jquery-2.2.4.js"></script>
-    <!------ Include the above in your HEAD tag ---------->
+    <script rel="stylesheet" src="/static/site/utils.js"></script>
     <h3>
         <a href="/">Home</a>
     </h3>
     <div class="wrapper fadeInDown">
         <div id="formContent">        
     
-        <!-- Login Form -->
-        <form id="login-form">
-            <input type="text" id="login" class="fadeIn second" name="login" placeholder="login">
-            <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">
-            <div id="feedback" style="padding: 10px;"></div>
-            <input type="submit" class="fadeIn fourth" value="Log In">
+        
+        <form action="/admin/login/?next=/admin/" method="post" id="login-form"><input type="hidden" name="csrfmiddlewaretoken" value="WNqnpZqG3ksQNIZxxZFdpxyoudrLRPvsaDGJPod67vlOcWxeqkjMcE9g4L9Aj1Nw">
+            <div class="form-group">            
+                <label class="required" for="username">Username:</label>
+                <input class="form-control" name="username" autofocus="" id="username" required="">
+            </div>
+            <div class="form-group">            
+                <label class="required" for="password">Password:</label>
+                <input class="form-control" type="password" name="password" id="password" required="">                
+            </div>                        
+            <div class="submit-row">
+                <input type="hidden" id="next_url" >
+                <label id="feedback" style="padding: 10px;"></label>
+                <input type="submit" class="fadeIn fourth" value="Log In">
+            </div>
         </form>
         <script src="/static/site/login.js"></script>
     

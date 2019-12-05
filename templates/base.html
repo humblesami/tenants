@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="/static/libs/bootstrap-4.2.1.css">
     <link rel="stylesheet" href="/static/site/site.css">
     <script src="/static/libs/jquery-2.2.4.js"></script>
+    <script src="/static/site/utils.js"></script>
     <script src="/static/site/site.js"></script>
 </head>
 
@@ -13,7 +14,7 @@
     {% block header %}
         <a href="/">Home</a> | <a href="/admin/">Admin</a>
         {% if not request.user.id %}
-            | <a href="/login">Login</a>
+            | <a href="/accounts/login">Login</a>
         {% endif %}
         {% if request.user.id %}
             | <a href="/logout">Signout</a>
