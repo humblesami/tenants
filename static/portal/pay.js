@@ -1,4 +1,20 @@
 $(function(){
+       $("#password, #confirm_password" ).keyup(function(e) {
+            var password = $('#password').val();
+            var confirm_password = $('#confirm_password').val();
+            if(password && confirm_password)
+            {
+                if(password != confirm_password)
+                {
+                    $('#btn_add_request').attr('disabled', 'disabled');
+                    $('#confirm_password_error').show();
+                }
+                else{
+                    $('#btn_add_request').removeAttr('disabled');
+                    $('#confirm_password_error').hide();
+                }
+            }
+       });
 //    $("#comapny_name" ).blur(function(e) {
 //        e.preventDefault();
 //        if($("#comapny_name" ).val() == ''){

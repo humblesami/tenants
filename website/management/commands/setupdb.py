@@ -10,7 +10,7 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 class Command(BaseCommand):
     help = 'setting up db i.e. create db or drop db for dev purpose'
     settings_dir = os.path.dirname(__file__)
-    base_directory = settings_dir.replace('customers/management/commands', '')
+    base_directory = settings_dir.replace('website/management/commands', '')
     def connect_database(self, database_info = {}):
         con = None
         try:
@@ -39,11 +39,13 @@ class Command(BaseCommand):
 
     def init_execution(self, hard_reset, create):
         database_info = {}
+        res = 'Unknown'
         try:
+            print (self.base_directory+'config.json')
             with open(self.base_directory+'config.json', 'r') as config:
                 database_info = json.load(config)
         except:
-            return 'Configration File not found.'
+            return 'Configuration File not found.'
 
         main_database_connection = self.connect_main_database(database_info)
         if main_database_connection is str:
@@ -58,18 +60,16 @@ class Command(BaseCommand):
                 str_error = error.args[0]
                 if 'does not exist' in str_error:
                     main_database_cursor.execute('CREATE DATABASE ' + database_info['default']['NAME'])
-            return 'Database dropped and created'
-
-        if create:
+        elif create:
             try:
                 main_database_cursor.execute('CREATE DATABASE ' + database_info['default']['NAME'])
             except Error as error:
                 str_error = error.args[0]
                 if 'already exists' in str_error:
                     return 'Database already exists'
-            return 'Database created'
         main_database_cursor.close()
         main_database_connection.close()
+        return 'done'
 
     def add_arguments(self, parser):
         parser.add_argument('-hard', '--hard', 
@@ -84,8 +84,11 @@ class Command(BaseCommand):
         create = kwargs['create']
         if hard_reset:
             create = False
-        print(self.init_execution(hard_reset, create))
-        importlib.import_module('del')
-        call_command('makemigrations')
-        call_command('migrate')
-        call_command('loaddata data')
+        res = self.init_execution(hard_reset, create)
+        print(res)
+        if res == 'done':
+            importlib.import_module('del')
+            call_command('makemigrations')
+            call_command('makemigrations', 'tenant_only' ,'customers')
+            call_command('migrate')
+            call_command('loaddata', 'website/fixtures/data.json')

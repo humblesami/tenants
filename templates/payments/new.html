@@ -25,15 +25,10 @@
                             <div class="col-md-7 col-lg-7">
                                 <div class="PaymentCreditCardForm FaxForm">
                                     <form id="payement_form" action="" method="post" class="form">
-                                      {% csrf_token %}
+                                        {% csrf_token %}
                                         <style>
-                                        .stripe-button-el{
-                                            display:none;
-                                        }
-                                        #comapny_name_error{
-                                            display:none;
-                                        }
-                                        #email_error{
+                                        .stripe-button-el, #comapny_name_error, #email_error, #password_error, #confirm_password_error
+                                        {
                                             display:none;
                                         }
                                         </style>
