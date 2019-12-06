@@ -1,28 +1,24 @@
+import stripe
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.models import ContentType
-from django.db import connection, transaction
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, redirect
-from django.views.generic import TemplateView
-from django_tenants.utils import get_tenant_model
 
-from customers.model_files.payemts import Payment, PaymentMethod
-from customers.model_files.plans import PlanRequest, Plan
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.db import connection, transaction
+from django_tenants.utils import get_tenant_model
+from django.contrib.contenttypes.models import ContentType
+
+
 from customers.models import Client
 from main_app import settings, ws_methods
-import stripe
-
 from main_app.settings import TENANT_DOMAIN
+from customers.model_files.plans import Plan
+from customers.model_files.payemts import Payment, PaymentMethod
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
-# class SubscriptionForm(TemplateView):
-#     def get_context_data(self, **kwargs):
-#         return {}
-def subscribe(request, plan_id, request_id=None):
+def subscribe(request, plan_id):
     template_name = 'payments/new.html'
-    # def get_context_data(self, plan_id, **kwargs):
     if request.method != 'POST':
         qs = Plan.objects.filter(id=plan_id).values('id', 'name', 'cost', 'days')
         plan = list(qs)[0]
@@ -151,8 +147,7 @@ def make_payemt(amount, currency, description, token):
         capture=True,)
     return charge
 
-# from rest_framework.decorators import api_view
-# @api_view()
+
 def checkName(request):
     name = request.GET['name']
     tenant_model = get_tenant_model()
@@ -164,16 +159,3 @@ def checkName(request):
         result =  'done'
 
     return HttpResponse(result)
-
-
-
-# class SaveRequest(TemplateView):
-#     def render_to_response(self, context, **response_kwargs):
-#         request = self.request
-#         res = 'Unknown'
-#         name = request.GET['name']
-#         email = request.GET['email']
-#         request_obj = PlanRequest(name=name, email=email, plan_id=1)
-#         request_obj.save()
-#         res = 'done'
-#         return HttpResponse(res)

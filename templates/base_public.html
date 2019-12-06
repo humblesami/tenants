@@ -2,14 +2,12 @@
 
 {% block header %}
     {{ block.super }}
-    <h4>
-        {% if request.user.is_superuser %}
-            | <a href="/payments/list">Payments</a>                        
-            | <a href="/clients/list">Clients</a>            
-        {% endif %}
-        {% if request.user.id %}
-            | <a href="/clients/my-companies">My Companies</a>
-        {% endif %}
-    </h4>
+    {% if request.user.is_superuser %}
+        | <a href="/payments/list">Payments</a>
+        | <a href="/clients/list">Clients</a>
+    {% endif %}
+    {% if request.user.id %}
+        | <a href="/clients/my-companies">My Companies</a>
+    {% endif %}
 {% endblock %}
 

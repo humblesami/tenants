@@ -1,9 +1,12 @@
 from django.contrib import admin
 from customers.models import Client
-from customers.model_files.plans import Plan, PlanCost, PlanRequest, Subscription
+from customers.model_files.payemts import Payment, PaymentMethod
+from customers.model_files.plans import Plan, PlanCost, Subscription
+
 
 admin.site.register(Client)
 admin.site.register(Plan)
 admin.site.register(PlanCost)
-admin.site.register(PlanRequest)
+admin.site.register(Payment)
+admin.site.register(PaymentMethod)
 admin.site.register(Subscription)

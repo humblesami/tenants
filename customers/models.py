@@ -1,12 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_tenants.models import TenantMixin
-from .model_files import payemts, plans
 
 
 class Client(TenantMixin):
     name = models.CharField(max_length=100)
-    description = models.TextField(max_length=200, default='')
+    description = models.TextField(max_length=512, blank=True, default='')
     created_on = models.DateField(auto_now_add=True)
     owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='superuser')
     users = models.ManyToManyField(User)

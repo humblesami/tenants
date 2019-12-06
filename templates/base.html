@@ -12,9 +12,8 @@
 <body>
 <div id="header">    
     {% block header %}
-    {{request.user.is_superuser}}
         <a href="/">Home</a>
-        |<a href="/plans">Plans</a>
+        | <a href="/plans">Plans</a>
         {% if not request.user.id %}
             | <a href="/accounts/login">Login</a>
         {% endif %}
