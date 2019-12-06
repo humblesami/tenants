@@ -24,7 +24,7 @@ def authenticate_user(request):
         login(request, user)
         return redirect(next_url)
     else:
-        context = {'error' : 'Invalid credentials'}
+        context = {'error' : 'Invalid credentials', 'input': {'username': username, 'next_url': next_url}}
         return render(request, 'login.html', context)
 
 

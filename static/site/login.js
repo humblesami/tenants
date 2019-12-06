@@ -1,8 +1,14 @@
 //http://localhost:8001/accounts/login
 //http://localhost:8001/accounts/login
-$(function(){    
-    var next_url = window['js_utils']['get_param']('next') || '/';
-    $('#next_url').val(next_url);
+$(function(){
+    if(!$('#next_url').val())
+    {
+        var next_url = window['js_utils']['get_param']('next') || '/';
+        $('#next_url').val(next_url);
+    }
+    else{
+        next_url = $('#next_url').val();
+    }
     console.log(next_url);
 //    $('#login-form').submit(function(e){
 //        e.preventDefault();
