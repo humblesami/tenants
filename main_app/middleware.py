@@ -35,6 +35,8 @@ class TenantMiddleware(MiddlewareMixin):
             response = produce_result(response)
         elif response.status_code and response.status_code != 301 and response.status_code != 200 and response.status_code != 302 and request.path != '/favicon.ico':
             error_content = response.content.decode("utf-8")
+            if not error_content:
+                error_content = 'Error '+ str(response.status_code)
             return render(request, 'error.html', {'error': error_content, 'error_code': response.status_code})
         return response
 
