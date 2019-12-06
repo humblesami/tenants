@@ -128,15 +128,15 @@ WSGI_APPLICATION = 'main_app.wsgi.application'
 
 TENANT_MODEL = "customers.Client"  # app.Model
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
-TENANT_DOMAIN = 'abc.com'
-SERVER_PORT = None
+TENANT_DOMAIN = 'localhost'
+SERVER_PORT = 8001
 SERVER_PORT_STR = ''
 if SERVER_PORT:
     SERVER_PORT_STR = ':' + str(SERVER_PORT)
-SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN + SERVER_PORT_STR
 DOMAIN_NAME = TENANT_DOMAIN
 MAIN_URL = DOMAIN_NAME + SERVER_PORT_STR
-SESSION_COOKIE_NAME = 'fdfdsedfsoodsd'
+# SESSION_COOKIE_NAME = 'fdfdsedfsoodsd'
+# SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN + SERVER_PORT_STR
 LOGIN_URL = '/accounts/login'
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
