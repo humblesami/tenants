@@ -100,25 +100,33 @@ def create_tenant(t_name, email, password, request):
         with transaction.atomic():
             if not tenant_model.objects.filter(schema_name=t_name):
 
-                user_exists = User.objects.filter(email=email)
-                if not user_exists:
-                    owner = User.objects.create(username=email, email=email, is_active=True)
-                    owner.set_password(password)
-                    owner.save()
+                owner_mail = 'owner@'+t_name+'.com'
+                owner = User.objects.create(username=owner_mail, email=owner_mail, is_active=True)
+                owner.set_password(password)
+                owner.save()
+
+                tenant_superuser = User.objects.filter(email=email)
+                if not tenant_superuser:
+                    tenant_superuser = User.objects.create(username=email, email=email, is_active=True)
+                    tenant_superuser.set_password(password)
+                    tenant_superuser.save()
+                else:
+                    tenant_superuser = tenant_superuser[0]
 
                 domain_url = t_name + '.' + TENANT_DOMAIN
                 company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
                 company.save()
                 company.users.add(owner)
+                company.users.add(tenant_superuser)
+                company.save()
 
                 request.tenant = company
                 connection.set_tenant(request.tenant)
                 ContentType.objects.clear_cache()
 
-                if not user_exists:
-                    owner = User.objects.create(username=email, email=email, is_superuser=True, is_staff=True, is_active=True)
-                    owner.set_password(password)
-                    owner.save()
+                owner = User.objects.create(username=email, email=email, is_superuser=True, is_staff=True, is_active=True)
+                owner.set_password(password)
+                owner.save()
 
                 company = tenant_model.objects.get(schema_name='public')
                 request.tenant = company

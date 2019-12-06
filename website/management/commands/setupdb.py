@@ -54,22 +54,21 @@ class Command(BaseCommand):
         main_database_cursor = main_database_connection.cursor()
         if hard_reset:
             try:
-                main_database_cursor.execute('DROP DATABASE ' + database_info['default']['NAME'])
+                main_database_cursor.execute('DROP DATABASE if exists ' + database_info['default']['NAME'])
                 main_database_cursor.execute('CREATE DATABASE ' + database_info['default']['NAME'])
+                res = 'done'
             except Error as error:
                 str_error = error.args[0]
-                if 'does not exist' in str_error:
-                    main_database_cursor.execute('CREATE DATABASE ' + database_info['default']['NAME'])
+                res = str_error
         elif create:
             try:
                 main_database_cursor.execute('CREATE DATABASE ' + database_info['default']['NAME'])
             except Error as error:
                 str_error = error.args[0]
-                if 'already exists' in str_error:
-                    return 'Database already exists'
+                res = str_error
         main_database_cursor.close()
         main_database_connection.close()
-        return 'done'
+        return res
 
     def add_arguments(self, parser):
         parser.add_argument('-hard', '--hard', 
