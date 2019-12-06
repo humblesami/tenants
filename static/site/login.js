@@ -1,5 +1,4 @@
 //http://localhost:8001/accounts/login
-//http://localhost:8001/accounts/login
 $(function(){
     if(!$('#next_url').val())
     {
