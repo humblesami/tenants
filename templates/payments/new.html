@@ -11,7 +11,7 @@
                 <div class="col-lg-12 ">
                     <h2>Payment</h2>
                     <h6>Plan Name : {{plan.name }}</h6>
-                    <h6>Cost : {{plan.cost }}</h6>
+                    <h6>Cost : {{ plan.cost }}</h6>
                     <h6>Valid for : {{plan.days }} days</h6>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                                                 <div>
                                                 <p id="confirm_password_error" class="alert alert-danger">Password must match</p></div>
                                             </div>
-                                            <input class="form-control" type="hidden" class="form-control" required name="amountpay" id="amount2" value="{{ plan.cost }}" />
+                                            <input class="form-control" type="hidden" class="form-control" required name="amountpay" id="amount2" value="{{ plan.cents_cost }}" />
                                             <div class="form-group" >
                                                 <button class="btn btn-primary" id="btn_add_request">Subscribe</button>
                                             </div>
@@ -62,7 +62,7 @@
                                         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                         data-key="{{ key }}"
                                         data-description="Odufax Charge"
-                                        data-amount="{{ plan.cost }}"
+                                        data-amount="{{ plan.cents_cost }}"
                                         data-locale="auto"></script>                                        
 
                                     </form>

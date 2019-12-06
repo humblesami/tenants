@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django_tenants.utils import get_tenant_model
 
+from customers.model_files.payemts import Payment, PaymentMethod
 from customers.model_files.plans import PlanRequest, Plan
 from customers.models import Client
 from main_app import settings, ws_methods
@@ -25,6 +26,7 @@ def subscribe(request, plan_id, request_id=None):
     if request.method != 'POST':
         qs = Plan.objects.filter(id=plan_id).values('id', 'name', 'cost', 'days')
         plan = list(qs)[0]
+        plan['cents_cost'] = int(plan['cost']) * 100
         context = {
             'key': settings.STRIPE_PUBLISHABLE_KEY,
             'plan': plan
@@ -50,9 +52,10 @@ def subscribe(request, plan_id, request_id=None):
             context['error'] = message
             return render(request, template_name, )
         email = ''
+        payment_response = None
         if not context['error']:
             token = req_data['stripeToken']
-            payment_response = make_payemt(amount,'usd','Odufax payment recieve',token)
+            payment_response = make_payemt(amount, 'usd','Odufax payment recieve',token)
             failure_code = payment_response ['failure_code']
             if failure_code:
                 message = payment_response['failure_message']
@@ -69,6 +72,7 @@ def subscribe(request, plan_id, request_id=None):
         if context['error']:
             qs = Plan.objects.filter(id=plan_id).values('id', 'name', 'cost', 'days')
             plan = list(qs)[0]
+            plan['cents_cost'] = int(plan['cost']) * 100
             context = {
                 'key': settings.STRIPE_PUBLISHABLE_KEY,
                 'plan': plan,
@@ -76,7 +80,16 @@ def subscribe(request, plan_id, request_id=None):
             }
             return render(request, template_name, context)
         else:
-            res = create_tenant(req_data['company'], email, password, request)
+            transaction_id = payment_response['id']
+            medium = PaymentMethod.objects.filter(name='Stripe')
+            if not medium:
+                medium = PaymentMethod.objects.create(name='Stripe')
+            else:
+                medium = medium[0]
+
+            obj = Payment(transaction_id=transaction_id, medium_id=medium.id, amount=amount)
+            obj.save()
+            res = create_tenant(company, email, password, request)
             return redirect('/')
 
 

@@ -11,7 +11,7 @@ class Payment(models.Model):
     medium = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True)
     transaction_id = models.CharField(max_length=128)
 
-    def save(self, kw, **args):
+    def save(self, *args, **kwargs):
         #add to Subscription
-        super(Payment, self).save(kw, args)
+        super(Payment, self).save(args, kwargs)
 
