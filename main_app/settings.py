@@ -56,9 +56,6 @@ LOGGING = {
     }
 }
 
-LOGIN_REQUIRED_URLS = (
-    r'/clients/(.*)$',
-)
 
 MIDDLEWARE = (
     'main_app.middleware.TenantMiddleware',
