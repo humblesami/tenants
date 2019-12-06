@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/libs/bootstrap-4.2.1.css">
+    <link rel="stylesheet" href="/static/site/site.css">
+    <script src="/static/libs/jquery-2.2.4.js"></script>
+    <script src="/static/site/utils.js"></script>
+    <script src="/static/site/site.js"></script>
+</head>
+
+<body>
+<div id="header">    
+    {% block header %}
+        <a href="/">Home</a>
+        {% if not request.user.id %}
+            | <a href="/accounts/login">Login</a>
+        {% endif %}
+        {% if request.user.id %}
+            | <a href="/clients">My Companies</a>
+            {% if request.user.is_staff %}
+                | <a href="/admin/">Admin</a>
+            {% endif %}
+            | <a href="/logout">Signout</a>
+        {% endif %}
+    {% endblock %}
+</div>
+<div id="summary">
+{% block summary %}
+{% endblock %}
+</div>
+
+<div id="instructions">
+{% block instructions %}
+{% endblock %}
+</div>
+
+<div id="content">
+{% block content %}
+{% endblock %}
+</div>
+
+<div id="footer">
+    
+</div>
+</body></html>

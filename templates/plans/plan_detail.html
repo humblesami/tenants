@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block summary %}
+    Home Page
+    {% if request.user.is_superuser %}
+        | <a href="/clients">Clients</a>
+        | <a href="/admin">Admin</a>
+    {% endif %}
+{% endblock %}
+{% block content %}
+
+    <div class="col-12">
+        <div class="row">
+            <div class="col-2"><label>Plan Name</label></div><div><h2>{{plan.name}}</h2></div>
+        </div>
+        <div class="row">
+            <div class="col-2"><label>Description</label></div><div><p>{{plan.description}}</p></div>
+        </div>
+        <div class="row">
+            <div class="col-2"><label>Cost</label></div><div><p>{{plan.cost}}</p></div>
+        </div>
+        <div class="row">
+            <div class="col-2"><label>Days</label></div><div><p>{{plan.days}}</p></div>
+        </div>
+        <div class="row">
+            <form id="payement" action="/payments/new" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="amount" value="{{plan.cost}}">
+                <input name="submit" id="submit" class="btn btn-primary" type="submit" value="Subscribe">
+            </form>
+        </div>
+
+        
+    </div>
+
+{% endblock %}
