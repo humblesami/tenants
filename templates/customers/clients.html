@@ -1,0 +1,25 @@
+{% extends 'base_public.html' %}
+{% block title %}
+{% endblock %}
+
+{% block summary %}
+{% endblock %}
+
+{% block instructions %}
+
+        <h3>My tenants</h3>
+        {% for client in clients %}
+        <ul>
+            <li>
+                {{client.id }} -- {{client.schema_name }} --
+                {% if client.id == 1 %}
+                    <a href="http://{{client.domain_url}}{{port}}">Link</a>
+                {% endif %}
+                {% if client.id != 1 %}
+                    <a href="http://{{client.domain_url}}{{port}}">Link</a>  |
+                    <a href="delete?id={{client.id}}">Delete</a>
+                {% endif %}
+            </li>
+        </ul>
+        {% endfor %}
+{% endblock %}

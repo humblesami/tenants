@@ -51,8 +51,23 @@ class Delete(TemplateView):
         context['port'] = SERVER_PORT_STR
         return context
 
+class CompanyList(TemplateView):
+    
+    template_name = "customers/clients.html"
 
-class TenantView(TemplateView):
+    def get_context_data(self, **kwargs):
+        tenants_list = []
+        if self.request.user.is_superuser:
+            tenant_model = get_tenant_model()
+            tenants_list = tenant_model.objects.all()
+            tenants_list = tenants_list.prefetch_related('domains').all()
+            tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
+        context = {'clients': tenants_list}
+        context['port'] = SERVER_PORT_STR
+        return context
+
+
+class MyCompanies(TemplateView):
     
     template_name = "customers/index.html"
 

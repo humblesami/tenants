@@ -3,7 +3,7 @@
 {% block summary %}
     Home Page
     {% if request.user.is_superuser %}
-        | <a href="/clients">Clients</a>
+        | <a href="/clients/list">Clients</a>
         | <a href="/admin">Admin</a>
     {% endif %}
 {% endblock %}
