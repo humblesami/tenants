@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection, transaction
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django_tenants.utils import get_tenant_model
@@ -148,18 +148,32 @@ def make_payemt(amount, currency, description, token):
         currency=currency,
         description=description,
         source=token,
-        capture=True,
-    )
+        capture=True,)
     return charge
 
+# from rest_framework.decorators import api_view
+# @api_view()
+def checkName(request):
+    name = request.GET['name']
+    tenant_model = get_tenant_model()
+    obj = tenant_model.objects.filter(schema_name=name)
+    result = {}
+    if obj:
+        result =   'Already Exist'
+    else:
+        result =  'done'
 
-class SaveRequest(TemplateView):
-    def render_to_response(self, context, **response_kwargs):
-        request = self.request
-        res = 'Unknown'
-        name = request.GET['name']
-        email = request.GET['email']
-        request_obj = PlanRequest(name=name, email=email, plan_id=1)
-        request_obj.save()
-        res = 'done'
-        return HttpResponse(res)
+    return HttpResponse(result)
+
+
+
+# class SaveRequest(TemplateView):
+#     def render_to_response(self, context, **response_kwargs):
+#         request = self.request
+#         res = 'Unknown'
+#         name = request.GET['name']
+#         email = request.GET['email']
+#         request_obj = PlanRequest(name=name, email=email, plan_id=1)
+#         request_obj.save()
+#         res = 'done'
+#         return HttpResponse(res)

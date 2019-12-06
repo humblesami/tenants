@@ -15,31 +15,28 @@ $(function(){
                 }
             }
        });
-//    $("#comapny_name" ).blur(function(e) {
-//        e.preventDefault();
-//        if($("#comapny_name" ).val() == ''){
-//            return
-//        }
-//        $("#comapny_name_error").hide();
-//        var name = $("#comapny_name" ).val();
-//        var params = { 'name' : name };
-//        window['js_utils']['ajax']({
-//            url:'/subscriptions/check-name',
-//            data:params,
-//            dataType: 'json',
-//            success:function(data){
-//                if(data >= 1){
-//                    $("#comapny_name_error").html("Name Already Exist");
-//                    $("#comapny_name_error").show();
-//                }
-//
-//                console.log(data,'ok');
-//            },
-//            error:function(e){
-//                console.log(e, 'err in ajax');
-//            }
-//        });
-//    });
+   $("#company_name" ).blur(function(e) {
+       e.preventDefault();
+       if($("#company_name" ).val() == ''){
+           return
+       }
+       $("#company_name_error").hide();
+       var name = $("#company_name" ).val();
+
+       var params = { 'name' : name };
+       console.log(params)
+       window['js_utils']['ajax']({
+           url:'/subscriptions/check-name',
+           data:params,
+           dataType: 'json',
+           error:function(data){
+            if(data != "done"){
+                $("#company_name_error").html("User Already Exist");
+                $("#company_name_error").show();
+            }
+           }
+       });
+   });
 
 //    $("#email").blur(function(e){
 //        e.preventDefault();
@@ -58,10 +55,10 @@ $(function(){
 
 //    $('#btn_add_request').click(function(e){
 //        e.preventDefault();
-//        if($("#comapny_name").val() == '' || $("#email").val() == ''){
-//            if($("#comapny_name").val() == ''){
-//                $("#comapny_name_error").html("Add Name First");
-//                $("#comapny_name_error").show();
+//        if($("#company_name").val() == '' || $("#email").val() == ''){
+//            if($("#company_name").val() == ''){
+//                $("#company_name_error").html("Add Name First");
+//                $("#company_name_error").show();
 //            }
 //            if($("#email").val() == ''){
 //                $("#email_error").show();
@@ -69,8 +66,8 @@ $(function(){
 //            return
 //        }
 //        $("#email_error").hide();
-//        $("#comapny_name_error").hide();
-//        var name = $("#comapny_name").val();
+//        $("#company_name_error").hide();
+//        var name = $("#company_name").val();
 //        var email = $("#email").val();
 //        var params = { 'name' : name, 'email' : email}
 //        window['js_utils']['ajax']({
@@ -82,8 +79,8 @@ $(function(){
 //            },
 //            error : function(e){
 //                if(e == "User already Exist"){
-//                    $("#comapny_name_error").html("Name Already Occupied");
-//                    $("#comapny_name_error").show();
+//                    $("#company_name_error").html("Name Already Occupied");
+//                    $("#company_name_error").show();
 //                }
 //                console.log(e,"Error in ajax")
 //            }

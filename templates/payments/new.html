@@ -27,7 +27,7 @@
                                     <form id="payement_form" action="" method="post" class="form">
                                         {% csrf_token %}
                                         <style>
-                                        .stripe-button-el, #comapny_name_error, #email_error, #password_error, #confirm_password_error
+                                        .stripe-button-el, #company_name_error, #email_error, #password_error, #confirm_password_error
                                         {
                                             display:none;
                                         }
@@ -37,7 +37,7 @@
                                                 <label>Company</label>
                                                 <input class="form-control" required name="company" id="company_name" />
                                                 <div>
-                                                    <p id="comapny_name_error" class="alert alert-danger"></p>
+                                                    <p id="company_name_error" class="alert alert-danger"></p>
                                                 </div>
 
                                             </div>

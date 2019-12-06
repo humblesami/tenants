@@ -6,14 +6,21 @@
             return myParam
         },
         ajax : function(options){
+            // console.log(options);
             $.ajax({
                 url: options.url,
                 data:options.data,
                 dataType: 'json',
                 success:function(data){
+                    try{
+                        data = JSON.parse(data);
+                    }
+                    catch{
+
+                    }
                     if(data.error)
                     {
-                        console.log(data.error);
+                        // console.log(data.error);
                         if(options.error){
                             options.error(data.error);
                         }
