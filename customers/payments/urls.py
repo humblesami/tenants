@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import PaymentList #,PaymetCallback
+from .views import PaymentListLocal, PaymentList
 
 urlpatterns = [
-    # path('callback', PaymetCallback.as_view(), name='Payment CallBack'),
-    path('list', PaymentList.as_view(), name='Payment List'),
+    path('list', PaymentListLocal.as_view(), name='Payment List'),
+    path('source', PaymentList.as_view(), name='Payment List'),
 ]

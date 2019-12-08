@@ -1,42 +1,45 @@
 $(function(){
-       $("#password, #confirm_password" ).keyup(function(e) {
-            var password = $('#password').val();
-            var confirm_password = $('#confirm_password').val();
-            if(password && confirm_password)
-            {
-                if(password != confirm_password)
-                {
-                    $('#btn_add_request').attr('disabled', 'disabled');
-                    $('#confirm_password_error').show();
-                }
-                else{
-                    $('#btn_add_request').removeAttr('disabled');
-                    $('#confirm_password_error').hide();
-                }
-            }
-       });
-   $("#company_name" ).blur(function(e) {
-       e.preventDefault();
-       if($("#company_name" ).val() == ''){
-           return
-       }
-       $("#company_name_error").hide();
-       var name = $("#company_name" ).val();
+    $("#password, #confirm_password" ).keyup(function(e) {
+         var password = $('#password').val();
+         var confirm_password = $('#confirm_password').val();
+         if(password && confirm_password)
+         {
+             if(password != confirm_password)
+             {
+                 $('#btn_add_request').attr('disabled', 'disabled');
+                 $('#confirm_password_error').show();
+             }
+             else{
+                 $('#btn_add_request').removeAttr('disabled');
+                 $('#confirm_password_error').hide();
+             }
+         }
+    });
+$("#company_name" ).blur(function(e) {
+    e.preventDefault();
+    if($("#company_name" ).val() == ''){
+        return
+    }
+    $("#company_name_error").hide();
+    var name = $("#company_name" ).val();
 
-       var params = { 'name' : name };
-       console.log(params)
-       window['js_utils']['ajax']({
-           url:'/subscriptions/check-name',
-           data:params,
-           dataType: 'json',
-           error:function(data){
+    var params = { 'name' : name };
+    window['js_utils']['ajax']({
+        url:'/clients/check-name',
+        data:params,
+        dataType: 'json',
+        success: function(data){
+            console.log(data);
+        },
+        error:function(data){
+            console.log(data);
             if(data != "done"){
                 $("#company_name_error").html("User Already Exist");
                 $("#company_name_error").show();
             }
-           }
-       });
-   });
+        }
+    });
+});
 
 //    $("#email").blur(function(e){
 //        e.preventDefault();
@@ -87,13 +90,13 @@ $(function(){
 //        });
 //    });
 
-    function ValidateEmail(mail) 
-    {
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
-        {
-            return (true)
-        }
-            return (false)
-    }
+ function ValidateEmail(mail) 
+ {
+     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+     {
+         return (true)
+     }
+         return (false)
+ }
 })
 

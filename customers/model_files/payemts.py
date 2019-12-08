@@ -8,7 +8,7 @@ class PaymentMethod(models.Model):
 class Payment(models.Model):
     amount = models.PositiveIntegerField()
     date_time = models.DateTimeField(auto_now_add=True)
-    medium = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL)
+    method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=128)
 
     def save(self, *args, **kwargs):

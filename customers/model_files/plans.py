@@ -25,15 +25,3 @@ class PlanCost(models.Model):
             self.plan.cost = self.cost
             self.plan.days = self.days
             self.plan.save()
-
-
-class Subscription(models.Model):
-    active = models.BooleanField(default=True)
-    plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
-    plan_cost = models.ForeignKey(PlanCost, on_delete=models.CASCADE)
-    discount = models.IntegerField(default=0)
-    start_date = models.DateField()
-    end_data = models.DateField()
-
-    def days_left(self):
-        return 0

@@ -1,3 +1,5 @@
+from django.http import HttpResponse
+from django.views import View
 from django.contrib.auth.models import User
 from django.db import transaction, connection
 from django.views.generic import TemplateView
@@ -51,6 +53,7 @@ class Delete(TemplateView):
         context['port'] = SERVER_PORT_STR
         return context
 
+
 class CompanyList(TemplateView):
     
     template_name = "customers/clients.html"
@@ -68,13 +71,25 @@ class CompanyList(TemplateView):
 
 
 class MyCompanies(TemplateView):
-    
     template_name = "customers/index.html"
-
     def get_context_data(self, **kwargs):
         context = {'list': get_customer_list(self.request.user)}
         context['port'] = SERVER_PORT_STR
         return context
+
+
+class CheckForExisting(View):
+    def get(self, request):
+        request = self.request
+        name = request.GET['name']
+        tenant_model = get_tenant_model()
+        obj = tenant_model.objects.filter(schema_name=name)
+        result = {}
+        if obj:
+            result = 'Already Exist'
+        else:
+            result = 'done'
+        return HttpResponse(result)
 
 
 def get_my_tenants(user):

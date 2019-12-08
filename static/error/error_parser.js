@@ -2,48 +2,30 @@
     console.log('Error from view')
     var dom = undefined;
     try{
-        dom = $($('#original_error').text())[0].parentNode;
-        var summary = dom.getElementById('summary');
-        var explanation = dom.getElementById('explanation');
-        var traceback = dom.getElementById('traceback');
-        var requestinfo = dom.getElementById('requestinfo');
+        var error_text = $('#original_error').text();
+        var error_obj = $(error_text);
+        var title = '<h3>' + error_obj[3].innerHTML + '</h3>';
+        var error_html = title;
+        error_obj.each(function(i, el){
+            // console.log(i, el);
+            if(i > 10 && i <12 && i % 2 != 0){
+                if($(el).is('#summary')){
+                    $(el).find('table.meta tbody').children().each(function(j, tr){
+                        if(j>5)
+                        {
+                            $(tr).remove();
+                        }
+                    })
+                }
+                error_html += el.outerHTML;
+            }
+        });
 
-        var description = $(summary).find('h1:first').text();
-        var exception_value = $(summary).find('.exception_value').text();
-        var location_th = $(summary).find('th:contains("Exception Location:")');
-        var location = location_th.parent().text();
-
-        if(description)
-        {
-            $('#error_display').append('<h3>Description</h3><div>'+description+'</div>');
-        }
-        else{
-            $('#error_display').append('<h3>Description</h3><div>Unknown Error</div>');
-        }
-        if(exception_value)
-        {
-            $('#error_display').append('<h3>Value</h3><div>'+exception_value+'</div>');
-        }
-        if(location)
-        {
-            $('#error_display').append('<h3>Location</h3><div>'+location+'</div>');
-        }
+        $('#error_display').html(error_html);
     }
     catch(er){
-        try{
-            if($('#explanation').text())
-            {
-                dom = $('<div>' + $('#explanation').text() +'</div>');
-                $('#explanation').html(dom);
-            }
-            else{
-                dom = $('<div>' + $('#original_error').text() +'</div>');
-                $('#error_display').html(dom);
-            }
-        }
-        catch(er){
+        console.log(er);
 
-        }
     }
 
 })()

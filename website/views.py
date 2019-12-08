@@ -7,7 +7,5 @@ class Index(TemplateView):
     template_name = "website/index.html"
     def get_context_data(self, **kwargs):
         request = self.request
-        print(6666)
-        print(request.user.id)
         context = {}
         return context

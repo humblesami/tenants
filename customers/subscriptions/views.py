@@ -7,21 +7,22 @@ from django.db import connection, transaction
 from django_tenants.utils import get_tenant_model
 from django.contrib.contenttypes.models import ContentType
 
-
+from customers.model_files.subscription import Subscription
 from customers.models import Client
 from main_app import settings, ws_methods
 from main_app.settings import TENANT_DOMAIN
-from customers.model_files.plans import Plan
+from customers.model_files.plans import Plan, PlanCost
 from customers.model_files.payemts import Payment, PaymentMethod
+from main_app.ws_methods import add_interval
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 def subscribe(request, plan_id):
-    template_name = 'payments/new.html'
+    template_name = 'customers/subscribe.html'
+    qs = Plan.objects.filter(id=plan_id).values('id', 'name', 'cost', 'days')
+    plan = list(qs)[0]
     if request.method != 'POST':
-        qs = Plan.objects.filter(id=plan_id).values('id', 'name', 'cost', 'days')
-        plan = list(qs)[0]
         plan['cents_cost'] = int(plan['cost']) * 100
         context = {
             'key': settings.STRIPE_PUBLISHABLE_KEY,
@@ -51,7 +52,7 @@ def subscribe(request, plan_id):
         payment_response = None
         if not context['error']:
             token = req_data['stripeToken']
-            payment_response = make_payemt(amount, 'usd','Odufax payment recieve',token)
+            payment_response = make_payemt(amount, 'usd', 'Payment Receive', token)
             failure_code = payment_response ['failure_code']
             if failure_code:
                 message = payment_response['failure_message']
@@ -60,14 +61,7 @@ def subscribe(request, plan_id):
                 context['error'] = message
             else:
                 email = payment_response['billing_details']['name']
-        if not email:
-            message = 'Email not found'
-            if context['error']:
-                message += ', ' + message
-            context['error'] = message
         if context['error']:
-            qs = Plan.objects.filter(id=plan_id).values('id', 'name', 'cost', 'days')
-            plan = list(qs)[0]
             plan['cents_cost'] = int(plan['cost']) * 100
             context = {
                 'key': settings.STRIPE_PUBLISHABLE_KEY,
@@ -82,14 +76,16 @@ def subscribe(request, plan_id):
                 medium = PaymentMethod.objects.create(name='Stripe')
             else:
                 medium = medium[0]
-
-            obj = Payment(transaction_id=transaction_id, medium_id=medium.id, amount=amount)
-            obj.save()
-            res = create_tenant(company, email, password, request)
+            payment = Payment.objects.create(transaction_id=transaction_id, method_id=medium.id, amount=amount)
+            plan_cost = PlanCost.objects.filter(plan_id=plan['id']).last()
+            subscription = Subscription(payment_id=payment.id, plan_id=plan['id'], plan_cost_id=plan_cost.id)
+            subscription.amount = plan_cost.cost
+            subscription.end_date = add_interval('days', plan['days'])
+            res = create_tenant(company, email, password, subscription.id, request)
             return redirect('/')
 
 
-def create_tenant(t_name, email, password, request):
+def create_tenant(t_name, email, password, subscription_id, request):
     res = 'Unknown issue'
     try:
         tenant_model = get_tenant_model()
@@ -111,7 +107,10 @@ def create_tenant(t_name, email, password, request):
 
                 domain_url = t_name + '.' + TENANT_DOMAIN
                 company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
+                company.subscription_id = subscription_id
                 company.save()
+
+                company.plan_id = company.subscription.plan.id
                 company.users.add(owner)
                 company.users.add(tenant_superuser)
                 company.save()
@@ -146,16 +145,3 @@ def make_payemt(amount, currency, description, token):
         source=token,
         capture=True,)
     return charge
-
-
-def checkName(request):
-    name = request.GET['name']
-    tenant_model = get_tenant_model()
-    obj = tenant_model.objects.filter(schema_name=name)
-    result = {}
-    if obj:
-        result =   'Already Exist'
-    else:
-        result =  'done'
-
-    return HttpResponse(result)

@@ -1,7 +1,6 @@
 (function(){
     $(function(){
         var origin  = window.origin.toString();
-        console.log(origin);
         var arr = origin.split('.');
         var cnt = 55;
         while(arr.length > 1 && cnt++ < 59)
@@ -15,7 +14,7 @@
             origin = origin.replace(chunk+'.', '');
             arr = origin.split('.');
         }
-        console.log(origin);
+        // console.log(origin);
         $('a.public_home_link').attr('href', origin);
     })
 })()
