@@ -17,62 +17,66 @@
             </div>
         </div>
     </div>
-        <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="col-lg-8">
-                    <div class="WhiteBox">
-                        <div class="row d-flex justify-content-center align-items-center">
-                            <div class="col-md-7 col-lg-7">
-                                <div class="PaymentCreditCardForm FaxForm">
-                                    <form id="payement_form" action="" method="post" class="form">
-                                        {% csrf_token %}
-                                        <style>
-                                        .stripe-button-el, #company_name_error, #email_error, #password_error, #confirm_password_error
-                                        {
-                                            display:none;
-                                        }
-                                        </style>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Company</label>
-                                                <input class="form-control" required name="company" id="company_name" />
-                                                <div>
-                                                    <p id="company_name_error" class="alert alert-danger"></p>
-                                                </div>
+    <div>{{error | safe}}</div>
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+                <div class="WhiteBox">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-md-7 col-lg-7">
+                            <div class="PaymentCreditCardForm FaxForm">
+                                <form id="payement_form" action="" method="post" class="form">
+                                    {% csrf_token %}
+                                    <style>
+                                    .stripe-button-el, #company_name_error, #email_error, #password_error, #confirm_password_error
+                                    {
+                                        display:none;
+                                    }
+                                    </style>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Company</label>
+                                            <input class="form-control" value="{{company}}" required name="company" id="company_name" />
+                                            <div>
+                                                <p id="company_name_error" class="alert alert-danger"></p>
+                                            </div>
 
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Password</label>
-                                                <input type="password" class="form-control" required name="password" id="password" />
-                                                <div>
-                                                <p id="password_error" class="alert alert-danger">Please Add Password</p></div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Confirm Password</label>
-                                                <input type="password" class="form-control" required name="confirm_password" id="confirm_password" />
-                                                <div>
-                                                <p id="confirm_password_error" class="alert alert-danger">Password must match</p></div>
-                                            </div>
-                                            <input class="form-control" type="hidden" class="form-control" required name="amountpay" id="amount2" value="{{ plan.cents_cost }}" />
-                                            <div class="form-group" >
-                                                <button class="btn btn-primary" id="btn_add_request">Subscribe</button>
-                                            </div>
                                         </div>
-                                        <script src="/static/portal/pay.js"></script>
-                                        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                        data-key="{{ key }}"
-                                        data-description="Odufax Charge"
-                                        data-amount="{{ plan.cents_cost }}"
-                                        data-locale="auto"></script>                                        
+                                        <div class="form-group">
+                                            <label>Password</label>
+                                            <input type="password" class="form-control" required name="password" id="password" />
+                                            <div>
+                                            <p id="password_error" class="alert alert-danger">Please Add Password</p></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Confirm Password</label>
+                                            <input type="password" class="form-control" required name="confirm_password" id="confirm_password" />
+                                            <div>
+                                            <p id="confirm_password_error" class="alert alert-danger">Password must match</p></div>
+                                        </div>
+                                        <input class="form-control" type="hidden" class="form-control" required name="amountpay" id="amount2" value="{{ plan.cents_cost }}" />
+                                        <div class="form-group" >
+                                            <button class="btn btn-primary" id="btn_add_request">Subscribe</button>
+                                        </div>
+                                    </div>
+                                    <div>{{token}}</div>
+                                    {% if not token %}
+                                    <script src="/static/portal/pay.js"></script>
+                                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                    data-key="{{ key }}"
+                                    data-description="Odufax Charge"
+                                    data-amount="{{ plan.cents_cost }}"
+                                    data-locale="auto"></script>
+                                    {% endif %}
 
-                                    </form>
-                                    
-                                </div>
+                                </form>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
   </section>
 {% endblock %}

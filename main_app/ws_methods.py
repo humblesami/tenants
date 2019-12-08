@@ -29,5 +29,3 @@ def add_interval(dt, interval_type, inc):
     if interval_type == 'hours':
         dt = dt + timedelta(hours=inc)
     return dt
-        
-    

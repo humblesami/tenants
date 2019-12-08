@@ -6,8 +6,27 @@ from django.views.generic import TemplateView
 from django_tenants.utils import get_tenant_model
 from django.contrib.contenttypes.models import ContentType
 
+from customers.model_files.payemts import PaymentInProgress
 from main_app import ws_methods
 from main_app.settings import SERVER_PORT_STR, TENANT_DOMAIN
+
+
+class CheckForExisting(View):
+    def get(self, request):
+        request = self.request
+        name = request.GET['name']
+        tenant_model = get_tenant_model()
+        obj = tenant_model.objects.filter(schema_name=name)
+        result = {}
+        if obj:
+            result = 'Already Exist'
+        else:
+            obj = PaymentInProgress.objects.filter(company=name)
+            if obj:
+                result = 'Already Exist'
+            else:
+                result = 'done'
+        return HttpResponse(result)
 
 
 class Create(TemplateView):
@@ -76,20 +95,6 @@ class MyCompanies(TemplateView):
         context = {'list': get_customer_list(self.request.user)}
         context['port'] = SERVER_PORT_STR
         return context
-
-
-class CheckForExisting(View):
-    def get(self, request):
-        request = self.request
-        name = request.GET['name']
-        tenant_model = get_tenant_model()
-        obj = tenant_model.objects.filter(schema_name=name)
-        result = {}
-        if obj:
-            result = 'Already Exist'
-        else:
-            result = 'done'
-        return HttpResponse(result)
 
 
 def get_my_tenants(user):

@@ -3,7 +3,7 @@ from customers.model_files.plans import Plan
 
 
 class PlansList(TemplateView):
-    template_name = "plans/plan_list.html"
+    template_name = "customers/plans/plan_list.html"
 
     def get_context_data(self, **kwargs):
         plans = Plan.objects.all().values('id', 'name', 'description', 'days', 'cost')
