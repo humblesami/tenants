@@ -117,20 +117,20 @@ def subscribe(request, plan_id, req_token=None, error=None):
                 amount = req_data['amountpay']
                 amount = int(amount) / 100
                 res = make_payment(req_data, amount)
-                token = context['token'] = res['token']
+                if not res.get('paid') and res.get('error'):
+                    return render(request, template_name, res)
+                payment_in_progress_obj = res['payment_in_progress']
                 error = res['error']
+                method_id = res['method_id']
+                payment_response = res['payment_response']
+                email = payment_response['billing_details']['name']
+                token = context['token'] = res['token']
+                transaction_id = payment_response['id']
                 if error:
                     return send_error(error, context, req_token, token, template_name, request, payment_in_progress_obj)
-                try:
-                    method_id = res['method_id']
-                    payment_response = res['payment_response']
-                    payment_in_progress_obj = res['payment_in_progress']
-                    transaction_id = payment_response['id']
-                    email = payment_response['billing_details']['name']
-                except:
-                    res = produce_exception()
-                    return send_error(res, context, req_token, token, template_name, request, payment_in_progress_obj)
-
+            if not transaction_id:
+                res = 'Invalid transaction id'
+                return send_error(res, context, req_token, token, template_name, request, payment_in_progress_obj)
             with transaction.atomic():
                 plan_cost = PlanCost.objects.filter(plan_id=plan['id']).values('id', 'cost', 'days')
                 plan_cost = plan_cost[len(plan_cost) - 1]
@@ -145,8 +145,7 @@ def subscribe(request, plan_id, req_token=None, error=None):
                 res = create_tenant(company, email, password, subscription.id, plan['id'], request)
 
             if res == 'done':
-                payment_in_progress_obj.processed = True
-                payment_in_progress_obj.save()
+                payment_in_progress_obj.delete()
                 return redirect('/')
             else:
                 return send_error(res, context, req_token, token, template_name, request, payment_in_progress_obj)
@@ -155,11 +154,11 @@ def subscribe(request, plan_id, req_token=None, error=None):
             return send_error(res, context, req_token, token, template_name, request, payment_in_progress_obj)
 
 
-def send_error(res, context, req_token, token, template_name, request, payment_in_progress):
+def send_error(res, context, req_token, token, template_name, request, payment_in_progress_obj):
     error = res
     context['error'] = error
-    payment_in_progress.error = error
-    payment_in_progress.save()
+    payment_in_progress_obj.error = error
+    payment_in_progress_obj.save()
     if not req_token and token:
         path = urllib.parse.urljoin(request.path, token)
         return redirect(path)
@@ -202,8 +201,9 @@ def create_tenant(t_name, email, password, subscription_id, plan_id, request):
                 tenant_user = TenantUser(username=email, is_superuser=True, is_staff=True, is_active=True)
                 tenant_user.on_schema_creating = True
                 tenant_user.email = email
-                tenant_user.password = password
                 tenant_user.save()
+                tenant_user.set_password(password)
+                tenant_model.save()
 
                 request.tenant = public_tenant
                 connection.set_tenant(request.tenant, False)
@@ -248,6 +248,7 @@ def make_payment(req_data, amount):
             if error:
                 message += ', ' + message
             error = message
+            return {'error' : error}
         else:
             email = payment_response['billing_details']['name']
             payment_in_progress.transaction_id = payment_response['id']
@@ -257,6 +258,7 @@ def make_payment(req_data, amount):
         error = produce_exception()
     res = {
         'error':  error,
+        'paid': 1,
         'token': payment_token,
         'method_id':  method_id,
         'payment_response': payment_response,
