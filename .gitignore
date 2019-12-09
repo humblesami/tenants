@@ -1,5 +1,5 @@
 /**/migrations
 /.idea
-db.*
+db.sql*
 *.pyc
 /.vscode
