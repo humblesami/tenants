@@ -1,9 +1,10 @@
 (function(){
     console.log('Error from view')
+    var error_text = '';
     var dom = undefined;
     try{
-        var error_text = $('#original_error').text();
-        var error_obj = $(error_text);
+        var error_text = $('#original_error').text();        
+        var error_obj = $(error_text);        
         var title = '<h3>' + error_obj[3].innerHTML + '</h3>';
         var error_html = title;
         error_obj.each(function(i, el){
@@ -20,12 +21,11 @@
                 error_html += el.outerHTML;
             }
         });
-
         $('#error_display').html(error_html);
     }
     catch(er){
-        console.log(er);
-
+        $('#error_display').html(error_text);
+        // console.log(er);
     }
 
 })()

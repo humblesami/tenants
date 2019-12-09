@@ -77,10 +77,10 @@ SHARED_APPS = (
 
 TENANT_APPS = (
     'django.contrib.contenttypes',
-    'django.contrib.auth',
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'auth_t',
     'tenant_only',
 )
 INSTALLED_APPS = list(set(TENANT_APPS + SHARED_APPS))

@@ -3,3 +3,4 @@
 db.sql*
 *.pyc
 /.vscode
+/uploaded_files

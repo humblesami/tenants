@@ -131,16 +131,16 @@ def subscribe(request, plan_id, req_token=None, error=None):
                     return send_error(res, context, req_token, token, template_name, request, payment_in_progress_obj)
 
             with transaction.atomic():
-                payment = Payment.objects.create(transaction_id=transaction_id, method_id=method_id, amount=amount)
                 plan_cost = PlanCost.objects.filter(plan_id=plan['id']).values('id', 'cost', 'days')
                 plan_cost = plan_cost[len(plan_cost) - 1]
 
-                subscription = Subscription(payment_id=payment.id, plan_id=plan['id'], plan_cost_id=plan_cost['id'])
+                subscription = Subscription(plan_id=plan['id'], plan_cost_id=plan_cost['id'])
                 subscription.amount = plan_cost['cost']
                 end_date = ws_methods.add_interval('days', plan_cost['days'])
                 # end_date = end_date.date().strftime("%Y-%m-%d")
                 subscription.end_date = end_date
                 subscription.save()
+                Payment.objects.create(subscription_id=subscription.id, transaction_id=transaction_id, method_id=method_id, amount=amount)
 
             res = create_tenant(company, email, password, subscription.id, plan['id'], request)
             if res == 'done':

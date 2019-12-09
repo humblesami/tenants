@@ -6,9 +6,8 @@
         | <a href="/payments/list">Payments</a>
         | <a href="/clients/list">Clients</a>
     {% endif %}
+    | <a href="/plans">Plans</a>
     {% if request.user.id %}
-        | <a href="/plans">Plans</a>
         | <a href="/clients/my-companies">My Companies</a>
     {% endif %}
 {% endblock %}
-
