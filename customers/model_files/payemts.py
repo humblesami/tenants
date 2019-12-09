@@ -1,5 +1,5 @@
 from django.db import models
-
+from customers.model_files.subscription import Subscription
 from customers.model_files.plans import Plan
 
 
@@ -14,6 +14,7 @@ class Payment(models.Model):
     date_time = models.DateTimeField(auto_now_add=True)
     method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=128)
+    subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE)
 
 class PaymentInProgress(models.Model):
     method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
