@@ -80,6 +80,7 @@ TENANT_APPS = (
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.auth',
     'auth_t',
     'tenant_only',
 )
@@ -109,6 +110,8 @@ MAIN_URL = DOMAIN_NAME + SERVER_PORT_STR
 # SESSION_COOKIE_NAME = 'fdfdsedfsoodsd'
 # SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN + SERVER_PORT_STR
 LOGIN_URL = '/accounts/login'
+
+PUBLIC_TENANT = None
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 DATABASE_ROUTERS = (

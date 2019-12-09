@@ -85,7 +85,7 @@ class TenantMiddleware(MiddlewareMixin):
             request.urlconf = settings.PUBLIC_SCHEMA_URLCONF
             return
 
-        connection.set_tenant(request.tenant)
+        connection.set_tenant(request.tenant, False)
         ContentType.objects.clear_cache()
 
         if selected_schema_name == 'public':

@@ -127,7 +127,7 @@ def create_tenant(t_name, request):
                 company.users.add(owner)
 
                 request.tenant = company
-                connection.set_tenant(request.tenant)
+                connection.set_tenant(request.tenant, False)
                 ContentType.objects.clear_cache()
 
                 owner = User.objects.create(username='admin@' + t_name, is_superuser=True, is_staff=True, is_active=True)
@@ -136,7 +136,7 @@ def create_tenant(t_name, request):
 
                 company = tenant_model.objects.get(schema_name='public')
                 request.tenant = company
-                connection.set_tenant(request.tenant)
+                connection.set_tenant(request.tenant, False)
                 ContentType.objects.clear_cache()
 
                 res = 'done'

@@ -183,13 +183,16 @@ def create_tenant(t_name, email, password, subscription_id, plan_id, request):
                 company.plan_id = plan_id
                 company.save()
 
+                public_tenant = request.tenant
                 request.tenant = company
-                connection.set_tenant(request.tenant)
+                connection.set_tenant(request.tenant, False)
                 ContentType.objects.clear_cache()
 
                 # all the rest is handled in tenant user creation
-                tenant_user = TenantUser.objects.create(username=email, email=email, is_superuser=True, is_staff=True, is_active=True)
-                tenant_user.set_password(password)
+                tenant_user = TenantUser(username=email, is_superuser=True, is_staff=True, is_active=True)
+                tenant_user.email = email
+                tenant_user.password = password
+                tenant_user.set_tenants(public_tenant, company)
                 tenant_user.save()
 
                 res = 'done'

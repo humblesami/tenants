@@ -11,7 +11,7 @@ def produce_exception():
     for er in eg:
         cnt += 1
         if not 'lib/python' in er and not 'lib\\' in er:
-            error_message += er + '<br><br>'
+            error_message += er + '\n'
     return error_message
 
 def add_interval(interval_type, inc, dt=None):
