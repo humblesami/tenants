@@ -15,7 +15,6 @@ class Payment(models.Model):
     method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=128)
 
-
 class PaymentInProgress(models.Model):
     method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField()
@@ -28,3 +27,6 @@ class PaymentInProgress(models.Model):
     transaction_id = models.CharField(max_length=64, null=True)
     date_time = models.DateTimeField(auto_now_add=True)
     processed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.company + " - " + self.method.name + " - " + str(self.amount)

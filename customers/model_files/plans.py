@@ -6,6 +6,8 @@ class Plan(models.Model):
     description = models.TextField()
     cost = models.PositiveIntegerField()
     days = models.PositiveIntegerField()
+    def __str__(self):
+        return self.name
 
     
 class PlanCost(models.Model):
@@ -13,6 +15,9 @@ class PlanCost(models.Model):
     cost = models.IntegerField()
     date_time = models.DateField(auto_now_add=True, null=True)
     days = models.IntegerField()
+      
+    def __str__(self):
+        return self.plan.name + " - " + str(self.cost) + " - " + str(self.days) + " days"
 
     def save(self, kw, **args):
         creating = False
