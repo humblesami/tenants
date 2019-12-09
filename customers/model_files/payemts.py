@@ -22,5 +22,7 @@ class PaymentInProgress(models.Model):
     token = models.CharField(max_length=32)
 
     email = models.EmailField(null=True)
+    error = models.TextField(default='')
     transaction_id = models.CharField(max_length=64, null=True)
     date_time = models.DateTimeField(auto_now_add=True)
+    processed = models.BooleanField(default=False)

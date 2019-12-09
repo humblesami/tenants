@@ -11,7 +11,7 @@ class Subscription(models.Model):
     amount = models.IntegerField()
     discount = models.IntegerField(default=0)
     start_date = models.DateField(auto_now_add=True)
-    end_data = models.DateField()
+    end_date = models.DateField()
 
     def days_left(self):
         return 0
