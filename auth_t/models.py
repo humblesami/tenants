@@ -14,12 +14,10 @@ class TenantUser(User):
     name = models.CharField(max_length=100)
     photo = models.ImageField(null=True, blank=True)
 
-    def create_public_user(self, password):
-        if connection.tenant.schema_name != 'public':
-            connection.set_tenant(self.public_tenant)
-            ContentType.objects.clear_cache()
-        else:
-            public_tenant = connection.tenant
+    def create_public_user(self, password, public_tenant, user_tenant):
+        connection.set_tenant(public_tenant)
+        ContentType.objects.clear_cache()
+
         public_user = User.objects.create(username=self.email, email=self.email, is_active=self.is_active)
         public_user.set_password(password)
         public_user.save()
@@ -27,14 +25,11 @@ class TenantUser(User):
         self.public_tenant.users.add(public_user)
         self.public_tenant.save()
 
-    my_tenant = None
-    public_tenant = None
+        self.on_schema_creating = False
+        connection.set_tenant(user_tenant)
+        ContentType.objects.clear_cache()
 
-    def set_tenants(self, my_tenant, public_tenant):
-        self.my_tenant = my_tenant
-        self.public_tenant = public_tenant
-
-
+    on_schema_creating = False
     def save(self, *args, **kwargs):
         creating = False
         password = self.password
@@ -48,15 +43,10 @@ class TenantUser(User):
             super(TenantUser, self).save(args, kwargs)
         else:
             with transaction.atomic():
-
                 super(TenantUser, self).save(args, kwargs)
-                tenant_model = get_tenant_model()
-                selected_tenant = connection.tenant()
-
-                if selected_tenant.schema_name != 'public':
-
+                if not self.on_schema_creating:
+                    user_tenant = connection.tenant
                     connection.set_schema_to_public()
-                    self.create_public_user(password)
-                    connection.set_schema(selected_tenant.schema_name, False)
-                else:
-                    self.create_public_user(password, selected_tenant)
+                    tenant_model = get_tenant_model()
+                    public_tenant = tenant_model.objects.filter(schema_name='public')
+                    self.create_public_user(password, public_tenant, user_tenant)

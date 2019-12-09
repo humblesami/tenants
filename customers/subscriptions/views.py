@@ -167,6 +167,14 @@ def send_error(res, context, req_token, token, template_name, request, payment_i
         return render(request, template_name, context)
 
 
+def create_public_user(public_tenant, email, password):
+    public_user = User.objects.create(email=email, username=email, is_active=True)
+    public_user.save_password(password)
+    public_user.save()
+    public_tenant.users.add(public_user)
+    public_tenant.save()
+
+
 def create_tenant(t_name, email, password, subscription_id, plan_id, request):
     res = 'Unknown issue'
     try:
@@ -184,16 +192,22 @@ def create_tenant(t_name, email, password, subscription_id, plan_id, request):
                 company.save()
 
                 public_tenant = request.tenant
+                create_public_user(public_tenant, email, password)
+
                 request.tenant = company
                 connection.set_tenant(request.tenant, False)
                 ContentType.objects.clear_cache()
 
                 # all the rest is handled in tenant user creation
                 tenant_user = TenantUser(username=email, is_superuser=True, is_staff=True, is_active=True)
+                tenant_user.on_schema_creating = True
                 tenant_user.email = email
                 tenant_user.password = password
-                tenant_user.set_tenants(public_tenant, company)
                 tenant_user.save()
+
+                request.tenant = public_tenant
+                connection.set_tenant(request.tenant, False)
+                ContentType.objects.clear_cache()
 
                 res = 'done'
             else:

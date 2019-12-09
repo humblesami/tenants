@@ -40,12 +40,15 @@ class Command(BaseCommand):
     def init_execution(self, hard_reset, create):
         database_info = {}
         res = 'Unknown'
+        path = ''
         try:
-            print (self.base_directory+'config.json')
-            with open(self.base_directory+'config.json', 'r') as config:
+            path = (self.base_directory+'/config.json')
+            path = path.replace('\\/', '\\')
+            path = path.replace('//', '/')
+            with open(path, 'r') as config:
                 database_info = json.load(config)
         except:
-            return 'Configuration File not found.'
+            return 'Configuration File not found. at '+path
 
         main_database_connection = self.connect_main_database(database_info)
         if main_database_connection is str:
@@ -88,7 +91,7 @@ class Command(BaseCommand):
             print('Database created')
             importlib.import_module('del')
             call_command('makemigrations')
-            call_command('makemigrations', 'tenant_only' ,'customers')
+            call_command('makemigrations', 'tenant_only' ,'customers', 'auth_t')
             call_command('migrate')
             call_command('loaddata', 'website/fixtures/data.json')
         else:
