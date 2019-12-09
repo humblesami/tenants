@@ -5,6 +5,8 @@ from customers.model_files.plans import Plan
 
 class PaymentMethod(models.Model):
     name = models.CharField(max_length=64)
+    def __str__(self):
+        return self.name
 
 
 class Payment(models.Model):
