@@ -42,8 +42,8 @@ class TenantMiddleware(MiddlewareMixin):
 
     def process_exception(self, request, exception):
         res = produce_exception()
-        res = HttpResponse(res)
-        return res
+        # res = HttpResponse(res)
+        return render(request, 'error.html', {'error': res})
 
     def process_request(self, request):
         try:

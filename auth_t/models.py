@@ -28,13 +28,22 @@ class TenantUser(User):
                 super(TenantUser, self).save(args, kwargs)
                 tenant_model = get_tenant_model()
                 selected_tenant = connection.get_tenant()
+
+                # going at public tenant
                 public_tenant = tenant_model.objects.get(schema_name='public')
                 connection.set_tenant(public_tenant)
                 ContentType.objects.clear_cache()
 
-                owner = User.objects.create(username=self.email, email=self.email, is_active=self.is_active)
-                owner.set_password(password)
-                owner.save()
+                tenant_user = User.objects.create(username=self.email, email=self.email, is_active=self.is_active)
+                tenant_user.set_password(password)
+                tenant_user.save()
 
+                public_tenant.users.add(tenant_user)
+                public_tenant.save()
+
+                selected_tenant.users.add(tenant_user)
+                selected_tenant.save()
+
+                #back to tenant
                 connection.set_tenant(selected_tenant)
                 ContentType.objects.clear_cache()

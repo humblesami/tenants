@@ -8,5 +8,5 @@ urlpatterns = [
     # path('', user_passes_test(lambda u: u.is_superuser)(TenantView.as_view())),
     path('my-companies',(MyCompanies.as_view())),
     path('check-name', CheckForExisting.as_view(), name='Check Name'),
-    path('list',(CompanyList.as_view())),
+    path('list', (CompanyList.as_view())),
 ]

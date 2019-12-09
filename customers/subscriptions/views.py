@@ -10,6 +10,7 @@ from django.db import connection, transaction
 from django_tenants.utils import get_tenant_model
 from django.contrib.contenttypes.models import ContentType
 
+from auth_t.models import TenantUser
 from customers.model_files.subscription import Subscription
 from customers.models import Client
 from main_app import settings, ws_methods
@@ -141,8 +142,8 @@ def subscribe(request, plan_id, req_token=None, error=None):
                 subscription.end_date = end_date
                 subscription.save()
                 Payment.objects.create(subscription_id=subscription.id, transaction_id=transaction_id, method_id=method_id, amount=amount)
+                res = create_tenant(company, email, password, subscription.id, plan['id'], request)
 
-            res = create_tenant(company, email, password, subscription.id, plan['id'], request)
             if res == 'done':
                 payment_in_progress_obj.processed = True
                 payment_in_progress_obj.save()
@@ -173,41 +174,23 @@ def create_tenant(t_name, email, password, subscription_id, plan_id, request):
         with transaction.atomic():
             if not tenant_model.objects.filter(schema_name=t_name):
 
-                owner_mail = 'owner@'+t_name+'.com'
-                owner = User.objects.create(username=owner_mail, email=owner_mail, is_active=True)
-                owner.set_password(password)
-                owner.save()
-
-                tenant_superuser = User.objects.filter(email=email)
-                if not tenant_superuser:
-                    tenant_superuser = User.objects.create(username=email, email=email, is_active=True)
-                    tenant_superuser.set_password(password)
-                    tenant_superuser.save()
-                else:
-                    tenant_superuser = tenant_superuser[0]
+                schema_owner = User.objects.create(username='owner@'+t_name+'.com')
+                schema_owner.save()
 
                 domain_url = t_name + '.' + TENANT_DOMAIN
-                company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
+                company = tenant_model(schema_name=t_name, name=t_name, owner_id=schema_owner.id, domain_url=domain_url)
                 company.subscription_id = subscription_id
-                company.save()
-
                 company.plan_id = plan_id
-                company.users.add(owner)
-                company.users.add(tenant_superuser)
                 company.save()
 
                 request.tenant = company
                 connection.set_tenant(request.tenant)
                 ContentType.objects.clear_cache()
 
-                owner = User.objects.create(username=email, email=email, is_superuser=True, is_staff=True, is_active=True)
-                owner.set_password(password)
-                owner.save()
-
-                company = tenant_model.objects.get(schema_name='public')
-                request.tenant = company
-                connection.set_tenant(request.tenant)
-                ContentType.objects.clear_cache()
+                # all the rest is handled in tenant user creation
+                tenant_user = TenantUser.objects.create(username=email, email=email, is_superuser=True, is_staff=True, is_active=True)
+                tenant_user.set_password(password)
+                tenant_user.save()
 
                 res = 'done'
             else:
@@ -215,7 +198,6 @@ def create_tenant(t_name, email, password, subscription_id, plan_id, request):
     except:
         res = ws_methods.produce_exception()
     return res
-
 
 
 def make_payment(req_data, amount):

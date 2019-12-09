@@ -78,45 +78,36 @@ class CompanyList(TemplateView):
     template_name = "customers/clients.html"
 
     def get_context_data(self, **kwargs):
-        tenants_list = []
-        if self.request.user.is_superuser:
-            tenant_model = get_tenant_model()
-            tenants_list = tenant_model.objects.all()
-            tenants_list = tenants_list.prefetch_related('domains').all()
-            tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
-        context = {'clients': tenants_list}
+
+        context = {'clients': get_customer_list(self.request.user)}
         context['port'] = SERVER_PORT_STR
         return context
+
+def get_customer_list(user):
+    tenants_list = []
+    if user.is_superuser:
+        tenant_model = get_tenant_model()
+        tenants_list = tenant_model.objects.all()
+        tenants_list = tenants_list.prefetch_related('domains').all()
+        tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
+    return tenants_list
 
 
 class MyCompanies(TemplateView):
     template_name = "customers/index.html"
     def get_context_data(self, **kwargs):
-        context = {'list': get_customer_list(self.request.user)}
+        user = self.request.user
+        user_id = user.id
+        tenants_list = []
+        if user_id:
+            tenant_model = get_tenant_model()
+            tenants_list = tenant_model.objects.filter(users__email__in=[user.email]).exclude(schema_name='public')
+            tenants_list = tenants_list.prefetch_related('domains').all()
+            tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
+            tenants_list = list(tenants_list)
+        context = {'list': tenants_list}
         context['port'] = SERVER_PORT_STR
         return context
-
-
-def get_my_tenants(user):
-    user_id = user.id
-    tenants_list = []
-    if user_id:
-        tenant_model = get_tenant_model()
-        tenants_list = tenant_model.objects.filter(users__email__in=[user.email])
-        tenants_list = tenants_list.prefetch_related('domains').all()
-        tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
-        tenants_list = list(tenants_list)
-    return tenants_list
-
-
-def get_customer_list(user):
-    tenants_list = []
-    # if user.is_superuser:
-    #     tenants_list = get_tenant_model().objects.prefetch_related('domains').all()
-    #     tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
-    #     tenants_list = list(tenants_list)
-    my_tenants = get_my_tenants(user)
-    return {'all': tenants_list, 'mine': my_tenants, 'my_count': len(my_tenants)}
 
 
 def create_tenant(t_name, request):

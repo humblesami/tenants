@@ -1,18 +1,15 @@
 $(function(){
-    var curl = window.location.toString();    
+    var curl = window.location.toString();
+    var modules = $('#content-main>.module');
     if(!curl.endsWith('admin') && !curl.endsWith('admin/'))
     {
+        modules.show();
         return;
     }
-    var hostname = window.location.hostname;    
-    var modules = $('#content-main>.module');
+    var hostname = window.location.hostname;        
     var arr = hostname.split('.');
     
     if(arr.length > 1){
-        //public tenant        
-        // $('body').addClass('tenant-app');
-        // let module_selector = '#content-main .module .tenant-app';         
-        // $(module_selector).closest('.module').show();
         let tenant_apps = [
             'auth_t',
             'tenant_only',
@@ -22,12 +19,7 @@ $(function(){
             $('#content-main .app-'+app+'.module').show();
         }
     }
-    else{        
-        //customer tenant
-        // modules.show();
-        // $('body').addClass('shared-app');
-        // let module_selector = '#content-main .module .tenant-app';
-        // $(module_selector).closest('.module').hide();
+    else{
         let shared_apps = [
             'customers',
             'auth',
