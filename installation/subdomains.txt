@@ -1,0 +1,14 @@
+
+server{
+    server_name a2.sd;
+    listen 80;
+}
+
+server{
+    server_name dom a1.sd a3.sd;
+    location / {
+        proxy_pass  http://127.0.0.1:8000/;
+        proxy_set_header Host $host;
+    }
+    listen 80;
+}

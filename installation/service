@@ -1,0 +1,7 @@
+[Unit]
+Description=Spark service
+[Service]
+ExecStart=/home/sami_akram/run
+[Install]
+WantedBy=multi-user.target
+

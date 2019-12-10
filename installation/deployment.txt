@@ -1,0 +1,121 @@
+Step 1 (add our sudo installation)
+sudo apt update
+sudo apt install python3-pip virtualenv gunicorn libpq-dev nginx curl daemon
+sudo apt install build-essential libpoppler-cpp-dev pkg-config libjpeg8-dev zlib1g-dev libfreetype6-dev
+sudo apt install -y unoconv
+
+-----------------------------
+Ste 2: Git Clone
+Make your directory where you want and Git clone
+4) mkdir boardsheet
+cd boardsheet
+git init
+git remote add origin https://github.com/DigitalNet/HopeVUE.git
+git checkout -b meet
+git config credential.helper store
+git pull origin meet
+
+---------------------------------
+Step 3: Configuration
+nano config.json
+
+{
+    "server_base_url": "https://www.boardsheet.com",
+    "socket_url": "https://chat.brainpbx.com",
+    "auth_server_url": "https://www.boardsheet.com",
+    "ip2location":
+    {
+        "active":
+        {
+            "base_url": "http://api.ipstack.com/",
+            "params": 
+            {
+                "access_key":"94bfb283cce53facd307167d1596b8c8"
+            },
+            "prefix": "http://api.ipstack.com/",
+            "postfix":"?access_key=94bfb283cce53facd307167d1596b8c8"
+        },
+        "other": {}
+    }
+}
+
+--------------------------------------
+
+Step 4. Install Packages:
+sudo pip install -r requirements.txt
+
+--------------------------------------
+Step 5. Migrations:
+python3 manage.py makemigrations
+python3 manage.py migrate
+
+
+-----------------------------------
+Step 6. Runserver
+python3 manage.py runserver
+
+
+-------------------------------------
+Step 7. nginx settings:
+sudo ln -s /etc/nginx/sites-available /etc/nginx/sites-enabled
+sudo nano /etc/nginx/sites-available/your_nginx_setting_file
+
+server {
+    server_name meetvue.com www.meetvue.com;
+    listen 80;
+}
+server {
+    server_name dn.meetvue.com;
+    location / {
+        proxy_pass  http://127.0.0.1:8000/;
+        proxy_set_header Host $host;
+    }
+    listen 80;
+}
+-----------------------------------
+server {
+    server_name boardsheet.com www.boardsheet.com;    
+    location / {
+        proxy_pass  http://127.0.0.1:8000/;
+        proxy_set_header Host $host;
+    }
+}
+
+-----------------------------------
+Step 8. SSL installation:
+
+1) sudo apt-get update && sudo apt-get install software-properties-common
+2) sudo add-apt-repository universe && sudo add-apt-repository ppa:certbot/certbot
+
+3) sudo apt-get update && sudo apt-get install certbot python-certbot-nginx
+4) sudo certbot --nginx
+
+sudo systemctl restart nginx
+
+
+step 9. Service:
+
+1) make a file at home directory named run no extention with following text
+
+#!/bin/sh
+python3 /home/sami/django/jangomeet/manage.py runserver 0.0.0.0:8000
+
+apply sudo chmod u+x run
+
+2) sudo nano /lib/systemd/system/myservice1.service with following content
+
+[Unit]
+Description=Spark service
+[Service]
+ExecStart=/home/sami_akram/run
+[Install]
+WantedBy=multi-user.target
+
+3)
+sudo systemctl daemon-reload
+sudo systemctl enable myservice1
+sudo systemctl start myservice1
+sudo systemctl status myservice1
+
+
+

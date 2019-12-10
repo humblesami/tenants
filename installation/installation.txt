@@ -1,0 +1,115 @@
+pip3 install Django==2.2
+django-admin startproject myproject
+pip3 install -r requirements.txt
+
+config local
+
+{
+    "server_base_url": "http://localhost:8000",
+    "socket_url": "http://localhost:3000",
+    "auth_server_url": "http://localhost:8000",
+    "ip2location":
+    {
+        "active":{
+            "base_url": "http://api.ipstack.com/",
+            "params": {
+                "access_key":"94bfb283cce53facd307167d1596b8c8"
+            },
+            "prefix": "http://api.ipstack.com/",
+            "postfix":"?access_key=94bfb283cce53facd307167d1596b8c8"
+        },
+        "other": {}
+    }
+}
+
+config live
+{
+    "server_base_url": "https://www.boardsheet.com",
+    "socket_url": "https://chat.brainpbx.com",
+    "auth_server_url": "https://www.boardsheet.com",
+    "ip2location":
+    {
+        "active":
+        {
+            "base_url": "http://api.ipstack.com/",
+            "params": 
+            {
+                "access_key":"94bfb283cce53facd307167d1596b8c8"
+            },
+            "prefix": "http://api.ipstack.com/",
+            "postfix":"?access_key=94bfb283cce53facd307167d1596b8c8"
+        },
+        "other": {}
+    }
+}
+
+apt-get install python3-pypdf2
+
+To use postgresql use following in settings
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.postgresql_psycopg2',
+		'NAME': 'demo1',
+		'USER': 'odoo',
+		'PASSWORD': '123',
+	}
+}
+
+sudo apt-get install postgresql postgresql-contrib libpq-dev
+sudo -u postgres psql;
+CREATE USER odoo WITH PASSWORD '123';
+ALTER USER odoo WITH SUPERUSER;
+\password odoo user_name;
+GRANT ALL PRIVILEGES ON DATABASE database_name TO username;
+
+change
+local   all             all                                     peer
+to
+local   all             all                                     md5
+sudo systemctl restart postgresql
+
+
+
+
+
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+python manage.py migrate myproj --fake-initial
+
+
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py createsuperuser --username=sa --email=sami.akram@digitalnet.com
+
+find . -path "*/migrations/*.pyc"  -delete
+
+To add default records of meeting
+1. Put default-records.py in migrations
+2. python3 manage.py migrate --fake meetings 0001_initial
+3. python3 manage.py migrate
+
+
+create home page
+
+python3 manage.py runserver
+
+python3 manage.py startapp mymodule
+
+ng build --aot --source-map=false --prod=true --output-path=../static/angular
+mv ../static/static/assets/  ../static/
+move ../static/static/assets/  ../static/
+
+  server {
+    listen 8000;
+
+    location / {
+      #proxy_pass http://compute-1-36:8787;
+      proxy_redirect http://localhost:8000;
+    }
+  }
+
+if pillow package below fails to install then use following first
+sudo apt install libjpeg8-dev zlib1g-dev
+
+sudo python3 manage.py runserver 0.0.0.0:8000
+kill processes with port 8000
+sudo fuser -k 8000/tcp

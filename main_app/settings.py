@@ -101,7 +101,7 @@ WSGI_APPLICATION = 'main_app.wsgi.application'
 TENANT_MODEL = "customers.Client"  # app.Model
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
 TENANT_DOMAIN = 'localhost'
-SERVER_PORT = 8001
+SERVER_PORT = None
 SERVER_PORT_STR = ''
 if SERVER_PORT:
     SERVER_PORT_STR = ':' + str(SERVER_PORT)
