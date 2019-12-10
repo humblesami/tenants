@@ -12,7 +12,7 @@
         <li>
             {{customer.id }} -- {{customer.schema_name }} --
             {% if customer.id != 1 %}
-                <a href="http://{{customer.domain_url}}{{port}}{{auth_token}}">Link</a>
+                <a href="{{request.scheme}}://{{customer.domain_url}}{{port}}{{auth_token}}">Link</a>
             {% endif %}
         </li>
     </ul>

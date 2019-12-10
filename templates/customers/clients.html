@@ -13,10 +13,10 @@
             <li>
                 {{client.id }} -- {{client.schema_name }} --
                 {% if client.id == 1 %}
-                    <a href="http://{{client.domain_url}}{{port}}">Link</a>
+                    <a href="{{request.scheme}}://{{client.domain_url}}{{port}}">Link</a>
                 {% endif %}
                 {% if client.id != 1 %}
-                    <a href="http://{{client.domain_url}}{{port}}">Link</a>  |
+                    <a href="{{request.scheme}}://{{client.domain_url}}{{port}}">Link</a>  |
                     <a href="delete?id={{client.id}}">Delete</a>
                 {% endif %}
             </li>
