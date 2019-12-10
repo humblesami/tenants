@@ -1,0 +1,11 @@
+{
+  "default": {
+    "ENGINE": "django_tenants.postgresql_backend",
+        "NAME": "tt",
+        "USER": "odoo",
+        "PASSWORD": "123"
+  },
+  "domain": "localhost",
+  "port": "",
+  "https": 0
+}
