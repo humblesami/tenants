@@ -2,6 +2,7 @@ import sys
 import traceback
 from datetime import datetime
 from datetime import timedelta
+from main_app.settings import PROTOCOL, MAIN_URL
 
 
 def produce_exception():
@@ -13,6 +14,11 @@ def produce_exception():
         if not 'lib/python' in er and not 'lib\\' in er:
             error_message += er + '\n'
     return error_message
+
+
+def get_company_url(schema_name):
+    url = PROTOCOL + '://' + schema_name + '.' + MAIN_URL
+    return url
 
 def add_interval(interval_type, inc, dt=None):
     inc = int(inc)

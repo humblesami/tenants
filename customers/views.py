@@ -1,6 +1,7 @@
 import uuid
 
 from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.models import User
 from django.db import transaction, connection
@@ -94,26 +95,29 @@ def get_customer_list(user):
     return tenants_list
 
 
-class MyCompanies(TemplateView):
+def my_companies(request):
     template_name = "customers/index.html"
-    def get_context_data(self, **kwargs):
-        user = self.request.user
-        user_id = user.id
-        tenants_list = []
-        auth_token = ''
-        if user_id:
-            tenant_model = get_tenant_model()
-            tenants_list = tenant_model.objects.filter(users__email__in=[user.email]).exclude(schema_name='public')
-            if tenants_list:
-                tenants_list = tenants_list.prefetch_related('domains').all()
-                tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
-                tenants_list = list(tenants_list)
-                auth_token = uuid.uuid4().hex[:20]
-                PortalUser.objects.create(username=user.username, token=auth_token)
-                auth_token = '/login/'+auth_token
-        context = {'list': tenants_list, 'auth_token': auth_token}
-        context['port'] = SERVER_PORT_STR
-        return context
+    user = request.user
+    user_id = user.id
+    tenants_list = []
+    auth_token = ''
+    if user_id:
+        tenant_model = get_tenant_model()
+        tenants_list = tenant_model.objects.filter(users__email__in=[user.email]).exclude(schema_name='public')
+        if tenants_list:
+            tenants_list = tenants_list.prefetch_related('domains').all()
+            tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
+            tenants_list = list(tenants_list)
+            auth_token = uuid.uuid4().hex[:20]
+            PortalUser.objects.create(username=user.username, token=auth_token)
+            auth_token = '/login/'+auth_token
+            if len(tenants_list) == 1:
+                my_company = tenants_list[0]
+                url = ws_methods.get_company_url(my_company['schema_name'])
+                return redirect(url)
+    context = {'list': tenants_list, 'auth_token': auth_token}
+    context['port'] = SERVER_PORT_STR
+    return render(request, template_name, context)
 
 
 def create_tenant(t_name, request):

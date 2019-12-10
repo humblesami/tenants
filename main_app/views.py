@@ -1,5 +1,8 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
+from django_tenants.utils import get_tenant_model
+
+from main_app.ws_methods import get_company_url
 
 
 def login_page(request):
@@ -13,7 +16,17 @@ def login_page(request):
         user = authenticate(request, username=username, password=password)
         if user and user.id:
             login(request, user)
-            return redirect(next_url)
+            if not user.is_staff:
+                tenant_model = get_tenant_model()
+                tenants_list = tenant_model.objects.filter(users__email__in=[user.email]).exclude(schema_name='public')
+                if len(tenants_list) > 1:
+                    return redirect('/clients/my-companies')
+                else:
+                    if len(tenants_list) == 1:
+                        my_company = tenants_list[0]
+                        url = get_company_url(my_company.schema_name)
+                        return redirect(url)
+            return redirect('/')
         else:
             context = {'error': 'Invalid credentials', 'input': {'username': username, 'next_url': next_url}}
             return render(request, template_name, context)
