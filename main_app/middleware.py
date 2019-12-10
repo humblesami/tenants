@@ -60,7 +60,7 @@ class TenantMiddleware(MiddlewareMixin):
             selected_schema_name = 'public'
             tenant_model = get_tenant_model()
             request.main_url = request.scheme +'://' + settings.MAIN_URL
-
+            request.protocol = settings.PROTOCOL
             if hostname_without_port.startswith('login.'):
                 hostname_without_port = hostname_without_port.replace('login.', '')
 

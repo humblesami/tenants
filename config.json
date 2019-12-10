@@ -7,5 +7,6 @@
         "HOST": ""
     },
     "domain": "localhost",
-    "port": "8001"
+    "port": "8001",
+    "https": 0
 }
