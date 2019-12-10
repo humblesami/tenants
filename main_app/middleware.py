@@ -29,14 +29,6 @@ def create_public_tenant(tenant_model):
 
 class TenantMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
-        try:
-            prt = connection.tenant.name + '-' + request.path
-            if request.user.id:
-                prt += '-'+ str(request.user.email)
-            prt += '-------------2'
-            print(prt)
-        except:
-            print('\n\n error - 2')
         if request.is_ajax():
             response = response.content
             response = response.decode("utf-8")

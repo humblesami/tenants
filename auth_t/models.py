@@ -39,18 +39,13 @@ class TenantUser(User):
     on_schema_creating = False
     def save(self, *args, **kwargs):
         creating = False
+        password = self.password
         if not self.pk:
             creating = True
         if self.email:
             self.username = self.email
         elif self.username:
             self.email = self.username
-        if not creating:
-            if self.password:
-                self.set_password(self.password)
-            super(TenantUser, self).save(args, kwargs)
-        else:
-            with transaction.atomic():
-                super(TenantUser, self).save(args, kwargs)
-                if not self.on_schema_creating:
-                    self.create_public_user(password)
+        super(TenantUser, self).save(args, kwargs)
+        if not self.on_schema_creating:
+            self.create_public_user(password)

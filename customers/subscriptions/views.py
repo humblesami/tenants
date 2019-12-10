@@ -182,7 +182,6 @@ def create_public_user(user_tenant, email, password):
     user_tenant.users.add(public_user)
     user_tenant.save()
 
-
 def create_tenant(t_name, email, password, subscription_id, plan_id, request):
     res = 'Unknown issue'
     public_tenant = request.tenant
