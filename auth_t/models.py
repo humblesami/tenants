@@ -26,6 +26,8 @@ class TenantUser(User):
             public_user = User.objects.create(username=self.email, email=self.email, is_active=self.is_active)
             public_user.set_password(password)
             public_user.save()
+        else:
+            public_user = public_user[0]
 
         user_tenant.users.add(public_user)
         user_tenant.save()
