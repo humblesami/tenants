@@ -13,11 +13,7 @@ class TenantUser(User):
     photo = models.ImageField(null=True, blank=True)
 
     def create_public_user(self, password):
-        obj = User.objects.filter(email=self.email)
-        if obj:
-            return
         user_tenant = connection.tenant
-
         connection.set_schema_to_public()
         tenant_model = get_tenant_model()
 
@@ -25,9 +21,11 @@ class TenantUser(User):
         connection.set_tenant(public_tenant)
         ContentType.objects.clear_cache()
 
-        public_user = User.objects.create(username=self.email, email=self.email, is_active=self.is_active)
-        public_user.set_password(password)
-        public_user.save()
+        public_user = User.objects.filter(email=self.email)
+        if not public_user:
+            public_user = User.objects.create(username=self.email, email=self.email, is_active=self.is_active)
+            public_user.set_password(password)
+            public_user.save()
 
         user_tenant.users.add(public_user)
         user_tenant.save()

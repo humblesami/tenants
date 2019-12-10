@@ -172,12 +172,11 @@ def send_error(res, context, req_token, token, template_name, request, payment_i
 
 
 def create_public_user(user_tenant, email, password):
-    obj = User.objects.filter(email=email)
-    if obj:
-        return
-    public_user = User.objects.create(email=email, username=email, is_active=True)
-    public_user.set_password(password)
-    public_user.save()
+    public_user = User.objects.filter(email=email)
+    if not public_user:
+        public_user = User.objects.create(email=email, username=email, is_active=True)
+        public_user.set_password(password)
+        public_user.save()
     user_tenant.users.add(public_user)
     user_tenant.save()
 
