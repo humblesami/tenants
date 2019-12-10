@@ -4,3 +4,4 @@ db.sql*
 *.pyc
 /.vscode
 /uploaded_files
+config.json

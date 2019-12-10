@@ -1,3 +1,4 @@
+import json
 import sys
 import os
 
@@ -14,6 +15,10 @@ PROJECT_DIR = os.path.join(BASE_DIR, os.pardir)
 TENANT_APPS_DIR = os.path.join(PROJECT_DIR, os.pardir)
 sys.path.insert(0, TENANT_APPS_DIR)
 
+config_path = (BASE_DIR+'/config.json')
+config_path = config_path.replace('\\/', '\\')
+config_path = config_path.replace('//', '/')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django_tenants.postgresql_backend',
@@ -22,6 +27,16 @@ DATABASES = {
         'PASSWORD': '123',
     }
 }
+config_info = {
+    'default': {
+
+    },
+    'domain': 'localhost',
+    'port': '',
+}
+with open(config_path, 'r') as site_config:
+    config_info = json.load(site_config)
+    DATABASES['default'] = config_info['default']
 
 TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
@@ -100,8 +115,9 @@ WSGI_APPLICATION = 'main_app.wsgi.application'
 
 TENANT_MODEL = "customers.Client"  # app.Model
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
-TENANT_DOMAIN = 'meetvue.com'
-SERVER_PORT = None
+TENANT_DOMAIN = config_info['domain']
+
+SERVER_PORT = config_info['port']
 SERVER_PORT_STR = ''
 if SERVER_PORT:
     SERVER_PORT_STR = ':' + str(SERVER_PORT)

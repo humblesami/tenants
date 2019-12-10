@@ -5,5 +5,7 @@
         "USER": "odoo",
         "PASSWORD": "123",
         "HOST": ""
-    }
+    },
+    "domain": "localhost",
+    "port": "8001"
 }
