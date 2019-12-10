@@ -74,9 +74,7 @@ class Delete(TemplateView):
 
 
 class CompanyList(TemplateView):
-    
     template_name = "customers/clients.html"
-
     def get_context_data(self, **kwargs):
 
         context = {'clients': get_customer_list(self.request.user)}

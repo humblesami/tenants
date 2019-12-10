@@ -1,7 +1,4 @@
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.views.generic import TemplateView
-from main_app.ws_methods import produce_exception
 from django.contrib.auth import authenticate, login, logout
 
 
@@ -16,8 +13,6 @@ def login_page(request):
         user = authenticate(request, username=username, password=password)
         if user and user.id:
             login(request, user)
-            print(4444)
-            print(request.user.id)
             return redirect(next_url)
         else:
             context = {'error': 'Invalid credentials', 'input': {'username': username, 'next_url': next_url}}
