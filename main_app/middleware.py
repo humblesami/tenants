@@ -29,6 +29,10 @@ def create_public_tenant(tenant_model):
 
 class TenantMiddleware(MiddlewareMixin):
     def process_response(self, request, response):
+        try:
+            print(connection.tenant.name)
+        except:
+            pass
         if request.is_ajax():
             response = response.content
             response = response.decode("utf-8")
@@ -48,6 +52,10 @@ class TenantMiddleware(MiddlewareMixin):
     def process_request(self, request):
         try:
             connection.set_schema_to_public()
+            try:
+                print(connection.tenant.name)
+            except:
+                pass
             hostname_without_port = remove_www_and_dev(request.get_host().split(':')[0])
             selected_schema_name = 'public'
             tenant_model = get_tenant_model()
