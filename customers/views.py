@@ -114,7 +114,7 @@ def my_companies(request):
             if len(tenants_list) == 1:
                 my_company = tenants_list[0]
                 url = ws_methods.get_company_url(my_company['schema_name'])
-                return redirect(url)
+                return redirect(url+auth_token)
     context = {'list': tenants_list, 'auth_token': auth_token}
     context['port'] = SERVER_PORT_STR
     return render(request, template_name, context)
