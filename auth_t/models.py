@@ -13,6 +13,9 @@ class TenantUser(User):
     photo = models.ImageField(null=True, blank=True)
 
     def create_public_user(self, password):
+        obj = User.objects.filter(email=self.email)
+        if obj:
+            return
         user_tenant = connection.tenant
 
         connection.set_schema_to_public()
@@ -36,7 +39,6 @@ class TenantUser(User):
     on_schema_creating = False
     def save(self, *args, **kwargs):
         creating = False
-        password = self.password
         if not self.pk:
             creating = True
         if self.email:
@@ -44,6 +46,8 @@ class TenantUser(User):
         elif self.username:
             self.email = self.username
         if not creating:
+            if self.password:
+                self.set_password(self.password)
             super(TenantUser, self).save(args, kwargs)
         else:
             with transaction.atomic():

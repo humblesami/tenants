@@ -79,15 +79,15 @@ TEMPLATES = [
 ]
 
 SHARED_APPS = (
-    'django_tenants',
-    'customers',
-    'website',
+    'django_tenants',    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'customers',
+    'website',
 )
 
 TENANT_APPS = (
