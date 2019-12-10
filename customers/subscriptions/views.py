@@ -90,6 +90,7 @@ def subscribe(request, plan_id, req_token=None, error=None):
         if token:
             context['token'] = token
         try:
+            print('Starting')
             if token:
                 email = payment_in_progress_dict['email']
                 usd_amount = payment_in_progress_dict['amount']
@@ -104,10 +105,12 @@ def subscribe(request, plan_id, req_token=None, error=None):
                     context['error'] = error
                     return render(request, template_name, context)
 
+                print('validated')
                 cent_amount = req_data['amountpay']
                 cent_amount = int(cent_amount)
                 usd_amount = int(cent_amount) / 100
                 res = make_payment(req_data, cent_amount, usd_amount)
+                print('payment tried')
                 if not res.get('paid') and res.get('error'):
                     return render(request, template_name, res)
 
@@ -118,16 +121,17 @@ def subscribe(request, plan_id, req_token=None, error=None):
                 email = payment_response['billing_details']['name']
                 token = context['token'] = res['token']
                 transaction_id = payment_response['id']
-
                 if error:
+                    print('payment failed')
                     return send_error(error, context, req_token, token, template_name, request, payment_in_progress_obj)
+                print('payment succeeded')
             if not transaction_id:
+                print('payment failed no transaction id')
                 res = 'Invalid transaction id'
                 return send_error(res, context, req_token, token, template_name, request, payment_in_progress_obj)
             with transaction.atomic():
                 plan_cost = PlanCost.objects.filter(plan_id=plan['id']).values('id', 'cost', 'days')
                 plan_cost = plan_cost[len(plan_cost) - 1]
-
                 subscription = Subscription(plan_id=plan['id'], plan_cost_id=plan_cost['id'])
                 subscription.amount = plan_cost['cost']
                 end_date = ws_methods.add_interval('days', plan_cost['days'])
@@ -138,7 +142,7 @@ def subscribe(request, plan_id, req_token=None, error=None):
                 obj.method_id = method_id
                 obj.amount = usd_amount
                 obj.save()
-
+                print('creating tenant')
                 res = create_tenant(company, email, password, subscription.id, plan['id'], request)
 
             if res == 'done':
@@ -242,6 +246,7 @@ def make_payment(req_data, cent_amount, usd_amount):
             source=stripe_token,
             capture=True)
         payment_response = charge
+        print(charge)
         failure_code = payment_response['failure_code']
         if failure_code:
             payment_in_progress.delete()
