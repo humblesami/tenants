@@ -10,7 +10,7 @@
     {% for customer in list %}
     <ul>
         <li>
-            {{customer.id }} -- {{customer.schema_name }} -{{auth_token}}-
+            {{customer.id }} -- {{customer.schema_name }} --
             {% if customer.id != 1 %}
                 <a href="http://{{customer.domain_url}}{{port}}{{auth_token}}">Link</a>
             {% endif %}

@@ -112,7 +112,6 @@ class MyCompanies(TemplateView):
                 PortalUser.objects.create(username=user.username, token=auth_token)
                 auth_token = '/login/'+auth_token
         context = {'list': tenants_list, 'auth_token': auth_token}
-        print(context)
         context['port'] = SERVER_PORT_STR
         return context
 

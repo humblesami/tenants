@@ -14,7 +14,7 @@
     {% block header %}
         <a href="/">Home</a>
         {% if not request.user.id %}
-            | <a href="/accounts/login">Login</a>
+            | <a href="{{request.main_url}}/accounts/login">Login</a>
         {% endif %}
         {% if request.user.id %}
            
