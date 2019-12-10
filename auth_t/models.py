@@ -1,9 +1,7 @@
-from django.contrib.auth.models import User, Group
-from django.contrib.contenttypes.models import ContentType
-from django.db import models, connection, transaction
 from django_tenants.utils import get_tenant_model
-
-from customers.models import Client
+from django.contrib.auth.models import User, Group
+from django.db import models, connection, transaction
+from django.contrib.contenttypes.models import ContentType
 
 
 class TenantGroup(Group):

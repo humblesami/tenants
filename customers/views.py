@@ -1,3 +1,5 @@
+import uuid
+
 from django.http import HttpResponse
 from django.views import View
 from django.contrib.auth.models import User
@@ -8,6 +10,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from customers.model_files.payemts import PaymentInProgress
 from main_app import ws_methods
+from website.models import PortalUser
 from main_app.settings import SERVER_PORT_STR, TENANT_DOMAIN
 
 
@@ -97,13 +100,19 @@ class MyCompanies(TemplateView):
         user = self.request.user
         user_id = user.id
         tenants_list = []
+        auth_token = ''
         if user_id:
             tenant_model = get_tenant_model()
             tenants_list = tenant_model.objects.filter(users__email__in=[user.email]).exclude(schema_name='public')
-            tenants_list = tenants_list.prefetch_related('domains').all()
-            tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
-            tenants_list = list(tenants_list)
-        context = {'list': tenants_list}
+            if tenants_list:
+                tenants_list = tenants_list.prefetch_related('domains').all()
+                tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
+                tenants_list = list(tenants_list)
+                auth_token = uuid.uuid4().hex[:20]
+                PortalUser.objects.create(username=user.username, token=auth_token)
+                auth_token = '/login/'+auth_token
+        context = {'list': tenants_list, 'auth_token': auth_token}
+        print(context)
         context['port'] = SERVER_PORT_STR
         return context
 

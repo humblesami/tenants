@@ -6,17 +6,13 @@
 {% endblock %}
 
 {% block instructions %}
-    <h3>My Companies</h3>
+    <h3>My Companies List</h3>
     {% for customer in list %}
     <ul>
         <li>
-            {{customer.id }} -- {{customer.schema_name }} --
-            {% if customer.id == 1 %}
-                <a href="http://{{customer.domain_url}}{{port}}">Link</a>
-            {% endif %}
+            {{customer.id }} -- {{customer.schema_name }} -{{auth_token}}-
             {% if customer.id != 1 %}
-                <a href="http://{{customer.domain_url}}{{port}}">Link</a>  |
-                <a href="delete?id={{customer.id}}">Delete</a>
+                <a href="http://{{customer.domain_url}}{{port}}{{auth_token}}">Link</a>
             {% endif %}
         </li>
     </ul>
