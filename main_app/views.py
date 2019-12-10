@@ -1,8 +1,11 @@
+import uuid
+
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login, logout
 from django_tenants.utils import get_tenant_model
 
 from main_app.ws_methods import get_company_url
+from website.models import PortalUser
 
 
 def login_page(request):
@@ -24,8 +27,10 @@ def login_page(request):
                 else:
                     if len(tenants_list) == 1:
                         my_company = tenants_list[0]
+                        auth_token = uuid.uuid4().hex[:20]
+                        PortalUser.objects.create(username=user.username, token=auth_token)
                         url = get_company_url(my_company.schema_name)
-                        return redirect(url)
+                        return redirect(url+auth_token)
             return redirect('/')
         else:
             context = {'error': 'Invalid credentials', 'input': {'username': username, 'next_url': next_url}}
