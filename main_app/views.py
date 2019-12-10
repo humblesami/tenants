@@ -29,6 +29,7 @@ def login_page(request):
                         my_company = tenants_list[0]
                         auth_token = uuid.uuid4().hex[:20]
                         PortalUser.objects.create(username=user.username, token=auth_token)
+                        auth_token = '/login/'+auth_token
                         url = get_company_url(my_company.schema_name)
                         return redirect(url+auth_token)
             return redirect('/')
