@@ -1,0 +1,19 @@
+{% extends "admin/actions_change_form.html" %}
+{% load i18n admin_urls static admin_modify %}
+{% block field_sets %}
+    {% for fieldset in adminform %}
+        {#  Custom fieldsets template #}
+        {% include "survey_fieldset.html" with inline_admin_formsets=inline_admin_formsets %}
+    {% endfor %}
+{% endblock %}
+{% load static %}
+    <script src="/static/assets/js/custom_survey.js"></script>
+{# Filter inlines that where already rendered to avoid duplication #}
+{% block inline_field_sets %}
+    {% for inline_admin_formset in inline_admin_formsets %}
+        {% if not inline_admin_formset.opts.insert_after %}
+            {#{% include inline_admin_formset.opts.template %}#}
+            {% include "survey_tabular.html" %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}

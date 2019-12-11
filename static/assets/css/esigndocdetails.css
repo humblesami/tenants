@@ -1,0 +1,391 @@
+#holder{
+    position:relative;
+    display: none;
+}
+
+.position_btns {
+    z-index: 1
+}
+
+.top_btns {
+	padding: 0;
+}
+
+.pg_no {
+    color: white;
+}
+
+.PdfTopBtnsWrapper {
+	background: #4B74B5;
+	padding:7px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.PdfTopBtnsWrapper  .doc-manage-btn-wrap{
+	font-size: 20px;
+	line-height: 1;
+	color: #ffffff;
+	cursor: pointer;
+	margin:0 5px;
+}
+
+.doc_btn {
+	background-color: transparent;
+	border: 0px solid transparent;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 21px;
+	line-height: 1;
+	color: #ffffff;
+	cursor: pointer;
+}
+
+.edit_sign:hover,
+.del_sign:hover {
+    background-color: white;
+    color: red!important
+}
+
+.new_sign i {
+    margin-left: 2px;
+}
+
+#scaleSelectContainer select#scaleSelect {
+    background: white;
+    margin-left: 3px;
+    border: navajowhite;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    height: 29px;
+    min-width:65px;
+}
+
+.sign-box.fa-lg {
+    margin-left: 10px;
+}
+
+#signature_editor_esign {
+    width: 459px;
+    height: 198px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.youtubeVideoModal .modal-dialog {
+    width: 495px;
+}
+
+.youtubeVideoModal {
+    z-index: 646 !important;
+}
+
+@media (max-width: 540px) {
+    .youtubeVideoModal .modal-dialog {
+        width: auto;
+    }
+    .youtubeVideoModal .modal-body {
+        padding: 6px;
+    }
+    #signature_editor_esign {
+        width: calc(100vw - 50px);
+        margin: 5px auto !important;
+    }
+    .youtubeVideoModal .modal-dialog .modal-body {
+        text-align: center;
+    }
+}
+
+.DocsButtonWrapper:nth-child(1) {
+    margin: 0;
+}
+
+/*#signature_editor_esign
+{
+    padding: 0px;
+    border: 1px solid #cccccc;
+    margin: 3px 10px;
+    width: 304px;
+    height: 198px;
+}*/
+
+#signature_editor_esign canvas {
+    border: 1px solid;
+}
+
+.DocsBtn {
+    min-width: 85px;
+    margin: 2px;
+}
+
+.DocsButtonWrapper .btn:first-child,
+.DocsBtn.DocsBtnfirst {
+    margin-left: 0px;
+}
+
+.DocsButtonWrapper {
+    font-size: 14px;
+    height: auto
+}
+
+.sign_embed {
+    height: auto;
+    padding: 20px;
+    border: 1px solid lightgray;
+}
+
+.embed-responsive {
+    height: 390px;
+}
+
+.sign_btn {
+    margin: 5px;
+}
+
+.sign_doc_form .o_inner_groupp,
+.o_cp_right {
+    display: none!important
+}
+
+#page_container1 {	
+	text-align: center;
+	background: #f7f7f7;
+	padding-top: 1px;
+}
+
+#the-canvas{
+    border:1px solid #dadada;
+}
+
+#doc-side-scroll{
+    height: calc(100vh - 112px);
+    overflow-y:auto;
+    width:22%;
+    display: none;
+    margin:0;
+    flex-direction: column;
+    align-items: center;
+    border-right: 1px solid rgba(75, 116, 181, 0.33);
+}
+.doc-container.admin #doc-side-scroll
+{
+    display: block;
+}
+
+.PdfButtonWrapper{    
+    padding: 10px 20px;    
+}
+
+.PdfButtonWrapper .btn {
+    width: 100%;
+}
+
+#doc-side-scroll::-webkit-scrollbar, #page_container1::-webkit-scrollbar {
+    width: 6px;
+}
+
+#doc-side-scroll::-webkit-scrollbar-thumb, #page_container1::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/*
+@media(min-width:548px){
+    #page_container1 {
+        height: calc(100vh - 306px);
+        text-align: center;
+        background: #f7f7f7;
+    }
+}
+@media(max-width:547px){
+    #page_container1 {
+        height: calc(100vh - 346px);
+
+    }
+}*/
+
+
+#nxxt_sign {
+    top: 5px;
+    display: none;
+    background: rgba(228, 21, 21, 0.9);
+    color: white;
+    position: absolute;
+    z-index: 2;
+    width: 140px;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom-right-radius: 78px;
+    border-top-right-radius: 78px;
+}
+
+@media screen and (max-width: 600px) {
+    #nxxt_sign {
+        width: 90px!important;
+        height: 25px;
+        font-size: 0.8em;
+    }
+}
+
+.o_form_nosheet {
+    padding: 0!important;
+}
+
+.new_sign {
+    box-shadow: 0px 0px 3px 1px #A4498C;
+}
+
+.details_div {
+    display: flex;
+    padding: 5px;
+}
+
+.sign_ids {
+    height: 43px;
+}
+
+.sign_ids:hover {
+    height: auto;
+    overflow: auto;
+}
+
+.pending_signs {
+    width: 50%;
+}
+
+.o_control_panel > .breadcrumb > li {
+    display: none
+}
+
+.o_control_panel > .breadcrumb > li:last-child {
+    display: inline-block
+}
+
+.o_control_panel > .breadcrumb > li:first-child {
+    display: inline-block
+}
+
+.o_control_panel > .breadcrumb > li:nth-child(2) {
+    display: inline-block
+}
+
+.check_box_send_all{
+    display: none
+}
+
+.o_cp_buttons, .o_cp_pager{
+    display:none !important;
+}
+
+.o_cp_left{
+    position: absolute;
+    right: 0;
+}
+
+.meetings_div{
+    color: #404040;
+    font-size: 12px;
+    padding-top:10px;
+    border-top: 1px solid #E1E1E1;
+}
+
+.meetings_div strong{
+	font-weight: 500;
+	padding-bottom: 10px;
+}
+
+.doc-subtitle{
+	font-family: 'Roboto';
+	font-weight: 500;
+	margin:7px 0px;
+}
+.doc-subtitle input{
+	margin-right:5px;
+	position: relative;
+    top: 2px;
+}
+
+.meetings_div select{
+    font-size: 16px;
+    width: 100%;
+    padding: 0px 15px;
+    border: 1px solid #A2A2A2;
+    border-radius: 5px;
+    height: 38px;
+    color: #6d6d6d;
+    cursor:pointer;
+    margin-bottom:1rem;
+}
+
+.PdfVerticalButtonWrapper{
+    display: block;
+}
+
+.fields-title{
+	color:#404040;
+	font-size:20px;
+	padding-bottom:5px;
+	border-bottom:1px solid #E1E1E1;
+	margin: 0 0 10px;
+
+}
+.PdfVerticalButtonWrapper .docselectbtn {
+    display: block;
+    font-size:16px;
+    color:#585757;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 5px;
+    cursor:pointer;
+}
+
+.PdfVerticalButtonWrapper .docselectbtn i{
+    font-size: 15px;
+    display: inline-block;
+    width: 30px;
+    text-align: left;
+}
+
+.PdfVerticalButtonWrapper .docselectbtn:hover{
+	color:#000000;
+}
+
+#save-doc-data {
+    width: 100%;
+    text-transform: uppercase;
+}
+
+.docselectbtn{
+    cursor: pointer;
+}
+
+.doc-container .docWrapperContainer{
+    width: 100%;
+}
+.doc-container.admin .docWrapperContainer{
+    width: 78%;
+}
+.sign_container{
+    cursor: pointer;    
+}
+.new_sign, .sign_container{    
+    padding: 5px;
+}
+.sign_container[signed="true"]{    
+    border: 1px dotted;
+    background: white;
+}
+.sign_container img{
+    max-width: inherit;
+}
+body.user #viewer_container{
+    height: calc(100vh - 164px);
+    overflow-y: auto;
+}
+body.public #viewer_container{
+    height: calc(100vh - 50px);
+    overflow-y: auto;
+}

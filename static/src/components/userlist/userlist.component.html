@@ -1,0 +1,64 @@
+<div class="roster">
+    <div class="main-full-seachbar">
+    <input type="text"
+        (keyup)="user_serach($event.target.value)"
+        placeholder="Search..."  class="form-control"/>
+    </div>
+    <div class="MeetingBtnWrapper">
+        <div class="btn-group user-types">
+            <a class="btn active" (click)="all_profile_users($event.target)">All Users <span>({{count}})</span></a>
+            <a class="btn" (click)="all_selected_users($event.target)">Selected <span>({{selected_user_count}})</span></a>
+            <a class="btn" (click)="all_available_users($event.target)">Available <span>({{available_user_count}})</span></a>                  
+        </div>
+    </div>
+
+    <div class="bg-heading" *ngIf="shown_users.length">
+        <div>
+            <label class="font-weight-bold">
+                User
+            </label>
+        </div>
+        <div>
+            <label class="font-weight-bold">
+                Status
+            </label>
+        </div>
+    </div>
+        <!-- Attendance -->
+    <div class="roster-height" [ngClass]="{'no-data': shown_users.length===0}">
+        <!-- <div class="hider" [ngClass]="{show: !available_tab && add_only}">
+            
+        </div> -->
+        <div class="d-flex py-2 mb-1 bg-roster" 
+            *ngFor="let obj of shown_users"            
+            [ngClass]="{disabled_row: obj.current_user}">
+            <div class="col-9">
+                <div class="d-flex left-margin" 
+                    title="Click to see profile"
+                    (click)="userService.show_profile_summary(obj.id)" 
+                    [ngStyle] = "{'cursor': 'pointer'}">
+                    <div class="d-block">
+                        <div class="img-flex img-circle">
+                            <img src="{{server_url}}{{obj.image}}"/>
+                        </div>                            
+                    </div>
+                    <div class="w-75 ml-1">
+                        <div class="text-truncate">
+                            {{obj.name}}
+                        </div>
+                        <div class="text-truncate">
+                            {{obj.email}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 custom-control custom-checkbox" (click)="obj.current_user ? null: toggle_user_selection(obj)">
+                <input type="checkbox"                
+                [checked]="obj.selected == true"
+                [(ngModel)]="obj.selected"
+                class="custom-control-input">
+                <label class="custom-control-label"></label>
+            </div>
+        </div>
+    </div>  
+</div>

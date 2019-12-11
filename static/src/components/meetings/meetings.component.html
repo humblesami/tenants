@@ -1,0 +1,66 @@
+﻿<app-breadcrumb app="meetings" model="event" create="1" title="{{meeting_type}}"></app-breadcrumb>
+<div class="router-outlet">
+	<div class="container">
+        <div class="kanban-headings">
+            <h3>
+                <i class="icon-meeting text-primary"></i> {{meeting_type | firstToUpper}} Meetings
+            </h3>
+            <div class="MeetingBtnWrapper">
+                <div class="btn-group">
+                    <a routerLink="/meetings/upcoming" class="btn">Upcoming</a>
+                    <a routerLink="/meetings/completed" class="btn">Completed</a>
+                    <a routerLink="/meetings/archived" class="btn">Archived</a>
+                    <a routerLink="/meetings/draft" class="btn">Draft</a>
+                </div>
+            </div>
+        </div>
+	</div>	
+
+	<div class="container">
+        <app-search (onsearch)="get_list()"></app-search>
+        <app-paginator
+        *ngIf="meeting_list.length"
+            (reload_data)="get_list()">
+        </app-paginator>
+        <div class="row">
+            <div class="col col-md-6 col-lg-4 mb-4" *ngFor="let meeting_object of meeting_list">
+                <div class="kanban-card kanban-meeting-info">
+                    <a class="kanban-upcoming-meeting" routerLink="/meeting/{{meeting_object.id}}">
+                        <div class="CalendarDateWrapper">
+                            <span *ngIf="meeting_object.start" class="CalendarDateWrap">
+                                <span class="kanban-upcoming-meeting-date">
+                                    {{meeting_object.start_dt.day}}
+                                </span>
+                                <span>
+                                    {{meeting_object.start_dt.month_year}}
+                                </span>
+                                <span>
+                                    {{meeting_object.start_dt.time}}
+                                </span>
+                            </span>
+                        </div>
+                        <div class="Info">
+                            <p *ngIf="meeting_object.name">
+                                <b>{{meeting_object.name}}</b>
+                            </p>
+                            <span *ngIf="meeting_object.location" class="d-inline-block text-truncate">
+                                <i class="icon-pin fs-17 text-primary"></i>
+                                {{meeting_object.location}}
+                            </span>
+                        </div>
+                    </a>
+                    
+                    <app-meetingresponse my_event="{{meeting_object.my_event}}" *ngIf="meeting_type == 'upcoming'" meeting_id="{{meeting_object.id}}" attendee_status="{{meeting_object.attendee_status}}" ></app-meetingresponse>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div *ngIf="no_meet" >            
+            <div class="jumbotron text-center">
+                <h1>No record found!</h1>
+                <hr>
+            </div>		
+        </div>
+	</div>
+</div>

@@ -1,0 +1,18 @@
+#folder_view{
+    border: 1px solid;    
+    width: 100%;
+    padding: 20px;
+}
+#ul_sub_folders li {
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+}
+#ul_sub_folders li:hover{
+    background: blue;
+    color: white;
+}
+#ul_sub_folders{
+    list-style: none;
+}

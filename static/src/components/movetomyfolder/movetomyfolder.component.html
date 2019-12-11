@@ -1,0 +1,28 @@
+<div id="folder_view">
+    <div id="opened_folder">
+        <div class="col-12" id="parent_div">
+            <div class="d-flex justify-content-between">
+                <div><b><span class="rounded-circle"><i class="icon-folder" ></i> Current Directory: </span>
+                <span id="name"></span></b> </div>
+                <div ><span class="float-right" id="action"></span> </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col offset-md-1">
+                    <b>Child Directories</b>
+                </div>
+            </div>
+            <hr>
+
+            <ul class="p-2" id="ul_sub_folders">
+            </ul>
+        </div>
+    </div>    
+    <button id="btn_open_parent" class="btn btn-primary">
+        Back
+    </button>
+     <button class="btn btn-danger" (click)="close_modal(null)" id="btn_close">
+        Close
+    </button>
+</div>

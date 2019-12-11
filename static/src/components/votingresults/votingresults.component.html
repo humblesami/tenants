@@ -1,0 +1,9 @@
+<app-breadcrumb *ngIf="surveyDetails" app="voting" model="voting" 
+rid="{{surveyDetails.id}}" edit="1" delete="1" 
+routes='[{"title":"Votings", "link":"/votings"}, {"title":"surveyDetails.name", "link":"/voting/surveyDetails.id"}]'
+title="Voting Results"></app-breadcrumb>
+
+<div class="router-outlet jango-frame">    
+    <iframe id='survey-iframe'>
+    </iframe>    
+</div>

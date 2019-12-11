@@ -1,0 +1,382 @@
+{
+    "my_admin": {
+        "helper": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "admin": {
+        "logentry": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "auth": {
+        "permission": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "group": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "user": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "contenttypes": {
+        "contenttype": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "sessions": {
+        "session": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "authtoken": {
+        "token": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "authcode": {
+        "twofactorauthenticate": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "authsignup": {
+        "loginlocation": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "loginentry": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "dualauth": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "authuser": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "documents": {
+        "annotation": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "annotationdocument": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "drawingannotation": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "pointannotation": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "rectangleannotation": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "path": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "line": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "file": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "dimension": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "commentannotation": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "meetings": {
+        "event": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "news": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "topic": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "profile": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "newsvideo": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "newsdocument": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "meetingdocument": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "invitationresponse": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "committee": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "agendadocument": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "chat": {
+        "chatgroup": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "comment": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "message": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "notification": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "notificationtype": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "postaddress": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "usernotification": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "messagestatus": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "messagedocument": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "voting": {
+        "voting": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "votingtype": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "votingdocument": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "votingchoice": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "votinganswer": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "resources": {
+        "folder": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "resourcedocument": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "survey": {
+        "category": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "survey": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "response": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "question": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "answer": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "esign": {
+        "signaturedoc": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "signature": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    },
+    "restoken": {
+        "postinfo": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        },
+        "postusertoken": {
+            "add": 1,
+            "delete": 1,
+            "view": 1,
+            "change": 1
+        }
+    }
+}

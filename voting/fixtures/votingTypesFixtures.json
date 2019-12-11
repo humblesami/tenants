@@ -1,0 +1,56 @@
+[
+    {
+        "model": "voting.VotingType",
+        "pk": 1,
+        "fields": {
+            "name": "Voting"
+        }
+    },
+    {
+        "model": "voting.VotingType",
+        "pk": 2,
+        "fields": {
+            "name": "Approval"
+        }
+    },
+    {
+        "model": "voting.VotingChoice",
+        "pk": 1,
+        "fields": {
+            "name": "Yes",
+            "voting_type": 1
+        }
+    },
+    {
+        "model": "voting.VotingChoice",
+        "pk": 2,
+        "fields": {
+            "name": "No",
+            "voting_type": 1
+        }
+    },
+    {
+        "model": "voting.VotingChoice",
+        "pk": 3,
+        "fields": {
+            "name": "Abstain",
+            "voting_type": 1
+        }
+    },
+    {
+        "model": "voting.VotingChoice",
+        "pk": 2,
+        "fields": {
+            "name": "Accept",
+            "voting_type": 2
+        }
+    },
+    {
+        "model": "voting.VotingChoice",
+        "pk": 3,
+        "fields": {
+            "name": "Reject",
+            "voting_type": 2
+        }
+    }
+]

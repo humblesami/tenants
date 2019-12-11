@@ -1,0 +1,37 @@
+﻿<div class="router-outlet Login-form-wrapper" *ngIf="page_loaded">    
+    <div class="container-wrapper">
+        <div class="container">
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="form-container col-sm-12 col-md-6 col-xl-5">
+                    <div class="login-form-div">
+                        <form (ngSubmit)="onSubmit()" class="text-center">
+                            <img class="login-logo-image" src="/static/assets/images/logo.png" src_url="/static/assets/images/logo.png" />
+                            <div class="member-login-box">
+                                <img src_url="/static/assets/images/member-icon.png" />
+                                <span>Member Login</span>
+                            </div>
+                            <div class="form-group input-label-icon">
+                                <img class="img-fluid user-icon" src_url="/static/assets/images/login-user.png" />
+                                <input id="username" placeholder="Username" type="text" class="form-control" />
+                            </div>
+                            <div class="form-group input-label-icon">
+                                <img class="img-fluid" src_url="/static/assets/images/lock-icon.png" />
+                                <input id="password" placeholder="Password" type="password" class="form-control" />
+                            </div>
+                            <div class="login-feedback" style="text-align:center; color:red; padding-bottom:10px"></div>
+                            <div class="form-group text-center pl-5 pr-5 mb-2">
+                                <button type="submit" class="login-btn">Login</button>
+                            </div>
+                            <div style="display:none" class="form-group forgot text-center">
+                                <a class="forgot" href="/#/forgot-password">Forgot Password?</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>                
+                <div class="col-md-6 hide-small">
+                    <img class="login-image" async src="/static/assets/images/login-vector.png"/>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>

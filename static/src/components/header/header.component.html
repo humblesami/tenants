@@ -1,0 +1,150 @@
+<div class="header-container">
+    <div *ngIf="socketService.user_data">        
+        <div class="header-fixed">
+            <div class="main-nav-header">
+                <a class="nav-icon-split app-sidebar__toggle" data-toggle="sidebar" 
+                aria-label="Hide Sidebar">
+                    <img src="static/assets/images/menu.png" alt=""></a>
+                <a class="logo-link" routerLink="/">
+                    <img class="logo logo-image" src="static/assets/images/logo.svg">
+                </a>
+            </div>
+            
+			<div class="main-user-navbar">
+				<div class="automanage nav-icon" *ngIf="socketService.actually_admin">
+                    <a  *ngIf="socketService.admin_mode"
+                        (click)="socketService.set_admin_mode(false)"
+                        id="admin_mode_toggler"
+                        class="text-success"
+                        data-toggle="tooltip" 
+                        data-placement="right" 
+                        title="Disable Admim Mode">
+                        <i class="font-weight-bolder after_enable icon-admin-mode"></i>
+                    </a>
+                    <a  *ngIf="!socketService.admin_mode"
+                        (click)="socketService.set_admin_mode(true)"
+                        id="admin_mode_toggler"
+                        class="text-danger"
+                        data-toggle="tooltip" 
+                        data-placement="right" 
+                        title="Enable Admim Mode">
+                        <i class="font-weight-bold icon-admin-mode"></i>
+                    </a>
+				</div>
+				<div class="automanage nav-icon">
+                    <a routerLink="/calendar"><i class="icon-calendar"></i></a>
+                </div>
+                <div class="searchheader-icon nav-icon">
+                    <button id="search-btn" (click)="search_results_visibility()"><i class="icon-search"></i></button>
+                </div>
+                <div class="nav-icon" (click)="change_cursor()">
+                    <span class="cursor_chooser"><i class="icon-cursor" id="cursor_chooser"></i></span>
+                    <canvas id="cursor_canvas" width="20" height="20" style="display:none" ></canvas>
+                </div>
+                <div 
+                    class="messageicon-container mobile-chatroom nav-icon dropdown"                                
+                    data-placement="bottom"
+                    (click)="show_messenger()"
+                    >
+                    <button class="notification-icon">
+                        <i class="icon-chat"></i>
+                    </button>
+                    <span class="un-read-msg" *ngIf="socketService.unseen_messages !=0 ">{{socketService.unseen_messages}}</span>
+                </div>
+                <div>
+                    <app-chat></app-chat>
+                </div>                
+                <div class="navbar-profile-menu dropdown">
+                    <button class="profile-icon showmouseawaybutton img-flex" (click)="show_profile_menu($event)">
+                        <span class="header-user-name">{{socketService.user_data.name}}</span>
+                        <img id="navbar-profile-img" class="img-thumbnail-sm" src="{{socketService.user_photo}}">
+                    </button>
+                    <div class="profile-menu dropdown-menu hidemouseaway dropdown-menu-lg-right">
+						<div class="arrow"></div>
+                        <a class="dropdown-item border-0" routerLink="/my-profile">
+                            <div class="drop-down-user">
+                                <h5>{{socketService.user_data.name}}</h5>
+                            </div>
+                        </a>
+						<a class="dropdown-item" routerLink="/my-profile" href="">Profile Settings</a>
+                        <a class="dropdown-item" routerLink="/settings">Change Password</a>
+                        <a class="dropdown-item" routerLink="/support">Support</a>
+                        <a id='logout_link' (click)="signout()" class="dropdown-item">Logout</a>
+                    </div>
+                </div>        
+            </div>
+            
+        </div>
+    
+        <div>
+            <div class="searchbar-full-width" style="display: none;">
+                <div class="lowerheader input-group">
+                    <input id="search-box" type="text"
+                        pattern="[a-zA-Z ]*"
+                        [(ngModel)]="search_key_word"
+                        (focus)="on_search_focus()"
+                        (keyup.enter)="search()"
+                        placeholder="Search"  aria-expanded="false" class="form-control" />
+    
+                    <div class="input-group-append">
+                        <span class="input-group-text">
+                            <input [(ngModel)]="is_content_search" type="checkbox" aria-label="Checkbox for following text input">
+                            <span style="margin-left: 10px;">In Files</span>
+                        </span>
+
+                        <span *ngIf="can_be_type_specific" class="input-group-text">
+                            <input (change)="search()" [(ngModel)]="type_applied" type="checkbox" aria-label="Checkbox for following text input">
+                            <span style="margin-left: 10px;">in {{socketService.active_route_snapshot.data.model}}s only</span>
+                        </span>
+
+                        <span class="input-group-text">
+                            <button (click)="search()" class="btn btn-secondary" type="button">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
+                    </div>        
+                </div>
+                <div *ngIf="show_search_results && socketService.search_bar_shown" class="show_search_results app-content">
+                <div *ngIf="no_search" class="no-search">
+                    <h1>No Result Found!</h1>
+                </div>
+                <div *ngIf="!no_search" class="close-button close-fixed" (click)="hide_search()">
+                    <i class="fa fa-times"></i>
+                </div>
+                <div *ngIf="!no_search" class="container">
+                    <h3 *ngIf="is_content_search" style="color: #696969">Search Results Based on Content of Documents.</h3>
+                    <div *ngIf="content_search" class="row content_search">
+                        <div *ngFor="let doc_type of doc_types">
+                            <div *ngIf="content_search_results[doc_type].length > 0" class="col-sm">
+                                <div class="result-box-info">
+                                    <h2>{{doc_type | titlecase}} Documents</h2>
+                                    <h3 *ngFor="let item of content_search_results[doc_type]">
+                                        <a (click)="hide_search()" routerLink="{{item.route}}">{{item.name}}</a>
+                                    </h3>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div *ngIf="search_results" class="row">
+                        <div class="col-lg-12">
+                            <div class="row content_search" *ngFor="let item_type of search_item_types">
+                                <div *ngIf="search_results[item_type].length > 0" class="col-sm-12">
+                                    <h2 class="search-result-title">{{item_type}} ({{search_results[item_type].length}})</h2>
+                                    <div class="result-box-info d-flex flex-wrap">
+                                       
+                                        <h3 *ngFor="let item of search_results[item_type]">
+                                            <a (click)="hide_search()" routerLink="{{item.route}}">{{item.name}}</a>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>  
+                        </div>              
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            
+        </div>
+    </div>
+</div>

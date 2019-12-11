@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    {% if folder_id %}
+        <h2>You are no longer part of resource "{{folder_name}}" </h2>
+    {% endif %}
+<div id="div1"><h2>
+    {% if error %}
+        {{ error }}
+    {% elif success %}
+        {{ success }}
+    {% endif %}
+
+</h2></div>
+</body>
+</html>

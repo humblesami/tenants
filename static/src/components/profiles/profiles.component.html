@@ -1,0 +1,135 @@
+﻿<app-breadcrumb *ngIf="show_profiles_breadcrumb" app="meetings" 
+model="profile" create="1" 
+title="Profiles"></app-breadcrumb>
+
+<app-breadcrumb *ngIf="!show_profiles_breadcrumb && breadcrumb_title" app="meetings" 
+model="profile" create="1"
+routes='[{"title":"Profiles", "link":"/profiles"}]'
+title="{{breadcrumb_title|firstToUpper}}"></app-breadcrumb>
+
+<div class="router-outlet">
+    <div  class="container">
+        <div class="kanban-headings">
+            <h3>
+                <i class="icon-profile text-primary"></i> Profiles
+            </h3>
+            <div class="MeetingBtnWrapper">
+                <div class="btn-group">
+                    <a routerLink="/profiles" class="btn">All</a>
+                    <a routerLink="/profiles/directors" class="btn">Directors</a>
+                    <a routerLink="/profiles/admins" class="btn">Admins</a>
+                    <a routerLink="/profiles/staff" class="btn">Staff</a>
+                </div>
+            </div>
+        </div>
+        <app-search (onsearch)="get_list()"></app-search>
+        <app-paginator *ngIf="records.length" (reload_data)="get_list()">
+        </app-paginator>
+        <div *ngIf="records && records.length" class="d-none d-sm-block">
+            <div class="bg-profile">
+                <div class="col-3">
+                    <span>Basic Info</span>
+                </div>
+                <!-- <div class="col-2">
+                    <h6>Department</h6>
+                </div> -->
+                <div class="col-3 profile-items">
+                    <span>Company</span>
+                </div>
+                <div class="col-3 profile-items">
+                    <span>Phone</span>
+                </div>
+                <div class="col-3 profile-items">
+                    <div class="profile-item-content">
+                        <span>Membership</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row d-none d-sm-block mb-2">
+            <div class="col-12">
+                <div class="profile-row" *ngFor="let profile of records">
+                    <div class="kanban-profile-card">
+                        <a routerLink="/profile/{{profile.id}}">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="row no-gutters">
+                                        <div class="col-3">
+                                            <div class="profile-images img-flex">
+                                                <img class="img-thumbnail-md" alt='N/A' src="{{socketService.server_url}}{{profile.photo}}">
+                                            </div>                                            
+                                        </div>
+                                        <div class="col-9 pl-2">
+                                            <div class="text-truncate">
+                                                {{profile.name}}
+                                            </div>
+                                            <div class="text-truncate">
+                                                {{profile.email}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-2 profile-items">
+                                    <span class="text-truncate">{{profile.department}}</span>
+                                </div> -->
+                                <div class="col-3 profile-items">
+                                    <span class="text-truncate">{{profile.company}}</span>
+                                </div>
+                                <div class="col-3 profile-items">
+                                    <span class="text-truncate">{{profile.mobile_phone}}</span>
+                                </div>
+                                <div class="col-3 profile-items">
+                                    <div class="profile-item-content">
+                                        <div *ngIf="profile.group">    
+                                            <span class="text-truncate" *ngFor="let group of profile.group">{{ group | firstToUpper }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>		
+        </div>
+        <!-- Mobile View-->
+        <div class="row mobile-kanbann mb-2">
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-4" *ngFor="let profile of records">
+                <div class="kanban-card">
+                    <a routerLink="/profile/{{profile.id}}" class="kanban-profiles-user-info-box">
+                        <div class="profile-images img-flex">
+                            <img alt='N/A' src="{{socketService.server_url}}{{profile.photo}}">
+                        </div>
+                        <div class="kanban-profiles-user-info">
+                            <div class="kanban-profiles-user-InfoLIST">
+                                {{profile.name}}
+                            </div>
+                            <div *ngIf="profile.email" class="kanban-profiles-user-InfoLIST">
+                                <i class="fas fa-envelope"></i>
+                                <span>
+                                    {{profile.email}}
+                                </span>
+                            </div>
+                            <div *ngIf="profile.group" class="kanban-profiles-user-InfoLIST">
+                                <span > Role: </span>
+                                <span class="committee-member" *ngFor="let group of profile.group">{{ group | firstToUpper }}</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>		
+        </div>
+        <!-- End Mobile View-->
+    </div>
+
+    <div class="container" *ngIf="no_prof">
+		<div class="row">
+			<div class="col-lg-12 ">
+				<div class="jumbotron text-center">
+                    <h1>No record found!</h1>
+                    <!-- <h1>There is no {{type ? type: 'profile'}} to show for now!</h1> -->
+                    <hr>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>

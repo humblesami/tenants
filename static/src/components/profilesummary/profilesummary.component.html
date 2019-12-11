@@ -1,0 +1,62 @@
+
+<form *ngIf="profile_data" class="details-card">
+    <div class="container profile_summary_popup">
+        <div  *ngIf="profile_data.name" class="user-name">
+            <div class="UserProfileNameTittle text-truncate text-primary">
+                {{profile_data.name}}
+            </div>
+        </div>
+        <div class="ProfileUserNameJonbWrapper ProfileUserNameJonbWrapper-column">
+            <div class="ProfileChangeSaveWrapper img-flex mb-1">
+                <img *ngIf="profile_data.photo" src="{{server_url}}{{profile_data.photo}}">
+                <img *ngIf="!profile_data.photo"  src="static/assets/images/no-profile.png">
+            </div>
+            <div class="container min-width-0">
+                <div *ngIf="profile_data.email">
+
+                    <label for="email" class="font-weight-bold text-primary">
+                        Email
+                    </label>
+                    <div class="profile-border-bottom p-0 pb-2 mb-2">
+                        <div class="text-truncate">
+                            {{profile_data.email}}
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="profile_data.mobile_phone">
+                    <label for="mobile_phone" class="font-weight-bold text-primary">
+                        Phone
+                    </label>
+                    <div class="p-0 profile-border-bottom pb-2 mb-2">
+                        <div class="text-truncate">
+                            {{profile_data.mobile_phone}}
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="profile_data.company">
+                    <label for="company" class="font-weight-bold text-primary">
+                        Company
+                    </label>
+                    <div class="p-0 profile-border-bottom pb-2 mb-2">
+                        <div class="text-truncate">
+                            {{profile_data.company}}
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="profile_data.groups && profile_data.groups.length > 0">
+                    <label for="company" class="font-weight-bold text-primary">
+                        Role
+                    </label>
+                    <div class="col-12 p-0 profile-border-bottom pb-2 mb-2">
+                        <div class="committee-member-section">
+                            <span *ngFor="let group of profile_data.groups">
+                                <span class="committee-member" >{{group.name}}</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="cancel_button" (click)="activeModal.close('Close click')"><i class="fa fa-times"></i></a>
+</form>

@@ -1,0 +1,26 @@
+<div class="user-modal">    
+    <div>
+        <label *ngIf="!group_name" class="pop-heading">Create Chat Group</label>
+        <label *ngIf="group_name" class="pop-heading">Chat Group: {{group_name}}</label>
+        <div style="width: 100%;
+        display: flex;
+        justify-content: center;">
+            <input *ngIf="!group_name" [(ngModel)]="careated_group_name" placeholder="Enter Group Name" 
+            class="form-control form-control-sm" style="width: calc(100% - 30px);"/>
+        </div>
+        
+    </div>
+    <app-userlist 
+    selection_input_str="{{selection_input_str}}"
+    user_input_str="{{user_input_str}}"
+    (group_users_changed)="group_users_changed($event)"
+    ></app-userlist>
+    <div class="pop-bottom">
+        <div>
+        </div>
+        <div>
+            <button [attr.disabled]="(group_name || careated_group_name) ? null : 'disabled'" type="button" class="btn btn-primary" (click)="sendRecord()">Save</button>
+            <button type="button" class="btn btn-danger" (click)="activeModal.close()">Close</button>
+        </div>
+    </div>
+</div>

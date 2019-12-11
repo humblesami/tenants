@@ -1,0 +1,94 @@
+<app-breadcrumb 
+*ngIf="surveyDetails"
+routes='[{"title":"Actions", "link":"/actions"}, {"title":"Surveys", "link":"/surveys"}, {"title":"{{surveyDetails.name}}", "link":"/survey/{{surveyDetails.id}}"}]'
+title="Results"></app-breadcrumb>
+<div class="router-outlet">
+    <link rel="stylesheet" href="/static/assets/css/survey.css" />
+    <div class="container" *ngIf="surveyDetails">
+        <div class="form-details">
+            <div class="meeting-details-form">
+                <div *ngIf="surveyDetails.name" class="kanban-headings child-pages justify-content-between">                        
+                    <h3>
+                        <i class="icon-action text-primary"></i> {{surveyDetails.name}}
+                    </h3>
+                    <div style="height: 50px;width:50px;">
+                        <canvas id="progress-chart"></canvas>
+                    </div>
+                    <div class="MeetingBtnWrapper m-top" *ngIf="surveyDetails.publish">
+                        <div class="btn-group">
+                            <a *ngIf="surveyDetails && surveyDetails.is_respondent && surveyDetails.is_attempted" id="{{surveyDetails.id}}" class="btn" routerLink='/survey/survey/details/{{surveyDetails.id}}'>Reattempt Survey</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12 mr-b20" *ngIf="surveyDetails.questions">
+                        <div *ngFor="let question of surveyDetails.questions" class="row surveyDetailsquestions">
+                            <div class="col-sm-12 UserProfileDiscription">
+                                <!-- <h4 class="my-4 text-primary font-weight-bold">Q: {{question.name}}?</h4>     -->
+                                <!-- Accordions-->
+                                <div class="accordion" id="accordionExample">
+                                    <div class="card">
+                                        <a class="card-header" data-toggle="collapse" 
+                                        [attr.data-target]="'#question-' + question.id" 
+                                        id="headingOne" [ngClass]="{collapsed: !question.choices.length }">
+                                           <span>Q: {{question.name}}</span>
+                                           <span class="float-right"><i class="fa"></i></span>
+                                        </a>
+                                        <div id="question-{{question.id}}" class="collapse" [ngClass]="{show: question.choices.length }"
+                                         aria-labelledby="headingOne" data-parent="#accordionExample">
+                                            <div class="card-body" [ngClass]="{hideoverflow: !question.choices.length }">
+                                                <div *ngIf="question.user_answers && !question.chart_data.length">
+                                                    <div *ngFor="let answer of question.user_answers" style="display: flex">
+                                                        <div class="col-3 col-sm-5 col-md-4 border border-right-0 py-3">
+                                                            <div class="row" *ngIf="answer.user">
+                                                                <div class="col-sm-5 col-lg-5">
+                                                                    <div class="survey-results img-flex">
+                                                                        <img src="{{socketService.server_url}}{{answer.user.photo}}" alt="user" id="dialog">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-7 col-lg-7 mt-3">
+                                                                    <label>
+                                                                        <a (click)="show_user_details(answer.user.name,answer.user.email)">{{answer.user.name}}</a>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-9 col-sm-7 col-md-8 border py-3 font-weight-light text-justify">
+                                                            {{answer.answers.substr(0,250)}}
+                                                            <a class="readmore" *ngIf="answer.answers.length > 250"
+                                                                (click)="show_answer_details(answer.answers)">Read More...</a>                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="question.chart_data.length && question.user_answers.length > 0" class="w-50 ml-25">
+                                                    <div class="canvas_warpper my-5">
+                                                        <div class="canvas_container">
+                                                                <canvas id="chartData-{{question.id}}"></canvas>
+                                                        </div>
+                                                     </div>
+                                                    <label>Choices: Answer By {{ question.user_answers.length }} Person</label> 
+                                                    <table class="table">
+                                                        <tbody>
+                                                            <tr *ngFor="let obj of question.chart_data">
+                                                                <td [ngStyle]="{'background-color': obj.color}" style="width: 20px;height:20px;padding:0"></td>
+                                                                <td>{{obj.option_name}}</td>
+                                                                <td>{{obj.option_result || 0}}</td>
+                                                                <td *ngIf="obj.type != 'select-multiple'">{{obj.option_perc || 0}}%</td>
+                                                                <td *ngIf="obj.type == 'select-multiple'">{{obj.total_perc || 0}}%</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>                                                        
+                                                </div>    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

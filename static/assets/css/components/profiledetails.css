@@ -1,0 +1,233 @@
+.UserProfileNameTittle{
+	color:#3059C9;
+	font-size:25px;
+}
+.UserProfileDiscripTittle{
+	color:#444444;
+	font-size:16px;
+}
+
+.details-card h3{
+    margin: 25px 0;
+    font-size: 1.7em;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding:0 10px;
+    margin: 5px 0 10px 0;
+    display: block;
+    border: 1px solid #dedee8;
+    height: 35px;
+    line-height: 35px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+hr {
+    border: 1px solid #f1f1f1;
+    margin: 25px 0 25px 0;
+}
+
+/* Set a style for all buttons */
+/* button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+} */
+
+/* button:hover {
+    opacity:1;
+} */
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+    padding: 14px 20px;
+    background-color: #f44336;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn {
+    float: left;
+    width: 100%;
+}
+
+.signupbtn {
+    width: 100%;
+}
+
+/* Add padding to container elements */
+
+/* Clear floats */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.wordBreak{
+    word-break: break-all
+}
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 576px) {
+    .img-flex img{
+        border:1px solid #ddd;
+    }
+    h4.title-h4{
+        text-align: left;
+    }
+    .left-text{
+        text-align: left !important;
+    }
+}
+@media screen and (max-width: 340px) {
+    .cancelbtn, .signupbtn {
+        width: 100%;
+    }
+    h4.title-h4{
+        font-size: .9rem;
+    }
+}
+
+
+/*Success Snackbar*/
+
+.snackbar-success {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #54C036;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+    z-index: 999;
+}
+
+.snackbar-success.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+/*ERROR SNACKBAR*/
+
+
+.snackbar-error {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #ff0033;
+    color: white;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+    z-index: 999;
+}
+
+.snackbar-error.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+/*=============================
+last-login-details
+=============================*/
+
+.last-login-details {
+    background: #f8f8f8;
+    padding-bottom: 10px;
+    /* box-shadow: 1px 1px 119px #00000038; */
+}
+
+.last-login-details h3 {
+    margin: 10px 0;
+    padding: 0;
+    color: #313030;
+}
+
+.last-login-details span {
+    display: block;
+    color: #797979;
+}
+.docwrappercontainer .resume-edit-control
+{
+    text-align: center;    
+    position: absolute;
+    top: -9px;
+    font-size: 20px;
+    right: 11px;
+}
+.edit-file{
+    position: absolute;
+    left: 120px;
+    padding: 0.3rem 0.4rem 0.3rem 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    background: #4B74B5;
+    color: #fff;
+    font-size: 0.8rem;
+}
+@media screen and (max-width:576px){
+    .Eedit-resume-docs-icon img{
+        width: 75px;
+    }
+}

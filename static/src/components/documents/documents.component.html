@@ -1,0 +1,104 @@
+<div *ngIf="docs.length || socketService.admin_mode || personal" >
+    <div class="doc_container home_actions">
+        <h3>
+            <i class="icon-doc-file text-primary"></i> {{title}}
+        </h3>
+        <div *ngIf="docs && docs.length" class="doc_length">
+            {{docs.length}} Document<span *ngIf="docs.length > 1">s</span>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-4" *ngFor="let doc of docs">
+            <a *ngIf="doc.invalid" class="corrupt">
+                <input type="hidden" class="item_id" value="{{doc.id}}" />
+                <div class="doc-del-btn d-flex" *ngIf="!deleting && (socketService.admin_mode || personal) && !readonly">
+                    <div class="pointer" *ngIf="parent_model == 'Folder'"
+                    title="Move"
+                    (click)="renameService.make_movable($event, parent_id, doc.id, 'files', doc.personal)">
+                        <i class="fas fa-cut" ></i>
+                    </div>
+                    <div class="pointer"
+                    title="Delete"
+                    (click)="delete_file($event, doc.id)">
+                        <i class="far fa-trash-alt" ></i>
+                    </div>                    
+                </div>
+                <div class="p-1 pos-abs" style="left:5px">
+                    <img height="20px" width="20px" src="{{get_icon_url(doc.access_token)}}" alt="" class="doc_icons">
+                </div>
+                <div class="DocIcon">
+                    <span class="rounded-circle">
+                        <i class="icon-doc-file"></i>
+                    </span>
+                </div>
+                <div title="Rename Document" class="DocText" (click)="renameService.prevent_default($event, personal)">
+                    <div class="DocName w-100">
+                        <div *ngIf="!doc.edit_mode" [ngClass]="{'d-flex justify-content-between align-items-center': socketService.admin_mode || personal}">
+                            <span class="text-truncate doc-info" [ngClass]="{'mt-2': (!socketService.admin_mode && !personal)}">{{doc.name}}</span>                            
+                        </div>
+                    </div>   
+                </div>
+            </a>
+            <a class="DocumentWrapper gray-bg doc" 
+                *ngIf="!doc.invalid"
+                [ngClass]="{personal: doc.personal}"
+                routerLink="{{roterLinkPrefix+doc.id}}"
+                >
+                <input type="hidden" class="item_id" value="{{doc.id}}" />
+                <div class="doc-del-btn d-flex" *ngIf="!deleting && (socketService.admin_mode || personal) && !readonly">
+                    <div class="pointer" *ngIf="parent_model == 'Folder'"
+                    title="Move Document"
+                    (click)="renameService.make_movable($event, parent_id, doc.id, 'files', doc.personal)">
+                        <i class="fas fa-cut" ></i>
+                    </div>
+                    <div class="pointer"
+                    title="Delete Document"
+                    (click)="delete_file($event, doc.id)">
+                        <i class="far fa-trash-alt" ></i>
+                    </div>
+                </div>
+                <div class="p-1 pos-abs" style="left:5px">
+                    <img height="20px" width="20px" src="{{get_icon_url(doc.access_token)}}" alt="" class="doc_icons">
+                </div>
+                <div class="DocIcon">
+                    <span class="rounded-circle">
+                        <i class="icon-doc-file"></i>
+                    </span>
+                </div>
+                <div class="DocText" (click)="renameService.prevent_default($event, personal)">
+                    <div class="DocName w-100">
+                        <div *ngIf="!doc.edit_mode" [ngClass]="{'d-flex justify-content-between align-items-center': socketService.admin_mode || personal}">
+                            <span class="text-truncate doc-info" [ngClass]="{'mt-2': (!socketService.admin_mode && !personal)}">{{doc.name}}</span>
+                            <span class="d-flex">
+                                <button title="Rename Document" (click)="renameService.enable_rename($event, doc)" *ngIf="socketService.admin_mode || personal" class="btn btn-sm btn-primary ml-2 mr-1">
+                                    <svg _ngcontent-c9="" height="20" viewBox="0 0 35.813 35.809" width="15" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-c9="" id="edit" transform="translate(0 -0.028)"><path _ngcontent-c9="" d="M33.494,2.346a7.9,7.9,0,0,0-11.179,0L1.819,22.834a1.025,1.025,0,0,0-.29.588L.01,34.669a1.022,1.022,0,0,0,.29.862,1.042,1.042,0,0,0,.725.305.829.829,0,0,0,.137-.008l6.776-.916a1.032,1.032,0,0,0-.275-2.045L2.231,33.6l1.061-7.844,8.256,8.256a1.042,1.042,0,0,0,.725.305A1.01,1.01,0,0,0,13,34.013l20.5-20.488a7.894,7.894,0,0,0,0-11.179ZM22.712,4.864l3.441,3.441-18.7,18.7L4.009,23.567ZM12.28,31.831,8.915,28.466l18.7-18.7,3.365,3.365ZM32.418,11.655,24.184,3.422a5.849,5.849,0,0,1,8.233,8.233Z" data-name="Path 8793" fill="#fff" id="Path_8793" transform="translate(0 0)"></path></g></svg>
+                                </button>
+                                <button title="Define Access" *ngIf="res_model=='ResourceDocument' && (socketService.admin_mode || personal)" 
+                                (click)="userService.get_access_details(doc,'resources','ResourceDocument', parent)" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-user-plus"></i>
+                                </button>
+                            </span>
+                        </div>
+                        
+                        <div title="Rename Document" *ngIf="personal_access && doc.edit_mode" [ngClass]="{'d-flex justify-content-between align-items-center': socketService.admin_mode || personal}">
+                            <input class="form-control renamer"   
+                                (blur)="renameService.renamer_focused_out($event,doc,'file')"                             
+                                (keyup)="renameService.renamer_focused_out($event,doc,'file')"												
+                                value="{{doc.name}}"
+                                (change)="renameService.renamer_changed($event.target)">
+                            <button 
+                            class="fri-selt-btn check-time-btn" 
+                            aria-label="rename file.">
+                                <i class="fas fa-check"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div *ngIf="(personal || socketService.admin_mode) && !readonly">        
+        <input class="dlc-file-picker" type="file" name='files[]' multiple/>
+    </div>
+</div>

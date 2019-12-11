@@ -1,0 +1,170 @@
+<app-breadcrumb app="meetings" model="topic" 
+*ngIf="topic && meeting_type"
+rid={{topic.id}}
+delete="1"
+routes='[{"title":"{{meeting_type}} Meetings", "link":"/meetings/{{meeting_type}}"},
+{"title":"{{meeting_name}}", "link":"/meeting/{{meeting_id}}"}]'
+title="{{topic.name}}"></app-breadcrumb>
+<div class="router-outlet"><div class="container">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="MainTitleHeadWrap">
+					<div class="HeadingWrap">
+						<h3 class="text-dark"><i class="icon-meeting-agenda text-primary"></i> {{topic.name}}</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+        <div class="row">
+
+            <div class="col-sm-12 mr-b20">
+                <div  class="row">
+					<div *ngIf="topic.name" class="col-md-6">
+						<div class="meet-elements">Name</div>
+						<label class="meet-elementsInfo">{{topic.name}}</label>
+					</div>
+					<div *ngIf="topic.lead" class="col-md-6">
+						<div class="meet-elements">Lead</div>
+						<label class="meet-elementsInfo">{{topic.name}}</label>
+					</div>
+					<div *ngIf="topic.duration" class="col-md-6">
+						<div class="meet-elements">Duration</div>
+						<label class="meet-elementsInfo">{{topic.duration | hm}}</label>
+					</div>
+					<div *ngIf="topic.content" class="col-md-6">
+						<div class="meet-elements">Content</div>
+						<label class="meet-elementsInfo">{{topic.content}}</label>
+					</div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div *ngIf="(topic.surveys && topic.surveys.length) || (topic.votings && topic.votings.length)">
+        <h3 class="mt-3 attachedActions">
+            <i class="icon-business text-primary"></i> 
+            Attached Actions
+        </h3>
+    </div>
+    <div *ngIf="topic.surveys && topic.surveys.length" class="title-wrapper border-bottom">
+        <!--Surveys-->
+        <div class="clearfix">
+            <h4 class="text-primary float-left"><i class="icon-action"></i> Surveys</h4>
+            <div class="controls-top float-right btn-group mb-2" *ngIf="topic.surveys && topic.surveys.length > visible_limit['survey']">
+                <a class="btn-floating btn btn-sm btn-primary text-white" (click)="get_slider_start_index(-1,topic.surveys, 'survey')" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+                <a class="btn-floating btn btn-sm btn-primary text-white" (click)="get_slider_start_index(1, topic.surveys, 'survey')" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col col-md-6 col-lg-4 mb-4" *ngFor="let sur of topic.surveys">
+                <div class="kanban-card position-relative">
+                    <div class="kanban-meeting-info">
+                        <div class="kanban-upcoming-meeting" routerLink="/survey/{{sur.id}}">
+                            <div *ngIf="sur.open_date" class="CalendarDateWrapper">
+                                <span class="CalendarDateWrap">
+                                    <span class="kanban-upcoming-meeting-date">
+                                        {{sur.open_date.day}}
+                                    </span>
+                                        <span>
+                                        {{sur.open_date.month_year}}
+                                    </span>
+                                    <span>
+                                        {{sur.open_date.time}}
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="Info">
+                                <p class="text-truncate" *ngIf="sur.name">
+                                    <b>{{sur.name}}</b>
+                                </p>
+                                <span class=" text-truncate" *ngIf="sur.description">
+                                    Description: {{sur.description}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-between">
+                            <div class="col">
+                                <div class="bs-btnwrap survey-top-buttons" routerLink="/survey/{{sur.id}}" [ngStyle]="{'background': '#f3f3f3'}">
+                                    <a *ngIf = "sur.my_status == 'pending'" class="btn text-white">Start Survey</a>
+                                    <a *ngIf = "sur.my_status == 'done'" class="btn text-white">Survey Results</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>             
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="topic.votings && topic.votings.length" class="title-wrapper border-bottom">
+        <!--Votings-->
+        
+        <div class="clearfix mt-3">
+            <h4 class="text-primary float-left"><i class="icon-voting"></i> Resolutions</h4>
+            <div class="controls-top float-right btn-group mb-2" *ngIf="topic.votings.length > visible_limit['voting']">
+                <a class="btn-floating btn btn-sm btn-primary text-white" (click)="get_slider_start_index(-1,topic.votings, 'voting')" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+                <a class="btn-floating btn btn-sm btn-primary text-white" (click)="get_slider_start_index(1, topic.votings, 'voting')" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-md-6 col-lg-4 mb-4" *ngFor="let vote of topic.votings">
+                <div class="kanban-card position-relative">
+                    <div class="kanban-meeting-info">
+                        <div class="kanban-upcoming-meeting" routerLink="/voting/{{vote.id}}">
+                            <div *ngIf="vote.open_date" class="CalendarDateWrapper">
+                                <span class="CalendarDateWrap">
+                                    <span class="kanban-upcoming-meeting-date">
+                                        {{vote.open_date.day}}
+                                    </span>
+                                        <span>
+                                        {{vote.open_date.month_year}}
+                                    </span>
+                                    <span>
+                                        {{vote.open_date.time}}
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="Info">
+                                <p class="text-truncate" *ngIf="vote.name">
+                                    <b>{{vote.name}}</b>                                        
+                                </p>
+                                <span *ngIf="vote.voting_type__name">
+                                    <strong>Voting Type: </strong>{{vote.voting_type__name}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-between">
+                            <div class="col">
+                                <div class="bs-btnwrap survey-top-buttons" routerLink="/voting/{{vote.id}}" [ngStyle]="{'background': '#f3f3f3'}">
+                                    <span *ngIf = "vote.my_status != 'pending'" class="btn text-white">Results</span>
+                                    <span *ngIf = "vote.my_status == 'pending'" class="btn text-white">Start</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>             
+                </div>
+            </div>
+        </div>
+    </div>
+    <section *ngIf="socketService.admin_mode || (topic.docs && topic.docs.length)" class="HomepageDocumentSection">
+        <div class="container">
+            <div class="row">
+                <div  class="col-sm-12">
+                    <app-documents 
+                    *ngIf="topic && topic.id"
+                    title="Documents"
+                    parent_model="Topic" 
+                    parent_field="agenda_id" 
+                    parent_id="{{topic.id}}"
+                    res_app="meetings" 
+                    res_model="AgendaDocument">
+                    </app-documents>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

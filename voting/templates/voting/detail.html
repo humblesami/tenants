@@ -1,0 +1,37 @@
+{% extends 'voting.html' %}
+{% block content %}
+    {% load static %}
+    <script src="{% static 'js/custom_voting.js' %}"></script>
+    <div class="btn">
+        <a href="/voting/">
+            <i class="fa fa-arrow-left"></i>
+            Back To Votings
+        </a>
+    </div>
+    <h1>{{ voting.name }}</h1>
+    <h4>{{voting.description}}</h4>
+    <h4>{{voting.open_date}}</h4>
+    <h4>{{voting.close_date}}</h4>
+    <!-- {% url 'voting:answer' voting.id %} -->
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="answer-container" style="display:flex">
+            {% for option in options %}
+                <button class="btn btn-primary {{option.name}}" data-id="{{option.id}}" style="margin-right:10px">{{option.name}}</button>
+            {% endfor %}
+        </div>
+        {% if voting.public_visibility %}
+            <div>
+                <button class="btn btn-primary public-visibility" style="margin-top:10px">Graphical View</button>
+            </div>
+        {% endif %}
+        {% if voting.enable_discussion %}
+            <div style="border:solid grey 1px; margin-top:10px">
+                <h1>discussion is enabled</h1>
+            </div>
+        {% endif %}
+        {% if voting.signature_required %}
+            <input type="hidden" name="signature-required">
+        {% endif %}
+    </form>
+{% endblock %}

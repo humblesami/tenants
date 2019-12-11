@@ -1,0 +1,103 @@
+﻿<div class="breadcrumbSection">
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">                                                
+            <a routerLink="/resources">
+                Resources
+            </a>
+        </li>
+        <li class="breadcrumb-item" *ngFor="let parent of parents">                                                
+            <a routerLink="/resource/{{parent.id}}">
+                {{parent.name}}
+            </a>
+        </li>
+        <li *ngIf="folder && folder.name" class="breadcrumb-item active">{{folder.name}}</li>
+    </ul>
+    <div class="edit-buttons" *ngIf="socketService.admin_mode">		
+	</div>
+</div>
+
+<div class="router-outlet">    
+    <div *ngIf="search_options" class="container resources">        
+        <div class="kanban-headings">
+            <h3>
+                <i class="icon-folder text-primary"></i> Resources
+            </h3>
+        </div>
+        <div class="sub search">
+            <div class="input-group main-full-seachbar">
+                <input id="search_input" type="text"
+                    (change)="search()"                    
+                    placeholder="Search..." class="form-control py-2 border-0">
+                <span class="">
+                    <button class="btn bg-white border-left" 
+                    (click)="advance_search=!advance_search;advance_search_toggled()">
+                        <i class="fa fa-cog text-muted bold-setting small"></i>
+                    </button>
+
+                    <button class="btn bg-white border-left" 
+                    (click)="search()">
+                        <i class="fa fa-search text-primary"></i>
+                    </button>
+                </span>
+            </div>
+            <div class="search_options popup">
+                <span>
+                    <input type="radio" name="search_type" 
+                    (change)="search('files')"
+                    [checked]="search_options.search_type == 'files'"
+                    value="files"  />
+                    <label>Files</label>
+                </span>
+                
+                <span>
+                    <input type="radio" name="search_type" 
+                    (change)="search('folders')"
+                    [checked]="search_options.search_type == 'folders'"
+                    value="folders"  />
+                    <label>Folders</label>
+                </span>
+                
+                <span>
+                    <input type="radio" name="search_type" 
+                    (change)="search('all')"
+                    [checked]="search_options.search_type == 'all'"
+                    value="all"  />
+                    <label>All</label>
+                </span>
+                
+                <span>
+                    <input type="checkbox"
+                    (change)="search('recursive')"
+                    [(ngModel)]="search_options.recursive"
+                    name="recursive" />
+                    <label>Recursive</label>
+                </span>
+                
+            </div>
+        </div>
+        
+
+        <div class="sub_folders" *ngIf="!reloading && search_options.search_type != 'files'">
+            <app-folders
+            search_kw="{{search_options.search_kw}}"
+            recursive="{{search_options.recursive}}"
+            search_type="{{search_options.search_type}}"
+            (data_loaded)=data_loaded($event)
+            parent_id="{{folder_id}}"></app-folders>
+        </div>        
+        <app-documents
+            
+            *ngIf="!reloading && (folder_id || search_options.recursive) && (search_options.recursive || folder_id) 
+            && search_options.search_type != 'folders'"
+
+            search_kw="{{search_options.search_kw}}"
+            recursive="{{search_options.recursive}}"
+            search_type="{{search_options.search_type}}"
+            parent_model="Folder" 
+            parent_field="folder_id" 
+            parent_id="{{folder_id}}"
+            res_app="resources" res_model="ResourceDocument">
+        </app-documents>
+        
+    </div>
+</div>

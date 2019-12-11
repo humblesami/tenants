@@ -1,0 +1,73 @@
+﻿<app-breadcrumb app="meetings" model="committee" 
+*ngIf="committee" rid="{{committee.id}}" edit="1" delete="1" 
+routes='[{"title":"Committees", "link":"/committees"}]'
+title="{{committee.name}}"></app-breadcrumb>
+<div class="router-outlet">
+    <div  class="cards container">
+        <div class="page-links">
+            <span class="prev next-prev-link" title="Privious">
+                <i class="fa fa-angle-left"></i>
+            </span>
+            <span class="next next-prev-link" title="Next">
+                <i class="fa fa-angle-right"></i>
+            </span>
+        </div>
+        <div *ngIf="committee" class="deatils-form">
+            <div class="col-lg-12">
+                <div  class="kanban-headings child-pages">
+                    <h3 class="text-capitalize">
+                        <i class="icon-committees text-primary"></i> {{committee.name}}
+                    </h3> 
+                </div>
+            </div>
+            <div  class="container">
+                <div  *ngIf="committee.description">
+                    <div class="meet-elements">
+                        Description
+                    </div>
+                    <label class="meet-elementsInfo text-overflow-visible text-justify" [innerHtml]="committee.description"></label>
+                </div>
+                <div>
+                <div class="kanban-headings">
+                    <h3>
+                        <i class="fa fa-users text-primary"></i> Members
+                    </h3> 
+                </div>
+                <app-paginator *ngIf="committee.users.length" (reload_data)="get_list(committee.id)">
+                </app-paginator>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-4 mb-4" *ngFor="let profile of committee.users">
+                        <div class="kanban-card">
+                            <a routerLink="/profile/{{profile.id}}" class="kanban-profiles-user-info-box">
+                                <div class="kanban-profiles-user-img" [ngClass]="{default: profile.photo.endsWith('/default.png')}">
+                                    <img class="img-thumbnail-md" alt='N/A' src="{{socketService.server_url}}{{profile.photo}}">
+                                </div>
+                                <div class="min-width-0">
+                                    <div class="font-weight-bolder text-truncate">
+                                        {{profile.name}}
+                                    </div>
+                                    <div class="kanban-profiles-user-InfoLIST text-truncate">
+                                        <i class="fas fa-envelope"></i>{{profile.email}}
+                                    </div>
+                                    <div *ngIf="profile.committees && profile.committees.length > 0">
+                                        <p for="job-title" class="mb-1">
+                                            <b>Committees</b>
+                                        </p>                                                    
+                                        <span class="committee-member" *ngFor="let com of profile.committees">
+                                            <span  routerLink="/committees/{{com['id']}}">{{com['name']}}</span>
+                                        </span>                                                                                            
+                                    </div>
+                                    <div *ngIf="profile.response_by">Response By: {{profile.response_by}}</div>
+                                    <div *ngIf="profile.state" class="">
+                                        <b>Status : </b> {{profile.state}}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

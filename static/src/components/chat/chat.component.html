@@ -1,0 +1,36 @@
+<div class="notification-container">
+    <div class="main-user-navbar">
+        <div class="mobile-chatroom nav-icon dropdown">
+            <button (click)="toggle_notifications($event)"
+            class="showmouseawaybutton notification-icon notif">
+                <i class="icon-noti"></i>
+            </button>
+            <span class="un-read-msg" *ngIf="socketService.notificationList.length > 0">{{socketService.notificationList.length}}</span>
+        </div>
+    </div>
+    
+    <div class="container right-panel notification-list hidemouseaway">
+		<div class="arrow"></div>
+        <div class="notihead">Notification</div>
+        <ul class="chat-items list-group">
+            <li *ngFor="let note of socketService.notificationList">                
+                <a class="list-group-item contact" 
+                    *ngIf="note.client_route"                    
+                    routerLink="{{note.client_route}}">
+                    <div style="display: contents;" class="wrap">
+                        {{ note.body }}
+                    </div>
+                </a>
+                <a class="list-group-item contact" *ngIf="!note.client_route"
+                    [attr.link]="note.link">
+                    <div style="display: contents;" class="wrap">
+                        {{ note.body }}
+                    </div>
+                </a>
+            </li>
+            <li *ngIf="socketService.notificationList.length == 0" class="list-group-item contact">
+                No New Notifications
+            </li>
+        </ul>
+    </div>
+</div>

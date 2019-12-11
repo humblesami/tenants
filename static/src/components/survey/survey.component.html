@@ -1,0 +1,71 @@
+<app-breadcrumb app="survey" model="survey" *ngIf="surveyDetails" rid="{{surveyDetails.id}}" edit="1" delete="1" routes='[{"title":"Actions", "link":"/actions"}, {"title":"Surveys", "link":"/surveys"}]' title="{{surveyDetails.name}}"></app-breadcrumb>
+<div class="router-outlet">
+    <div class="container" *ngIf="surveyDetails">
+        <div class=" form-details">
+            <div class="meeting-details-form">
+                <div class="row">
+                    <div *ngIf="surveyDetails.name" class="col-lg-12">
+                        <div class="kanban-headings child-pages">
+                            <h3>
+                                <i class="icon-action text-primary"></i> {{surveyDetails.name}}
+                            </h3>
+                            <div class="MeetingBtnWrapper" *ngIf="surveyDetails.is_published">
+                                <div class="btn-group" id="tdmrb{{surveyDetails.id}}">
+                                    <a *ngIf="surveyDetails.is_respondent" id="{{surveyDetails.id}}" class="btn" routerLink='/survey/survey/details/{{surveyDetails.id}}'>Start Survey</a>
+                                    <a id="{{surveyDetails.id+surveyDetails.name}}" class="btn btn-primary" routerLink='/survey/{{surveyDetails.id}}/results'>Survey Results</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div *ngIf="surveyDetails.meeting && surveyDetails.meeting.name" class="col-lg-12">
+                        <div class="meet-elements">
+                            Meeting Subject
+                        </div>
+                        <a class="col-sm-6 col-md-4 col-lg-4 anchor-mb" routerLink="/home/meeting/{{voting_object.meeting.id}}">{{voting_object.meeting.name}}</a>
+                    </div>
+                    <div *ngIf="surveyDetails.topic && surveyDetails.topic.name" class="col-lg-12">
+                        <div class="meet-elements">
+                            Topic
+                        </div>
+                        <a class="col-sm-6 col-md-4 col-lg-4 anchor-mb" routerLink="/topic/{{voting_object.topic.id}}">{{voting_object.topic.name}}</a>
+                    </div>
+                    <div *ngIf="surveyDetails.hasOwnProperty('open_date') && surveyDetails.open_date" class="col-sm-6">
+                        <div class="meet-elements">
+                            Open Date
+                        </div>
+                        <label class="meet-elementsInfo" [innerHtml]="surveyDetails.open_date | date:'medium'"></label>
+                    </div>
+                    <div *ngIf="surveyDetails.hasOwnProperty('close_date') && surveyDetails.close_date" class="col-sm-6">
+                        <div class="meet-elements">
+                            Close Date
+                        </div>
+                        <label class="meet-elementsInfo" [innerHtml]="surveyDetails.close_date | date:'medium'"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div *ngIf="surveyDetails.hasOwnProperty('description') && surveyDetails.description" class="col-lg-12">
+                        <div class="meet-elements text-overflow-visible">
+                            Description
+                        </div>
+                        <label class="meet-elementsInfo text-overflow-visible" [innerHtml]="surveyDetails.description"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div *ngIf="surveyDetails.questions && surveyDetails.questions.length" class="col-lg-12">
+                        <div class="meet-elements">
+                            Questions
+                        </div>
+                        <div>
+                            <label class="meet-elementsInfo" *ngFor="let question of surveyDetails.questions">
+                     {{question.text}}
+                     </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-comments *ngIf="voting_object && voting_object.enable_discussion" res_app="{{discussion_params.res_app}}" res_model="{{discussion_params.res_model}}" res_id="{{discussion_params.res_id}}"></app-comments>
+    </div>
+</div>

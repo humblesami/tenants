@@ -1,0 +1,18 @@
+<label class="pop-heading">Users List</label>
+<div>
+    <app-userlist 
+    user_input_str="{{user_input_str}}"
+    add_only = "{{add_only}}"
+    selection_input_str="{{selection_input_str}}"
+    (group_users_changed)="on_user_selected($event)"
+    ></app-userlist>
+
+    <div class="pop-bottom">
+        <div> 
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary mr-1" (click)="sendRecord()">Save</button>
+            <button type="button" class="btn btn-danger" (click)="activeModal.close()">Close</button>
+        </div>
+    </div>
+</div>

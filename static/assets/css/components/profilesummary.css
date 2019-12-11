@@ -1,0 +1,18 @@
+.close-btn{
+    background-color: #21375a !important;
+}
+/* .ProfileUserNameJonbWrapper{
+    text-align: center;
+} */
+.cancel_button{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #fff !important;
+    background: #dc3545;
+    border-radius: 50%;
+    padding: 5px 10px;
+}
+.profile-border-bottom{
+    border-bottom: 1.5px solid #4b74b5;
+}
