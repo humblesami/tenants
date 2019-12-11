@@ -55,7 +55,7 @@ def form_company_info(request, plan_id):
                 if error:
                     error += ', ' + message
             if error:
-                redirect(request, '/subscriptions/' + req_data['plan_id'])
+                return redirect('/subscriptions/' + req_data['plan_id'])
             else:
                 payment_token = uuid.uuid4().hex[:20]
                 medium = PaymentMethod.objects.filter(name='Stripe')
@@ -69,7 +69,9 @@ def form_company_info(request, plan_id):
                 obj.token = payment_token
                 obj.amount = usd_amount
                 obj.save()
-                redirect(request, '/subscriptions/payment/' + payment_token)
+                success_url = 'payment/' + payment_token
+                print('\n\n' + success_url + '\n\n')
+                return redirect(success_url)
     except:
         res = produce_exception()
         context['error'] = res

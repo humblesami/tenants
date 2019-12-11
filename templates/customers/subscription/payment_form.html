@@ -33,12 +33,13 @@
                                         display:none;
                                     }
                                     </style>
-                                    <script src="/static/portal/pay.js"></script>
+                                    <button type="submit">Pay Now</button>
                                     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                     data-key="{{key}}"
                                     data-description="Odufax Charge"
                                     data-amount="{{ plan.cents_cost }}"
                                     data-locale="auto"></script>
+                                    <script src="/static/portal/pay.js"></script>
                                 </form>
                             </div>
                         </div>

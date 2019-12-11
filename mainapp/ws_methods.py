@@ -569,27 +569,28 @@ def produce_exception(msg=None):
                 error_message += " " + er
     else:
         error_message = msg
-    try:
-        dir = os.path.dirname(os.path.realpath(__file__))
-        ar = dir.split('/')
-        ar = ar[:-1]
-        dir = ('/').join(ar)
-        with open(dir+'/error_log.txt', "a+") as f:
-            f.write(error_message + '\n')
-    except:
-        try:
-            dir = os.path.dirname(os.path.realpath(__file__))
-            ar = dir.split('\\')
-            ar = ar[:-1]
-            dir = ('\\').join(ar)
-            with open(dir + '\\error_log.txt', "a+") as f:
-                f.write(error_message + '\n')
-        except:
-            eg = traceback.format_exception(*sys.exc_info())
-            error_message = ''
-            cnt = 0
-            for er in eg:
-                cnt += 1
-                if not 'lib/python' in er:
-                    error_message += " " + er
-            return error_message
+    return error_message
+    # try:
+    #     dir = os.path.dirname(os.path.realpath(__file__))
+    #     ar = dir.split('/')
+    #     ar = ar[:-1]
+    #     dir = ('/').join(ar)
+    #     with open(dir+'/error_log.txt', "a+") as f:
+    #         f.write(error_message + '\n')
+    # except:
+    #     try:
+    #         dir = os.path.dirname(os.path.realpath(__file__))
+    #         ar = dir.split('\\')
+    #         ar = ar[:-1]
+    #         dir = ('\\').join(ar)
+    #         with open(dir + '\\error_log.txt', "a+") as f:
+    #             f.write(error_message + '\n')
+    #     except:
+    #         eg = traceback.format_exception(*sys.exc_info())
+    #         error_message = ''
+    #         cnt = 0
+    #         for er in eg:
+    #             cnt += 1
+    #             if not 'lib/python' in er:
+    #                 error_message += " " + er
+    #         return error_message
