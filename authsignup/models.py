@@ -1,6 +1,10 @@
 import os
 import uuid
 
+from django.contrib.contenttypes.models import ContentType
+from django.db import connection
+from django_tenants.utils import get_tenant_model
+
 from .models_login import *
 from restoken.models import PostUserToken
 from mainapp.models import CustomModel
@@ -35,11 +39,44 @@ class AuthUser(user_model, CustomModel):
     mobile_phone = models.CharField(max_length=30, blank=True)
     image_updated = models.BooleanField(default=False)
 
+    def create_public_user(self, password):
+        user_tenant = connection.tenant
+        connection.set_schema_to_public()
+        tenant_model = get_tenant_model()
+
+        public_tenant = tenant_model.objects.get(schema_name='public')
+        connection.set_tenant(public_tenant)
+        ContentType.objects.clear_cache()
+
+        public_user = User.objects.filter(email=self.email)
+        if not public_user:
+            public_user = User.objects.create(username=self.email, email=self.email, is_active=self.is_active)
+            public_user.set_password(password)
+            public_user.save()
+        else:
+            public_user = public_user[0]
+
+        user_tenant.users.add(public_user)
+        user_tenant.save()
+
+        self.on_schema_creating = False
+        connection.set_tenant(user_tenant)
+        ContentType.objects.clear_cache()
+
+    on_schema_creating = False
+
     def save(self, *args, **kwargs):
         creating = False
-        if self.pk:
+        password = self.password
+        if not self.pk:
             creating = True
-        super(AuthUser, self).save(*args, **kwargs)
+        if self.email:
+            self.username = self.email
+        elif self.username:
+            self.email = self.username
+        super(AuthUser, self).save(args, kwargs)
+        if not self.on_schema_creating:
+            self.create_public_user(password)
 
     # def save(self, *args, **kwargs):
     #     creating = False

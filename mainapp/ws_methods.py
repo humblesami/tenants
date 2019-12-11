@@ -27,12 +27,11 @@ from mainapp.settings import SOCKET_SERVER_URL
 from emailthread.models import EmailThread
 
 
-
 import sys
 import traceback
 from datetime import datetime
 from datetime import timedelta
-from main_app.settings import PROTOCOL, MAIN_URL
+from mainapp.settings import PROTOCOL, MAIN_URL
 
 
 def get_company_url(schema_name):

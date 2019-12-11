@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from main_app.views import tenant_logout
+from mainapp.views import tenant_logout
 from mainapp import rest_api
 from tenant_only.views import TokenIndex
 from .import views
@@ -14,7 +14,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'', include('ngapp.urls')),
     url(r'^sw.js', (TemplateView.as_view(template_name="sw.js", content_type='application/javascript', )), name='sw.js'),
-    url(r'admin/', admin.site.urls, name='admin'),
     path('rest/public', rest_api.public, name = 'public'),
     path('rest/secure', rest_api.secure, name = 'secure'),
     path('rest/secure1', rest_api.session, name = 'session'),
@@ -25,7 +24,6 @@ urlpatterns = [
 
     url(r'^user/', include('authsignup.urls')),
     url(r'^', include('documents.urls')),
-    url(r'^temp/', include('temp.urls')),
     url(r'^voting/', include('voting.urls')),
     url(r'^meeting/', include('meetings.urls')),
     url(r'^esign/', include('esign.urls')),

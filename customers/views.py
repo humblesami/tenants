@@ -10,9 +10,9 @@ from django_tenants.utils import get_tenant_model
 from django.contrib.contenttypes.models import ContentType
 
 from customers.model_files.payemts import PaymentInProgress
-from main_app import ws_methods
+from mainapp import ws_methods
 from website.models import PortalUser
-from main_app.settings import SERVER_PORT_STR, TENANT_DOMAIN
+from mainapp.settings import SERVER_PORT_STR, TENANT_DOMAIN
 
 
 class CheckForExisting(View):

@@ -4,14 +4,15 @@ import stripe
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.db import connection, transaction
+from django.core.management import call_command
 from django_tenants.utils import get_tenant_model
 from django.contrib.contenttypes.models import ContentType
 
-from auth_t.models import TenantUser
 
-from main_app import settings, ws_methods
-from main_app.settings import TENANT_DOMAIN
-from main_app.ws_methods import produce_exception
+
+from mainapp import settings, ws_methods
+from mainapp.settings import TENANT_DOMAIN
+from mainapp.ws_methods import produce_exception
 
 from customers.models import Client
 from customers.model_files.plans import Plan, PlanCost
@@ -205,13 +206,15 @@ def create_tenant(t_name, email, password, subscription_id, plan_id, request):
                 connection.set_tenant(request.tenant, False)
                 ContentType.objects.clear_cache()
 
-                # all the rest is handled in tenant user creation
-                tenant_user = TenantUser(username=email, is_superuser=True, is_staff=True, is_active=True)
-                tenant_user.on_schema_creating = True
-                tenant_user.email = email
-                tenant_user.save()
-                tenant_user.set_password(password)
-                tenant_user.save()
+                # tenant_user = AuthUser(username=email, is_superuser=True, is_staff=True, is_active=True)
+                # tenant_user.on_schema_creating = True
+                # tenant_user.email = email
+                # tenant_user.save()
+                # tenant_user.set_password(password)
+                # tenant_user.save()
+
+                call_command('loaddata', 'website/fixtures/data.json')
+
                 res = 'done'
             else:
                 res = 'Client with id' + t_name + ' already exists'

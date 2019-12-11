@@ -11,8 +11,7 @@ $(function(){
     
     if(arr.length > 1){
         let tenant_apps = [
-            'auth_t',
-            'tenant_only',
+
         ]
         for(let app of tenant_apps)
         {

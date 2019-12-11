@@ -1,66 +1,106 @@
 [
     {
-        "model": "customers.Plan",
+        "model": "auth.Group",
         "pk": 1,
         "fields": {
-            "name": "Economy",
-            "description": "Love",
-            "cost": "10",
-            "days": "30"
+            "name": "Admin"
         }
     },
     {
-        "model": "customers.PlanCost",
-        "pk": 1,
-        "fields": {
-            "plan_id": "1",
-            "cost": "10",
-            "days": "30"
-        }
-    },
-    {
-        "model": "customers.Plan",
+        "model": "auth.Group",
         "pk": 2,
         "fields": {
-            "name": "Professional",
-            "description": "Deep Love",
-            "cost": "50",
-            "days": "100"
+            "name": "Director"
         }
     },
     {
-        "model": "customers.PlanCost",
-        "pk": 2,
-        "fields": {
-            "plan_id": "2",
-            "cost": "50",
-            "days": "100"
-        }
-    },
-    {
-        "model": "customers.Plan",
+        "model": "auth.Group",
         "pk": 3,
         "fields": {
-            "name": "Ultimate",
-            "description": "Love at full",
-            "cost": "100",
-            "days": "300"
+            "name": "Staff"
         }
     },
     {
-        "model": "customers.PlanCost",
-        "pk": 3,
+        "pk": 1,
+        "model": "auth.user",
         "fields": {
-            "plan_id": "3",
-            "cost": "100",
-            "days": "300"
+            "username": "sa",
+            "first_name": "Faize",
+            "last_name": "Ansari",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "groups": [1],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$150000$IcCUgVA4XXlg$zcfM9BdEPRQ3AR9J6A6jfRLnfT+2jUUvmp2XqLHj0ok=",
+            "email": "muhammad.faizan@digitalnet.com"
         }
     },
     {
-        "model": "customers.PaymentMethod",
+        "model": "authsignup.AuthUser",
+        "fields": {
+            "user_ptr_id": 1
+        }
+    },
+    {
+        "model": "meetings.Profile",
+        "fields": {
+            "user_ptr_id": 1,
+            "authuser_ptr_id": 1
+        }
+    },
+    {
+        "model": "voting.VotingType",
         "pk": 1,
         "fields": {
-            "name": "Stripe"
+            "name": "Voting"
+        }
+    },
+    {
+        "model": "voting.VotingType",
+        "pk": 2,
+        "fields": {
+            "name": "Approval"
+        }
+    },
+    {
+        "model": "voting.VotingChoice",
+        "pk": 1,
+        "fields": {
+            "name": "Yes",
+            "voting_type": 1
+        }
+    },
+    {
+        "model": "voting.VotingChoice",
+        "pk": 2,
+        "fields": {
+            "name": "No",
+            "voting_type": 1
+        }
+    },
+    {
+        "model": "voting.VotingChoice",
+        "pk": 3,
+        "fields": {
+            "name": "Abstain",
+            "voting_type": 1
+        }
+    },
+    {
+        "model": "voting.VotingChoice",
+        "pk": 2,
+        "fields": {
+            "name": "Accept",
+            "voting_type": 2
+        }
+    },
+    {
+        "model": "voting.VotingChoice",
+        "pk": 3,
+        "fields": {
+            "name": "Reject",
+            "voting_type": 2
         }
     }
 ]
