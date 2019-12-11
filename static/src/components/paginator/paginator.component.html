@@ -1,0 +1,56 @@
+<div class="board-sheet-paginator" *ngIf="httpService.total > limit_options[0]">
+    <div class="paging-meta" [ngClass]="{'justify-content-end' : httpService.limit >= httpService.total}">
+        <div class="page-limit">
+            <!-- <span>Page Size</span> -->
+            <div class="c1">
+                <div>
+                    <span class="c11">{{httpService.offset + 1}}-{{httpService.offset + httpService.count}} </span>
+                    <span class="c12"> out of {{httpService.total}}</span> 
+                </div>
+            </div>            
+            <div class="c2 pl-3">
+                <span class="c21">Page Size</span>
+                <select class="c22 form-control-sm" (change)="change_limit($event)" [(ngModel)]="httpService.limit">
+                    <option *ngFor="let opt of limit_options">{{opt}}</option>
+                </select>
+            </div>
+        </div>
+        <div *ngIf="httpService.limit < httpService.total" class="pages" aria-label="Page navigation example">
+            <ul class="pagination  pagination-sm justify-content-center" >
+                <li class="page-item" [class.disabled]="httpService.offset<= '0'" >
+                    <button (click)="first_Page(0)" class="page-link">
+                        <i class="fa fa-chevron-left"></i>
+                        <i class="fa fa-chevron-left"></i>
+                    </button>
+                </li>
+                <li class="page-item" [class.disabled]="httpService.offset<= '0'">
+                    <button (click)="change_page(-1)" class="page-link">
+                        <i class="fa fa-chevron-left"></i>
+                    </button>
+                </li>
+                <ul class="pagination" *ngFor="let obj of shown_pages">
+                    <li class="page-item" [class.active]="page_number == obj" >
+                        <button  (click)="page_Data(obj)" class="page-link">
+                            {{obj}}
+                        </button>
+                    </li>
+                </ul>
+                <li class="page-item" [class.disabled]="httpService.offset + httpService.limit >= httpService.total">
+                    <button (click)="change_page(1)" class="page-link">
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
+                </li>
+                <li class="page-item" [class.disabled]="httpService.offset + httpService.limit >= httpService.total">
+                    <button (click)="last_Page(httpService.total)" class="page-link">
+                        <i class="fa fa-chevron-right"></i>
+                        <i class="fa fa-chevron-right"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div *ngIf="httpService.total <= limit_options[0]" class="record-found">
+    <span *ngIf="httpService.total>0" class="mt-3">{{httpService.total}} Record<span *ngIf="httpService.total>1">s</span> Found</span>
+    <span *ngIf="httpService.total==0">No Records Found</span>
+</div>

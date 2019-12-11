@@ -1,0 +1,430 @@
+<div class="modal-header modal-header-heading">
+    <h1>Edit Profile</h1>
+    <!-- <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button> -->
+</div>
+<div class="modal-body edit-modal-body">    
+    <div class="router-outlet">
+        <div class="details-card profile-edit-container edit-mode" *ngIf="edit_mode">
+            <div class="row edit-buttons edit-mode">
+                <a href="javascript:void(0);" class="btn btn-primary save" (click)="onSubmit()">Save</a>
+                <a href="javascript:void(0);" class="btn btn-primary cancel" (click)="onCancel()">Cancel</a>
+            </div>
+            <div *ngIf="section=='personal'" class="label-control-form">
+                <div class="ProFileHeadWrap">
+                    PERSONAL INFO
+                </div>
+                <div class="row" *ngIf="last_login.login_time">
+                    <div class="row last-login-details">
+                        <div class="col-sm-12">
+                            <h3>Last Login Details</h3>
+                            <span *ngIf="last_login.login_time">Login Time: {{last_login.login_time | date:'MMM dd,yyyy hh:mm:ss A'}}</span>
+                            <span *ngIf="last_login.platform">OS: {{last_login.platform}}</span>
+                            <span *ngIf="last_login.browser">Browser: {{last_login.browser}}</span>
+                            <span *ngIf="last_login.ip">IP: {{last_login.ip}}</span>
+                            <span *ngIf="last_login.location">Location: {{last_login.location}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row single-input-label">
+                    <div class="col-md-6">
+                        <label for="name"> <b>First Name</b> </label>
+                        <input value="{{profile_data.first_name}}" (change)="modified_profile_data.first_name = $event.target.value" type="text" placeholder="Enter First Name" id="first_name">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="name"> <b>Last Name</b> </label>
+                        <input value="{{profile_data.last_name}}" (change)="modified_profile_data.last_name = $event.target.value"  type="text" placeholder="Enter Last Name" id="last_name">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="c-phone"> <b>Cell Phone</b> </label>
+                        <input value="{{profile_data.mobile_phone}}" (change)="modified_profile_data.mobile_phone=$event.target.value" type="text" placeholder="Enter Cell Phone" id="c-phone" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email"> <b>Email</b> </label>
+                        <input value="{{profile_data.email}}" [readonly]="true" (change)="modified_profile_data.email = $event.target.value"  type="text" placeholder="Enter Email" id="email">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="birth_date"> <b>Date of Birth</b> </label>
+                        <input 
+                            value="{{profile_data.birth_date}}"
+                            name="birth_date" 
+                            class="form-control rounded-0 date" 
+                            placeholder="Enter Date of Birth" id="birth_date">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="location"> <b>Location</b> </label>
+                        <input value="{{profile_data.location}}" (change)="modified_profile_data.location = $event.target.value" type="text" placeholder="Enter Location" id="location">
+                    </div>
+
+                    <div *ngIf="my_profile && choice_fields.two_factor_auth" class="col-md-12">
+                            <label for="ethnicity">
+                                <b>Two Factor Authentication</b>
+                            </label>
+                            <div class="UserProfileDiscription">
+                                <!-- <select (change)="modified_profile_data.ethnicity = $event.target.value" id='ethnicity' requeired>
+                                    <option *ngFor="let row of choice_fields.ethnicity" value="{{row.id}}" [selected]="row.id === profile_data.ethnicity.id">{{row.name}}</option>
+                                </select> -->
+
+                                <ng-select
+                                [items]="choice_fields.two_factor_auth"
+                                [multiple]="false"
+                                [closeOnSelect]="true"
+                                [hideSelected]="true"
+                                bindLabel="name"
+                                (change)="setTowFactorAuth()"
+                                placeholder="Select Authentication Type"
+                                [(ngModel)]="selectedTwoFactorAuth"
+                                >
+                                </ng-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row docwrappercontainer mb-0">
+                    <div class="col-sm-12 pt-3">
+                        <div class="ProFileHeadWrap">Resume</div>
+                    </div>
+                    <div  *ngIf="profile_data.resume" class="col-sm-12 mb-4">
+                        <div class="upload-resume-edit-section">
+                            <div class="resume-edit-control resume-edit-control-btn">
+                                <a class="edit link" (click)="edit_resume($event.target)">
+                                    <i class="far fa-trash-alt"></i>
+                                    <!-- <i class="far fa-edit"></i> -->
+                                </a>                                    
+                            </div>
+                            <div  class="resume-delete-confirm" *ngIf="delete_confirm">
+                                <div class="resume-delete-confirm-wrap">
+                                    <span>Do you really want to delete this resume?</span>
+                                    <div class="d-flex">
+                                        <button class="btn red-btn-bg" (click)="delete_confirmed()">Yes</button>
+                                        <button class="btn blue-btn-bg" (click)="delete_cancelled()">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <a routerLink="/resume/doc/{{profile_data.resume.id}}">
+                                <div class="DocIcon">
+                                    <span class="rounded-circle">
+                                        <i class="icon-doc-file"></i>
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+                <input
+                type="file"
+                name="add_resume"
+                class='add_resume' accept=".pdf,.odt,.doc,.docx,.xlsx,.xls,.ppt,.pptx" style="display: none"/>
+            </div>
+            <div *ngIf="section=='bio'" class="">
+                <div class="ProFileHeadWrap">
+                    Bio
+                </div>
+                <div class="form-group">
+                    <textarea value="{{profile_data.bio}}" (change)="modified_profile_data.bio = $event.target.value"
+                    class="form-control bio-textarea" placeholder="Enter Bio" id="bio">
+                    </textarea>
+                </div>
+            </div>
+            <div *ngIf="section=='work'" class="">
+                <div class="ProFileHeadWrap">
+                    WORK INFO
+                </div>
+                <div class="row label-control-form">
+                    <div class="container">
+                        <label for="company">
+                            <b>Company</b>
+                        </label>
+                        <input value="{{profile_data.company}}" (change)="modified_profile_data.company = $event.target.value"
+                            type="text" placeholder="Enter Company" id="company">
+                        <label for="job-title">
+                            <b>Job Title</b>
+                        </label>
+                        <input value="{{profile_data.job_title}}" (change)="modified_profile_data.job_title = $event.target.value"
+                            type="text" placeholder="Enter Job Title" id="job_title">
+                        <label for="department">
+                            <b>Department</b>
+                        </label>
+                        <input value="{{profile_data.department}}" (change)="modified_profile_data.department = $event.target.value"
+                            type="text" placeholder="Enter Department" id="department" required>
+                        <label for="work_phone">
+                            <b>Work Phone</b>
+                        </label>
+                        <input value="{{profile_data.work_phone}}" (change)="modified_profile_data.work_phone = $event.target.value"
+                            type="text" placeholder="Enter Work Phone" id="work_phone">
+                        <label for="fax">
+                                <b>Fax</b>
+                            </label>
+
+                        <input value="{{profile_data.fax}}" (change)="modified_profile_data.fax = $event.target.value"
+                            type="text" placeholder="Enter Fax" id="fax">
+                        <label for="website">
+                            <b>Website</b>
+                        </label>
+
+                        <input value="{{profile_data.website}}" (change)="modified_profile_data.website = $event.target.value"
+                            type="text" placeholder="Enter Website" id="website">
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="profile_data && socketService.admin_mode && section=='board'" class="">
+                <div class="ProFileHeadWrap">
+                    BOARD INFO
+                </div>
+                <div class="label-control-form board-info-container">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="board_joining_date">
+                                    <b>Committees</b>
+                                </label>
+                                <div class="UserProfileDiscription">
+                                    <ng-select
+                                    [disabled]="!socketService.admin_mode"
+                                    [items]="choice_fields.committees"
+                                    [multiple]="true"
+                                    [closeOnSelect]="false"
+                                    [hideSelected]="true"
+                                    bindLabel="name"
+                                    [searchable] = "true"
+                                    (change)="setCommittees()"
+                                    placeholder="Select Committees"
+                                    [(ngModel)]="selectedCommittees"
+                                    >
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="board_joining_date">
+                                    <b>Board Joining Date</b>
+                                </label>
+                                <input 
+                                    class="form-control rounded-0 date" 
+                                    value="{{profile_data.board_joining_date}}" 
+                                    name="board_joining_date"                                  
+                                    placeholder="Enter Board Joining Date" 
+                                    id="board_joining_date" required>  
+                            </div>                      
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="term_start_date">
+                                    <b>Term Start Date</b>
+                                </label>
+                                <input 
+                                    value="{{profile_data.term_start_date}}" 
+                                    name="term_start_date" 
+                                    class="form-control rounded-0 date"   
+                                    placeholder="Enter Term Start Date" 
+                                    id="term_start_date" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="term_end_date">
+                                    <b>Term End Date</b>
+                                </label>
+                                <input value="{{profile_data.term_end_date}}" 
+                                name="term_end_date" 
+                                    class="form-control rounded-0 date"  
+                                    placeholder="Enter End Start Date" 
+                                    id="term_end_date" required>
+                            </div>        
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="term_end_date">
+                                    <b>Role</b>
+                                </label>
+                                <div class="UserProfileDiscription">
+                                    <ng-select
+                                    [disabled]="!socketService.admin_mode"
+                                    [items]="choice_fields.groups"
+                                    [multiple]="true"
+                                    [closeOnSelect]="false"
+                                    [hideSelected]="true"
+                                    bindLabel="name"
+                                    [searchable] = "true"
+                                    (change)="setGroups()"
+                                    placeholder="Select Groups"
+                                    [(ngModel)]="selectedGroups"
+                                    >
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="(my_profile || socketService.admin_mode) && section == 'diversity'" class="">
+                <div class="ProFileHeadWrap">
+                    DIVERSITY INFO
+                </div>
+                <div class="row mb-2" *ngIf="choice_fields.ethnicity">
+                    <div class="col-sm-3">
+                        <label for="ethnicity">
+                            <b>Ethnicity</b>
+                        </label>
+                    </div>
+                    <div class="col-sm-9 UserProfileDiscription">
+                        <!-- <select (change)="modified_profile_data.ethnicity = $event.target.value" id='ethnicity' requeired>
+                            <option *ngFor="let row of choice_fields.ethnicity" value="{{row.id}}" [selected]="row.id === profile_data.ethnicity.id">{{row.name}}</option>
+                        </select> -->
+
+                        <ng-select
+                        [items]="choice_fields.ethnicity"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [hideSelected]="true"
+                        bindLabel="name"
+                        (change)="setEthnicity()"
+                        placeholder="Select Ethnicity"
+                        [(ngModel)]="selectedEthnicity"
+                        >
+                        </ng-select>
+
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-3">
+                        <label for="gender">
+                            <b>Gender</b>
+                        </label>
+                    </div>
+                    <div class="col-sm-9 UserProfileDiscription">
+                        <!-- <select (change)="modified_profile_data.gender = $event.target.value" id='gender' requeired>
+                            <option *ngFor="let row of choice_fields.gender" value="{{row.id}}" [selected]="row.id === profile_data.gender.id">{{row.name}}</option>
+                        </select> -->
+                        <ng-select
+                        [items]="choice_fields.gender"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [hideSelected]="true"
+                        bindLabel="name"
+                        (change)="setGender()"
+                        placeholder="Select Gender"
+                        [(ngModel)]="selectedGender"
+                        >
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-3">
+                        <label for="veteran">
+                            <b>Veteran</b>
+                        </label>
+                    </div>
+                    <div class="col-sm-9 UserProfileDiscription">
+                        <!-- <select (change)="modified_profile_data.veteran = $event.target.value" id='gender' requeired>
+                            <option *ngFor="let row of choice_fields.veteran" value="{{row.id}}" [selected]="row.id === profile_data.veteran.id">{{row.name}}</option>
+                        </select> -->
+                        <ng-select
+                        [items]="choice_fields.veteran"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [hideSelected]="true"
+                        bindLabel="name"
+                        (change)="setVeteran()"
+                        placeholder="Select Veteran"
+                        [(ngModel)]="selectedVeteran"
+                        >
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-3">
+                        <label for="disability">
+                            <b>Disability</b>
+                        </label>
+                    </div>
+                    <div class="col-sm-9 UserProfileDiscription">
+                        <!-- <select (change)="modified_profile_data.disability = $event.target.value" id='disability' requeired>
+                            <option *ngFor="let row of choice_fields.disability" value="{{row.id}}" [selected]="row.id === profile_data.disability.id">{{row.name}}</option>
+                        </select> -->
+                        <ng-select
+                        [items]="choice_fields.disability"
+                        [multiple]="false"
+                        [closeOnSelect]="true"
+                        [hideSelected]="true"
+                        bindLabel="name"
+                        (change)="setDisability()"
+                        placeholder="Select Disability"
+                        [(ngModel)]="selectedDisability"
+                        >
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="section == 'administrative'" class="">
+                <div class="ProFileHeadWrap">
+                    ADMINISTRATIVE ASSISTANT
+                </div>
+                <div class="row label-control-form">
+                    <div class="container">                            
+                        <div class="col p-0">
+                            <label for="admin-first-name">
+                                <b>First Name</b>
+                            </label>
+                            <input value="{{profile_data.admin_first_name}}" (change)="modified_profile_data.admin_first_name = $event.target.value"
+                                type="text" placeholder="First Name" required>
+                            <label for="admin-last-name">
+                                <b>Last Name</b>
+                            </label>
+                            <input value="{{profile_data.admin_last_name}}" (change)="modified_profile_data.admin_last_name = $event.target.value"
+                                type="text" placeholder="Last Name" required>
+                        
+                            <label for="admin-e-mail">
+                                <b>E-mail</b>
+                            </label>
+                            <input value="{{profile_data.admin_email}}" (change)="modified_profile_data.admin_email = $event.target.value"
+                                type="text" id="admin-e-mail" placeholder="" required>
+                            <label for="admin-cell">
+                                <b>Mobile Phone</b>
+                            </label>
+                            <input value="{{profile_data.admin_cell_phone}}" (change)="modified_profile_data.admin_cell_phone = $event.target.value"
+                                type="text" placeholder="" id="admin-cell" required>
+                            <label for="admin-fax">
+                                <b>Fax</b>
+                            </label>
+                            <input value="{{profile_data.admin_fax}}" (change)="modified_profile_data.admin_fax = $event.target.value"
+                                type="text" placeholder="" id="admin-fax" required>
+                            <label for="admin-work-phone">
+                                <b>Work Phone</b>
+                            </label>
+                            <input value="{{profile_data.admin_work_phone}}" (change)="modified_profile_data.admin_work_phone = $event.target.value"
+                                type="text" placeholder="" id="admin-work-phone" required>
+
+                            <label class="check-plus-label-wrap" for="mail-to-assistant">
+                                <input class="form-check-input"  
+                                    checked="{{profile_data.mail_to_assistant}}" 
+                                    (change)="mail_to_assistant_change($event.target.value)"
+                                    type="checkbox" id="mail-to-assistant" required
+                                />
+                                <span style="margin-top:-4px;">Email To Assistant</span>
+                            </label>
+
+                            <div style="display: none">
+                                <label for="mail-to-assistant">
+                                    <b>Mail to Assistant</b>
+                                </label>
+                                <select (change)="modified_profile_data.mail_to_assistant = $event.target.value" id='mail_to_assistant' requeired>
+                                    <option ng-value="true" [selected]="true == profile_data.mail_to_assistant">Yes</option>
+                                    <option ng-value="false" [selected]="null == profile_data.mail_to_assistant">No</option>
+                                </select>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+
+    <div id="slot-select-success" class="snackbar-success">Successfully Saved Your Profile.</div>
+    <div id="slot-select-error" class="snackbar-error">Something went wrong, Try Again After Some Time.</div>    
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>

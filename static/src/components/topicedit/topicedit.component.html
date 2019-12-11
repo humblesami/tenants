@@ -1,0 +1,110 @@
+<div class="modal-header modal-header-heading">
+    <h1>{{action|firstToUpper}} Agenda Topic</h1>
+</div>
+<div class="modal-body edit-modal-body">
+    <div class="router-outlet">
+        <div class="details-card profile-edit-container edit-mode">
+            <div class="row edit-buttons edit-mode">
+                <p class="error mb-0 py-1" *ngIf="(submitted && !(topic.name && topic.lead && topic.duration))">Please fill all fields</p>
+                <button [disabled]="(time_exceeded || !(topic.name && topic.lead && topic.duration))" class="btn btn-primary save" (click)="onAddAnother()">Save & Add another</button>
+                <button [disabled]="(time_exceeded || !(topic.name && topic.lead && topic.duration))" class="btn btn-primary save" (click)="onSubmit()">Save</button>
+                <a href="javascript:void(0);" class="btn btn-primary cancel" (click)="onCancel()">Cancel</a>
+            </div>
+            <div class="label-control-form">                
+                <div class="row single-input-label">
+                    <div class="col-md-6">
+                        <label for="name"> <b>Meeting Name</b> </label>
+                        <input value="{{event__name}}" disabled type="text" id="meeting_name">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="name"> <b>Name</b> </label>
+                        <input value="{{topic.name}}" [(ngModel)]="topic.name" (change)="modified_topic_data.name = $event.target.value" type="text" placeholder="Enter Agenda Subject" id="name">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="email"> <b>Lead</b> </label>
+                        <input value="{{topic.lead}}" [(ngModel)]="topic.lead" (focusout)="dur_focus($event.target.value)" (change)="modified_topic_data.lead = $event.target.value" type="text" placeholder="Enter Lead Name" id="lead">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="duration"> <b>Duration: </b> <span [ngClass]="{error: time_exceeded}">(Available time is {{available_duration}})</span> </label>
+                        <input value="{{topic.duration}}" [(ngModel)]="topic.duration" type="text" placeholder="Enter Agenda Duration" id="duration"  >
+                    </div>
+
+                    <div class="col-md-12">
+                        <label for="description"> <b>Description</b> </label>
+                        <textarea value="{{topic.description}}" [(ngModel)]="topic.description" (change)="modified_topic_data.description = $event.target.value" class="form-control" placeholder="Enter Description" id="description">
+                    </textarea>
+                    </div>
+                </div>
+                <div>
+                    <div class="row docwrappercontainer mb-0">
+                        <div class="col-sm-12 pt-3">
+                            <div class="ProFileHeadWrap">Agenda Documents</div>
+                            <div class="row">
+                                <div class="col-sm-6 mb-4" *ngFor="let doc of agenda_docs">
+                                    <a class="DocumentWrapper gray-bg doc" (click)="redirect_to_doc('/topic/doc/'+doc.id)">
+                                <input type="hidden" class="item_id" value="{{doc.id}}" />
+                                <div class="doc-del-btn d-flex">
+                                    <div class="pointer"
+                                    title="Delete"
+                                    (click)="delete_file($event, doc.id)">
+                                        <i class="far fa-trash-alt" ></i>
+                                    </div>                    
+                                </div>
+                                <div class="p-1 pos-abs" style="left:5px">
+                                    <img height="20px" width="20px" src="{{get_icon_url(doc.access_token)}}" alt="" class="doc_icons">
+                                </div>
+                                <div class="DocIcon">
+                                    <span class="rounded-circle">
+                                        <i class="icon-doc-file"></i>
+                                    </span>
+                                </div>
+                                <div class="DocText" (click)="renameService.prevent_default($event)">
+                                    <div class="DocName w-100">
+                                        <div *ngIf="!doc.edit_mode" [ngClass]="{'d-flex justify-content-between align-items-center': socketService.admin_mode}">
+                                            <span class="text-truncate doc-info" [ngClass]="{'mt-2': !socketService.admin_mode}">{{doc.name}}</span>
+                                            <span class="d-flex">
+                                                <button (click)="renameService.enable_rename($event, doc)" 
+                                                *ngIf="socketService.admin_mode" class="btn btn-sm btn-primary ml-2 mr-1">
+                                                <svg _ngcontent-c9="" height="20" viewBox="0 0 35.813 35.809" width="15" xmlns="http://www.w3.org/2000/svg"><g _ngcontent-c9="" id="edit" transform="translate(0 -0.028)"><path _ngcontent-c9="" d="M33.494,2.346a7.9,7.9,0,0,0-11.179,0L1.819,22.834a1.025,1.025,0,0,0-.29.588L.01,34.669a1.022,1.022,0,0,0,.29.862,1.042,1.042,0,0,0,.725.305.829.829,0,0,0,.137-.008l6.776-.916a1.032,1.032,0,0,0-.275-2.045L2.231,33.6l1.061-7.844,8.256,8.256a1.042,1.042,0,0,0,.725.305A1.01,1.01,0,0,0,13,34.013l20.5-20.488a7.894,7.894,0,0,0,0-11.179ZM22.712,4.864l3.441,3.441-18.7,18.7L4.009,23.567ZM12.28,31.831,8.915,28.466l18.7-18.7,3.365,3.365ZM32.418,11.655,24.184,3.422a5.849,5.849,0,0,1,8.233,8.233Z" data-name="Path 8793" fill="#fff" id="Path_8793" transform="translate(0 0)"></path></g></svg>
+                                                </button>
+                                            </span>
+                                        </div>
+                                        
+                                        <div *ngIf="doc.edit_mode" [ngClass]="{'d-flex justify-content-between align-items-center': socketService.admin_mode}">
+                                            <input class="form-control renamer"   
+                                                (blur)="renameService.renamer_focused_out($event,doc,'file')"                             
+                                                (keyup)="renameService.renamer_focused_out($event,doc,'file')"												
+                                                value="{{doc.name}}"
+                                                (change)="renameService.renamer_changed($event.target)">
+                                            <button 
+                                            class="fri-selt-btn check-time-btn" 
+                                            aria-label="rename file.">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="file" name="files[]" class='add_agenda_docs' multiple style="display: none" />
+                </div>
+                <!-- <div *ngIf="action=='update' && topic && topic.id">
+                <app-documents
+                title="Agenda Documents" 
+                parent_model="Topic" 
+                parent_field="agenda_id" 
+                parent_id="{{topic.id}}"
+                res_app="meetings" 
+                res_model="AgendaDocument">
+                </app-documents>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>

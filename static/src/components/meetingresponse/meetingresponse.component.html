@@ -1,0 +1,14 @@
+<div [ngClass]="{greyout:!my_event}" class="upcomingButton" id="tdmrb{{meeting_id}}">
+    <button [disabled]="!my_event" (click)="respond_invitation('accepted', meeting_id)" class="">
+        <i *ngIf="attendee_status == 'accepted'" class="fa fa-check fa-lg" style="color:white" modifiers="{}"></i>
+        <span name="accepted">Accept</span>
+    </button>
+    <button [disabled]="!my_event" (click)="respond_invitation('declined', meeting_id)" class="">
+        <i *ngIf="attendee_status == 'declined'" class="fa fa-check fa-lg" style="color:white" modifiers="{}"></i>
+        <span name="declined">Decline</span>
+    </button>
+    <button [disabled]="!my_event" (click)="respond_invitation('tentative', meeting_id)" class="">
+        <i *ngIf="attendee_status == 'tentative'" class="fa fa-check fa-lg" style="color:white" modifiers="{}"></i>
+        <span name="tentative">Tentative</span>
+    </button>
+</div>

@@ -1,0 +1,61 @@
+h2.heading-title {
+    margin-bottom: 20px;    
+}
+h2.heading-title span {
+    position: relative;
+}
+h2.heading-title span:before {
+    border-top: 1px solid #dddddd;
+    content: "";
+    position: absolute;
+    bottom: -7px;
+    left: 0px;
+    width: 100%;
+}
+
+.modal-header, .modal-footer{
+    background-color: #eeeeee !important;
+}
+
+.bordered{
+    border: 1px solid #808080;
+}
+
+.kanban-committees-info-box{
+    display: flex;
+    background: #f3f3f3;
+    border-radius: 3px;
+    border: 1px solid #f1eeee;
+    padding: 10px 5px 7px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom:15px;
+}
+
+span.btn.btn-sm{
+    width: 60px;
+    margin-left: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background-color: #4b74b5;
+    color: #ffffff;
+}
+
+.meet-elementsInfo {
+    border-bottom: 0px;
+}
+a,a:hover{
+    color: #3059C9;
+}
+.committee-member {
+    width: 70px;
+}
+@media screen and (max-width:480px){
+    .kanban-card{
+        min-width: 175px;
+    }
+    .kanban-profiles-user-InfoLIST{
+        word-break: break-all;
+    }
+}

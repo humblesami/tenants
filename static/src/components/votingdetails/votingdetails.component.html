@@ -1,0 +1,147 @@
+<app-breadcrumb *ngIf="voting_object && !token" app="voting" model="voting" 
+rid="{{voting_object.id}}" edit="1" delete="1" 
+routes='[{"title":"Actions", "link":"/actions"}, {"title":"Resolutions", "link":"/votings"}]'
+title="{{voting_object.name}}"></app-breadcrumb>
+<div class="router-outlet">
+	<div class="container">
+
+	</div>
+    <div class="container" *ngIf="voting_object">
+        <link rel="stylesheet" href="/static/assets/css/survey.css" />
+		<div class="kanban-headings child-pages justify-content-between">
+			<h3>
+                <i class="icon-voting-detail text-primary"></i> {{voting_object.name}}
+            </h3>
+            <div style="height: 50px;width:50px;">
+                <canvas id="progress-chart"></canvas>
+            </div>
+            <div class="MeetingBtnWrapper m-top" *ngIf="voting_object.is_attendee">
+				<div class="btn-group" id="tdmrb{{voting_object.id}}">
+					<a href="javascript:void(0);" (click)='respond_invitation(option.name, option.id, voting_object.id)' class="btn" *ngFor="let option of voting_object.voting_options">
+						<i *ngIf="voting_object.my_status == option.name" class="fa fa-check fa-lg"  modifiers="{}"></i>
+						<span name="option.name">{{option.name}}</span>
+					</a>
+					<a href="javascript:void(0);" style="display: none" *ngIf="voting_object && voting_object.signature_required == true" id="{{voting_object.id}}" class="fa fa-pen fa-lg strt_sign voting" url='/voting/save_signature'></a>
+				</div>
+            </div>
+		</div>
+        <div class=" form-details">
+            <div class="meeting-details-form">
+                <div class="row mt-3">
+                    <div *ngIf="voting_object.motion_first" class="col-md-6 mb-2">
+                        <div class="meet-elements">
+                            Motion First
+                            <span class="fa fa-user motion-icon"></span>
+                        </div>
+                        <a class="col-sm-6 col-md-4 col-lg-4 anchor-mb" routerLink="/profile/{{voting_object.motion_first.id}}">{{voting_object.motion_first.name}}</a>
+                    </div>
+
+                    <div *ngIf="voting_object.motion_second" class="col-md-6 mb-2">
+                        <div class="meet-elements">
+                            Motion Second
+                            <span class="fa fa-user motion-icon"></span>
+                        </div>
+                        <a class="col-sm-6 col-md-4 col-lg-4 anchor-mb" routerLink="/profile/{{voting_object.motion_second.id}}">{{voting_object.motion_second.name}}</a>
+                    </div>
+
+                    <div *ngIf="voting_object.meeting.name" class="col-md-6 mb-2">
+                        <div class="meet-elements">
+                            Meeting Subject
+                        </div>
+                        <a class="col-sm-6 col-md-4 col-lg-4 anchor-mb" routerLink="/home/meeting/{{voting_object.meeting.id}}">{{voting_object.meeting.name}}</a>
+                    </div>
+
+                    <div *ngIf="voting_object.topic.name" class="col-md-6 mb-2">
+                        <div class="meet-elements">
+                            Topic Subject
+                        </div>
+                        <a class="col-sm-6 col-md-4 col-lg-4 anchor-mb" routerLink="/topic/{{voting_object.topic.id}}">{{voting_object.topic.name}}</a>
+                    </div>
+
+                    <div *ngIf="voting_object.my_status && voting_object.is_attendee" class="col-md-6 mb-2">
+                        <div class="meet-elements">
+                            My Status
+                        </div>
+                        <label class="meet-elementsInfo">
+                            {{voting_object.my_status}}
+                        </label>
+                    </div>
+
+                    <div *ngIf="voting_object.voting_type.name && voting_object.is_attendee" class="col-md-6 mb-2">
+                        <div class="meet-elements">
+                            Voting Type
+                        </div>
+                        <label class="meet-elementsInfo">
+                            {{voting_object.voting_type.name}}
+                        </label>
+                    </div>
+                    
+                    <div *ngIf="voting_object.open_date && voting_object.open_date" class="col-md-6 mb-2">
+                        <div class="meet-elements">
+                            Open Date
+                        </div>
+                        <label class="meet-elementsInfo">
+                            {{voting_object.open_date | date:'medium'}}
+                        </label>
+                    </div>
+                    <div *ngIf="voting_object.close_date && voting_object.close_date" class="col-md-6 mb-2">
+                        <div class="meet-elements">
+                            Close Date
+                        </div>
+                        <label class="meet-elementsInfo">
+                            {{voting_object.close_date | date:'medium'}}
+                        </label>
+                    </div>
+					<div *ngIf="voting_object.hasOwnProperty('description') && voting_object.description" class="col-md-12 mb-2">
+                        <div class="meet-elements">
+                            Description
+                        </div>
+                        <label class="meet-elementsInfo text-overflow-visible" [innerHtml]="voting_object.description"></label>
+                    </div>
+                    <div *ngIf="voting_object.signature_required && voting_object.signature_data" class="col-md-2 mb-2">
+                        <div class="border">
+                            <img class="strt_sign_voting " style="width: 100%;" *ngIf="voting_object.signature_data" src="data:image/png;base64,{{voting_object.signature_data}}">
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="(socketService.admin_mode || voting_object.public_visibility) && voting_object.results.answer_count" class="title-wrapper voting-chart">
+                    <div class="modal-header">
+                        Results
+                    </div>
+                    <div class="w-50 ml-25">
+                        <div class="canvas_warpper my-5">
+                            <div class="canvas_container">
+                                <canvas id="myChart"></canvas>
+                            </div>
+                        </div>	
+                        <label>Choices</label> :
+                        <table class="table">
+                            <tbody>
+                                <tr *ngFor="let obj of voting_object.chart_data">
+                                    <td [ngStyle]="{'background-color': obj.color}" style="width: 20px;height:20px;padding:0"></td>
+                                    <td>{{obj.option_name}}</td>
+                                    <td>{{obj.option_result || 0}}</td>
+                                    <td>{{obj.option_perc || 0}}%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>                
+                </div>
+
+                <div class="title-wrapper">
+                    <app-documents 
+                    *ngIf="!token && (socketService.admin_mode || (voting_object.voting_docs && voting_object.voting_docs.length))" 
+                    title="Voting Documents"
+                    parent_model="Voting" 
+                    parent_field="voting_id" 
+                    parent_id="{{voting_object.id}}"
+                    res_app="voting" 
+                    res_model="VotingDocument">
+                    </app-documents>
+                </div>
+                
+            </div>
+        </div>
+        <app-comments *ngIf="!token && voting_object && voting_object.enable_discussion" res_app="{{discussion_params.res_app}}" res_model="{{discussion_params.res_model}}" res_id="{{discussion_params.res_id}}"></app-comments>
+    </div>
+</div>

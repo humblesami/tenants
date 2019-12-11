@@ -1,0 +1,51 @@
+﻿<app-breadcrumb app="meetings" model="committee" create="1" title="Committees"></app-breadcrumb>
+<div class="router-outlet">
+    <div class="container">
+        <div class="kanban-headings">
+            <h3>
+                <i class="icon-committees text-primary"></i> Committees
+            </h3>  
+        </div>
+        <app-search (onsearch)="get_list()"></app-search>
+        <app-paginator
+            *ngIf="records.length"
+            (reload_data)="get_list()">
+        </app-paginator>
+        <div class="row">
+            <div class="kanban-committees col-12 col-md-6 col-lg-4"
+                    *ngFor="let committee of records">
+                <a class="kanban-committees-info-box" routerLink="/committees/{{committee.id}}">
+                    <a class="kanban-committees-info-box-name">
+                        {{committee.name}}
+                    </a>
+                    <div class="container">
+                        <p class="mb-4">{{committee.description}}</p>
+                        <div class="row">
+                            <div class="col-5 col-lg-5 d-flex align-items-center">
+                               {{committee.users.length}} Member<span *ngIf="committee.users.length > 1">s</span>
+                            </div>
+                            <div class="col-7 col-lg-7">
+                                <div class="kanban-committees-info-box-img">
+                                    <a class="circle-imgwrap img-flex img"  *ngFor="let member of committee.users.slice(0,5)" routerLink="/profile/{{member.id}}">
+                                        <img title="{{member.username}}" src="{{socketService.server_url}}{{member.image}}">
+                                    </a>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </a>
+            </div>   
+        </div>
+    </div>
+        <div class="container" *ngIf="no_committees">
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <div class="jumbotron text-center">
+                        <h1>No record found!</h1>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+

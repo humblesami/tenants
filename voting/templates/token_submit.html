@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <div style="display: none">
+        <div id="voting_id">{{voting_id}}</div>
+        <div id="choice_id">{{choice_id}}</div>
+        <div id="user_token">{{token}}</div>
+    </div>
+        {% if signature_required and token %}
+
+        <link rel="stylesheet" type="text/css" href="/static/assets/css/roboto-condensed-fontface.css" />
+        <link rel="stylesheet" type="text/css" href="/static/assets/libs/bootstrap/bootstrap-4.1.1.css" />
+        <link rel="stylesheet" type="text/css" href="/static/assets/libs/css/jquery-ui.css" />  
+
+            <script type="text/javascript" src="/static/assets/libs/js/jquery-ui.min.js"></script>
+            <script type="text/javascript" src="/static/assets/libs/bootstrap/bootstrap-4.1.1.js"></script>
+            <script type="text/javascript" src="/static/assets/libs/js/jquery.ui.touch-punch.min.js"></script>
+            <script type="text/javascript" src="/static/assets/libs/js/jquery.mark.min.js"></script>
+            <script type="text/javascript" src="/static/assets/js/custom_signature.js"></script>
+
+            <style>
+                .DocsButtonWrapper{
+                    display: none;
+                }
+            </style>
+            <script>
+                (function(){
+                    our_init_sign();
+                    function our_init_sign()
+                {                    
+                    let sign_config = {
+                        on_signed: function(signature_data){
+                            submit_response(signature_data);
+                        }
+                    }
+                    window['init_sign'](sign_config);
+                }
+                    function submit_response(signature_data)
+                    {
+                        var voting = {
+                            voting_id: $('#voting_id').html(),
+                            choice_id: $('#choice_id').html(),
+                            token: $('#user_token').html(),
+                            signature_data: signature_data
+                        };
+                        window['current_user'] = {};                 
+                        var voting_response_data = {
+                            data:{
+                                args:{
+                                    app:'voting',
+                                    model:'VotingAnswer',
+                                    method:'submit_public'
+                                },
+                                no_loader:1,
+                                params: voting
+                            },
+                            url: '/rest/public',
+                            onSuccess:function(data){
+                                $('#div1').html('<h2>Successfully submitted</h2>');                                
+                            },
+                            onError:function(er){
+                                $('#div1').html('<h2>'+er+'</h2>');
+                            },
+                        }
+                        window['dn_rpc_object'](voting_response_data);
+                    }                    
+                })()
+                
+            </script>
+        {% endif %}
+<div id="div1"><h2>
+    {% if error %}
+        {{ error }}
+    {% elif success %}
+        {{ success }}
+    {% endif %}
+
+</h2></div>
+
+</body>
+</html>

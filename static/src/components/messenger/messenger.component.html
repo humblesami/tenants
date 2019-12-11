@@ -1,0 +1,224 @@
+<div class="messenger-container" *ngIf="user">
+        <div class="chat-setup-container chat friends-chat-box clearfix" *ngIf="chat_mode == 'none'">
+            <div class="card-header MessengerSearchWrap">
+                <div class="input-group mb-2">                
+                    <div class="input-group-prepend">
+                        <span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
+                    </div>
+                    <input [(ngModel)]="searchVal" type="text" placeholder="Search or start new chat" name="" class="form-control search">
+                </div>
+                <span class="chatgroup">
+                    <button (click)="group_create_mode()" class="create"> <img src="static/assets/images/add-group.svg" alt="" /> Create New Group</button>
+                </span>
+                <span class="float-right mt-1">
+                    <a (click)="change_messenger_view()" class="text-right">
+                        <i class="far fa-window-restore text-dark" *ngIf="socketService.is_messenger_max"></i>
+                    </a>
+                </span>
+            </div>
+
+            <div class="group-setup-container">
+                <div *ngIf="group_mode == 'edit'" class="chat-group-setup">
+                    <div class="Create-Group-input" *ngIf="!selected_chat_group">
+                        <input [(ngModel)]="group_name" class="group-name" placeholder="Group Name" />
+                        <label (click)="create_chat_room()" class="check-time-btn">
+                            <i class="fas fa-check"></i>
+                        </label>                        
+                        <label (click)="close_group_setup()" class="check-time-btn red-bg">
+                            <i class="fas fa-times"></i>
+                        </label>                        
+                    </div>
+
+                    <div class="Create-Group-input" *ngIf="selected_chat_group">
+                        <input readonly id="group_name" [(ngModel)]="group_name" class="group-name" placeholder="Enter your group name" />
+                        <label (click)="update_chat_group_members()" class="check-time-btn">
+                            <i class="fas fa-check"></i>
+                        </label>
+                        <label (click)="close_group_setup()" class="check-time-btn red-bg">
+                            <i class="fas fa-times"></i>
+                        </label>
+                    </div>
+
+                    <div class="messenger-group-select-member">
+                        <ng-select
+                            [items]="people_list"
+                            [multiple]="true"
+                            [closeOnSelect]="false"
+                            bindLabel="name"
+                            (change)="clean_member_selection()"
+                            placeholder="Select people"
+                            [(ngModel)]="selectedPeople">
+                        </ng-select>
+                    </div>
+                </div>
+    
+                <div *ngIf="group_mode == 'view' && selected_chat_group" class="chat-group-setup">
+                    <button (click)="close_group_setup()" class="" aria-label="Create group.">
+                        Close
+                    </button>
+                    <span>{{selected_chat_group.name}}</span>
+                    <ul class="contacts">
+                        <li *ngFor="let member of selected_chat_group.members">
+                            <div>
+                                <a class="contact-item d-flex align-items-center bd-highlight">
+                                    <div class="img_cont">
+                                        <img src="{{socketService.server_url}}{{member.photo}}" class="rounded-circle user_img">                            
+                                    </div>
+                                    <div class="user_info">
+                                        <span>{{ member.name }}</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            
+            <div class="contacts-container card-body contacts_body">
+                <ul class="chat-groups-container">
+                    <li *ngFor="let cg of socketService.chat_groups" (click)="start_group_chat(cg, $event)">
+                        <div *ngIf="cg.name.toLowerCase().indexOf(searchVal.toLowerCase()) > -1">
+                            <a class="contact-item group-adjustment-wrap">
+                                <div class="img_cont">
+                                    <img src="static/assets/images/group.jpeg" class="rounded-circle user_img">                                        
+                                </div>
+                                <div class="user_info">
+                                    <span>{{ cg.name }}</span>
+                                </div>
+                                <span class="unseen" *ngIf="cg.unseen">
+                                    {{cg.unseen}}
+                                </span>
+                                <button class="group-single-btn" (click)="show_group_members(cg, $event)">
+                                    Members
+                                </button>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+                <hr/>
+                <ul class="contacts">
+                    <li *ngFor="let chat_user of socketService.chat_users"
+                        (click)="select_chat_user(chat_user)"
+                        [ngClass]="[active_chat_user && chat_user.id == active_chat_user.id ? 'active': '']">                                
+                        <div *ngIf="chat_user.name.toLowerCase().indexOf(searchVal.toLowerCase()) > -1">
+                            <a class="contact-item d-flex align-items-center bd-highlight">
+                                <div class="img_cont">
+                                    <img src="{{socketService.server_url}}{{chat_user.photo}}" class="rounded-circle user_img">
+                                    <span *ngIf="chat_user.online" class="online_icon"></span>
+                                </div>
+                                <div class="user_info">
+                                    <span>{{ chat_user.name }}</span>
+                                    <p *ngIf="chat_user.online">Online</p>
+                                </div>
+                                <span class="unseen" *ngIf="chat_user.unseen">
+                                    {{chat_user.unseen}}
+                                </span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="messenger-navbar">
+                <div class="messenger-navbar-wrap"><a href="javascript:void(0);"><img async class="img-fluid" src="/static/assets/images/msg-home.svg" /></a> </div>
+                <div class="messenger-navbar-wrap"><a href="javascript:void(0);"><img async class="img-fluid" src="/static/assets/images/msg-user.svg" /></a></div>
+                <div class="messenger-navbar-wrap"><a href="javascript:void(0);"><img async class="img-fluid" src="/static/assets/images/msg-chat.svg" /></a></div>
+                <div class="messenger-navbar-wrap"><a href="javascript:void(0);"><img async class="img-fluid" src="/static/assets/images/msg-nav.svg" /></a></div>
+            </div>
+        </div>
+    
+        <div class="chat chat-container-wrppaer" *ngIf="active_chat_user">
+            <div class="chat-full-height">
+                <div class="chat-user-title">
+                    <div class="MessengerTitle pointer" (click)="userServie.show_profile_summary(active_chat_user.id)">
+                        <span class="backchatlist" (click)="set_chat_mode('none')"><i class="fas fa-arrow-left"></i></span>
+                        <img *ngIf="!active_chat_user.is_group" src="{{socketService.server_url}}{{active_chat_user.photo}}" />
+                        <span class="user-name">{{active_chat_user.name}}</span>                    
+                        <span class="status" *ngIf="active_chat_user.online" class="userstat">Online</span>
+                    </div>
+                    <div *ngIf="active_chat_user && !active_chat_user.is_group" class="MessengerConnectWrap">                    
+                        <div class="CallCircleIcon" (click)="socketService.video_call.init(active_chat_user.id, 'audio_only')">
+                            <span >
+                                <i class="fa fa-phone"></i>
+                            </span>
+                        </div>
+                        <div class="CallCircleIcon" (click)="socketService.video_call.init(active_chat_user.id)">
+                            <span >
+                                <i class="fa fa-video"></i>
+                            </span>
+                        </div>
+                    </div>
+    
+                    <div *ngIf="active_chat_user && active_chat_user.is_group" class="MessengerConnectWrap">                    
+                        <button class="group-single-btn" (click)="leave_group()">Leave</button>
+                    </div>
+                    
+                    <div *ngIf="active_chat_user" class="active_chat_user_id" style="display:none">{{active_chat_user.id}}</div>            
+                </div>
+    
+                <div class="card-body msg_card_body meetVue-chat-body">
+                    <h6 *ngIf="active_chat_user && active_chat_user.messages.length >= message_limit && !active_chat_user.read" style="text-align:center; padding-top:90px">Scroll to top to get older messages</h6>
+                    <div class="chat-message" *ngFor="let msg of active_chat_user.messages">
+                        <div [ngClass]="{me: msg.sender.id == user.id}">
+                            <div class="msg-send-box-wrapper">
+                                <div  *ngIf="msg.body" class="msg-send-box-text" [innerHTML]="msg.body"></div>
+                                <div class="attachment_container">
+                                    <div *ngFor="let doc of msg.attachments">
+                                        <a *ngIf="doc.url" contenteditable="false"
+                                        href="{{socketService.server_url}}{{doc.url}}"
+                                        target="__blank"
+                                        class="download">
+                                            <span class="file_name" >
+                                                {{doc.name}}
+                                                <i title="Move to my folder" *ngIf="!doc.moved && ['.pdf', '.doc'].indexOf(doc.file_type) > -1 && !active_chat_user.is_group" class="fa fa-save p-2" (click)="open_my_folder($event,doc)"></i>
+                                                <i class="fa fa-download"></i>                                                
+                                            </span>
+                                        </a>                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="msg_time_send">{{msg.create_date | dateAgo}}</span>
+                        </div>
+                    </div>                       
+                </div>
+    
+                <div class="card-footer meetVue-chat-footer">
+                    
+                    <div *ngIf="attachments.length" class="chat-selectBox" id="attach_modal">
+                        <div class="call_container ">
+                            <div *ngFor="let doc of attachments" contenteditable="false"
+                                class="doc-thumb" style="display: flex;">
+                                <span class="doc-thumb-icon"><i class="fa fa-2x fa-file"></i></span>
+                                <span class="file_name">{{doc.name}}</span>
+                                <span class="doc-thumb-close" (click)="remove_attachment($event)">
+                                    <i class="del fas fa-times-circle"></i>
+                                </span>
+                            </div>                                    
+                        </div>
+                    </div>
+    
+                    <div class="input-group">
+                        <input type="text" id="message_input_box" data-emojiable="true"
+                                data-type="image" class="form-control" placeholder="Type your message here" />                                
+                        <div class="input-group-append">
+                            <form style="padding: 10px;border:1px solid" class="input-group-text attach_btn" (click)="attach_btn_click($event)">
+                                <input (change)="file_change($event)" id="msg_file" type="file" 
+                                    accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.ppt" 
+                                    multiple
+                                    style="display:none" 
+                                />
+                                <i class="fas fa-paperclip"></i>
+                            </form>
+                        </div>
+    
+                        <div class="input-group-append">
+                            <span id="send_btn" class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!is_mobile_device && !active_chat_user" class="card wellcomescreen">
+                <h3>Welcome to BoardSheet</h3>
+            </div>
+        </div>
+    </div>

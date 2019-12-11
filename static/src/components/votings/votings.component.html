@@ -1,0 +1,82 @@
+<app-breadcrumb *ngIf="!loaded_as_child" app="voting" model="voting" 
+create="1"
+routes='[{"title":"Actions", "link":"/actions"}]'
+title="Resolutions"></app-breadcrumb>
+<div class="router-outlet">
+	<div class="container">
+		<div class="kanban-headings">
+			<h3>
+				<i class="icon-voting text-primary"></i> Resolutions
+			</h3>
+			<div *ngIf="!loaded_as_child" class="MeetingBtnWrapper">
+				<div class="btn-group">
+					<a routerLink="/actions" class="btn">All</a>
+					<a routerLink="/votings" [ngClass]="{active: '/votings' == socketService.current_path}" class="btn">Resolutions</a>
+					<a routerLink="/signdocs" class="btn">E-Signature</a>
+					<a routerLink="/surveys" class="btn">Surveys</a>
+				</div>
+			</div>
+		</div>
+    </div>    
+    
+	<div class="container">
+		<app-search *ngIf="!loaded_as_child" (onsearch)="get_list()"></app-search>
+
+		<div *ngIf="!to_do_only" class="MeetingBtnWrapper StateFilterContainer">
+			<div class="btn-group">
+                <a [attr.state]="'to do'" (click)="get_records($event.target, 'to do')" class="btn">To Do</a>
+                <a [attr.state]="'in progress'" (click)="get_records($event.target, 'in progress')" class="btn">In Progress</a>
+                <a [attr.state]="'completed'" (click)="get_records($event.target, 'completed')" class="btn">Completed</a>
+                <a [attr.state]="'draft'" *ngIf="socketService.admin_mode" (click)="get_records($event.target, 'draft')" class="btn">Draft</a>
+			</div>
+		</div>
+
+		<app-paginator
+		*ngIf="!loading && records.length && !loaded_as_child" 
+			(reload_data)="get_list()">
+		</app-paginator>
+
+		<div class="row">
+			<div class="col-12 col-md-6 col-lg-4 mb-4" *ngFor="let voting of records">
+				<div class="kanban-card">
+					<div class="kanban-meeting-info">
+						<a class="kanban-upcoming-meeting" routerLink="/voting/{{voting.id}}">
+							<div class="CalendarDateWrapper">
+								<span *ngIf="voting.open_date" class="CalendarDateWrap">
+									<span class="kanban-upcoming-meeting-date">
+									{{voting.open_date.day}}
+								</span>
+									<span>
+									{{voting.open_date.month_year}}
+								</span>
+									<span>
+									{{voting.open_date.time}}
+								</span>
+								</span>
+							</div>
+							<div class="Info">
+								<p *ngIf="voting.name">
+									<b>{{voting.name}}</b>
+								</p>
+								<span *ngIf="voting.voting_type" class="text-truncate">
+									<strong>Voting Type: </strong>{{voting.voting_type}}
+								</span>
+							</div>
+						</a>
+						<div class="row d-flex justify-content-between" routerLink="/voting/{{voting.id}}">
+							<div class="col">
+								<div class="bs-btnwrap survey-top-buttons">
+									<a class="btn text-white" *ngIf="voting.is_respondent">Cast Vote</a>
+									<a class="btn text-white" *ngIf="!voting.is_respondent">Details</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="jumbotron text-center" *ngIf="no_meet">
+			<h1>No record found!</h1>
+			<hr>
+		</div>
+	</div>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="173.471" height="61.679" viewBox="0 0 173.471 61.679">
+  <g id="logo-small" transform="translate(-5848.86 -2003)">
+    <g id="Group_179" data-name="Group 179" transform="translate(5848.86 2003)">
+      <path id="Path_1" data-name="Path 1" d="M748.737,1052.3c-1.842,1.623-3.018,3.359-3.167,5.136l-.012-.087a16.728,16.728,0,0,0,3.156,9.2l1.917-3.321C749.013,1059.59,748.047,1055.494,748.737,1052.3Z" transform="translate(-744.46 -1017.551)" fill="#414141" fill-rule="evenodd"/>
+      <path id="Path_2" data-name="Path 2" d="M810.145,1008.1a21.081,21.081,0,0,0,.963,8.363q.3.932.622,1.806l2.629-4.553a30.3,30.3,0,0,1-.879-7.719A30.448,30.448,0,0,0,810.145,1008.1Z" transform="translate(-804.469 -974.472)" fill="#414141" fill-rule="evenodd"/>
+      <path id="Path_3" data-name="Path 3" d="M887,970.634c-.859.364-1.7.746-2.51,1.143.014.873.061,1.75.139,2.622a34.068,34.068,0,0,0,.48,3.405l3.04-5.265c-.061-.774-.1-1.556-.1-2.339Q887.512,970.416,887,970.634Z" transform="translate(-873.711 -941.172)" fill="#414141" fill-rule="evenodd"/>
+      <path id="Path_4" data-name="Path 4" d="M910.706,563.921c-.719.053-1.474.128-2.243.227a6.343,6.343,0,1,0-6.844,1.561,9.485,9.485,0,0,0-3.412,1.947,13.914,13.914,0,0,0-3.139,5.182c2.5-3.411,10-5.417,16.774-6.1a7.585,7.585,0,0,1-1.136-2.817Z" transform="translate(-883.556 -553.435)" fill="#414141" fill-rule="evenodd"/>
+      <path id="Path_5" data-name="Path 5" d="M847.742,604.213c-.627.02-1.281.045-1.953.074a6.341,6.341,0,1,0-8.269.629c-9.086,1.041-18.972,3.536-23.252,9.791a10.757,10.757,0,0,0-1.78,3.813c3.551-6.25,16.564-8.732,23.559-9.749,1.128-.164,7.623-.816,12.535-1.29a7.572,7.572,0,0,1-.839-3.267Z" transform="translate(-806.726 -590.684)" fill="#638fc9" fill-rule="evenodd"/>
+      <path id="Path_6" data-name="Path 6" d="M782.707,664.79a6.341,6.341,0,1,0-8.661.087,141.615,141.615,0,0,0-16.718,1.9,68.38,68.38,0,0,0-15.061,4.339c-4.615,2.064-8.653,4.875-10.727,7.951a9.1,9.1,0,0,0-1.668,6.55c.33-3.935,5.7-7.676,12.174-10.419,13.329-5.649,36.408-7.067,50.364-6.8l-5.635-3.2A31.844,31.844,0,0,0,782.707,664.79Z" transform="translate(-729.778 -646.862)" fill="#4b74b5" fill-rule="evenodd"/>
+    </g>
+    <text id="BoardSheet" transform="translate(5870.165 2047.998)" fill="#4b74b5" font-size="22" font-family="CenturySchoolbookBT-BoldItalic, CentSchbook BT" font-weight="700" font-style="italic" letter-spacing="0.1em"><tspan x="0" y="0">BoardSheet</tspan></text>
+    <text id="Simplified_Board_Management" data-name="Simplified Board Management" transform="translate(5869.331 2059.679)" fill="#414141" font-size="11" font-family="Manjari-Bold, Manjari" font-weight="700" letter-spacing="0.01em"><tspan x="0" y="0">Simplified Board Management</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,27 @@
+<div class="modal fade" id="signModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div id="signature-body" class="modal-body" style="min-height: 1009px;">
+                <div class="DocsButtonWrapper">
+                    <span class="btn btn-primary btn-sm DocsBtn" id="draw-sig">Draw</span>
+                    <span id="upload-sig-btn" class="btn btn-sm btn-primary DocsBtn o_select_file_button" title="Select" >Upload</span>
+                    <input id="upload-sig" accept=".jpg,.png,.jpeg" style="display:none" type="file">
+                    <span class="btn btn-primary btn-sm DocsBtn" id="auto-sig">Auto</span>
+                    <!-- <span class="btn btn-primary btn-sm DocsBtn" id="insert-sig">Insert</span> -->
+                </div>
+                <div id="signature_editor" class="kbw-signature">
+                </div>
+                <span class="btn btn-danger btn-sm DocsBtn" id="clear-sig">Clear</span>
+                <span class="btn btn-primary btn-sm DocsBtn" id="save-sig">Save</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>    
+</div>
+{% load static %}
+<script src="{% static 'js/custom_signature.js' %}"></script>

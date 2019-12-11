@@ -1,0 +1,92 @@
+{
+    "my_admin": {
+        "helper": 1
+    },
+    "admin": {
+        "logentry": 2
+    },
+    "auth": {
+        "permission": 3,
+        "group": 4,
+        "user": 5
+    },
+    "contenttypes": {
+        "contenttype": 6
+    },
+    "sessions": {
+        "session": 7
+    },
+    "authtoken": {
+        "token": 8
+    },
+    "authcode": {
+        "twofactorauthenticate": 9
+    },
+    "authsignup": {
+        "loginlocation": 10,
+        "loginentry": 11,
+        "dualauth": 12,
+        "authuser": 13
+    },
+    "documents": {
+        "annotation": 14,
+        "annotationdocument": 15,
+        "drawingannotation": 16,
+        "pointannotation": 17,
+        "rectangleannotation": 18,
+        "path": 19,
+        "line": 20,
+        "file": 21,
+        "dimension": 22,
+        "commentannotation": 23
+    },
+    "meetings": {
+        "event": 24,
+        "news": 25,
+        "topic": 26,
+        "profile": 27,
+        "newsvideo": 28,
+        "newsdocument": 29,
+        "meetingdocument": 30,
+        "invitationresponse": 31,
+        "committee": 32,
+        "agendadocument": 33
+    },
+    "chat": {
+        "chatgroup": 34,
+        "comment": 35,
+        "message": 36,
+        "notification": 37,
+        "notificationtype": 38,
+        "postaddress": 39,
+        "usernotification": 40,
+        "messagestatus": 41,
+        "messagedocument": 42
+    },
+    "voting": {
+        "voting": 43,
+        "votingtype": 44,
+        "votingdocument": 45,
+        "votingchoice": 46,
+        "votinganswer": 47
+    },
+    "resources": {
+        "folder": 48,
+        "resourcedocument": 49
+    },
+    "survey": {
+        "category": 50,
+        "survey": 51,
+        "response": 52,
+        "question": 53,
+        "answer": 54
+    },
+    "esign": {
+        "signaturedoc": 55,
+        "signature": 56
+    },
+    "restoken": {
+        "postinfo": 57,
+        "postusertoken": 58
+    }
+}

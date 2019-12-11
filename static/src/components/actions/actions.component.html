@@ -1,0 +1,21 @@
+<app-breadcrumb title="Actions"></app-breadcrumb>
+<div class="router-outlet actions">
+    <div class="container">
+        <div class="kanban-headings">
+            <h3>
+                <i class="icon-action text-primary"></i> Actions
+            </h3>
+            <div class="MeetingBtnWrapper">
+                <div class="btn-group">
+                    <a routerLink="/actions" class="btn">All</a>
+                    <a routerLink="/votings" class="btn">Resolutions</a>
+                    <a routerLink="/signdocs" class="btn">E-Signature</a>
+                    <a routerLink="/surveys" class="btn">Surveys</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<app-votings to_do_only="1" loaded_as_child="1"></app-votings>
+<app-esigndocs to_do_only="1" loaded_as_child="1"></app-esigndocs>
+<app-surveys to_do_only="1" loaded_as_child="1"></app-surveys>
+</div>

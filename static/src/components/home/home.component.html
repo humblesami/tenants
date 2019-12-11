@@ -1,0 +1,285 @@
+<app-breadcrumb *ngIf="home_data" title="Home" edit="1" app="meetings" model="news" rid="{{home_data.id}}"></app-breadcrumb>
+<div class="router-outlet home-container" *ngIf="ng_init && home_data">
+    <link rel="stylesheet" href="/static/assets/css/home_calendar.css" />
+    <div class="container">
+        <div id="welcome" *ngIf="home_data">
+            <section class="HomepageDocumentSection">
+                <div class="row">
+                    <div class="col-md-7 WelcomeContent">                    
+                    <div class="kanban-headings">
+                        <h3>
+                            <i class="icon-newspaper text-primary"></i> {{home_data.news.name}}
+                        </h3>
+                    </div>
+                    <div class="HomePageDiscription">
+                        <div *ngIf="home_data.description" class="HomePageContentText">
+                            <div class="HomePageContentImg img-flex">                        
+                                <img src="{{socketService.server_url}}{{home_data.news.photo}}">
+                            </div>
+                            <div id="home-content" [innerHtml]="home_data.description"></div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="col-md-5 home-calendar" style="visibility: hidden">       
+                        <app-calendar></app-calendar>
+                        <div class="col-sm-12 calendarwrapper">
+                            <div class="full-calendar-btn">
+                                <a routerLink="/calendar">Full Calendar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section *ngIf="to_do_count" class="HomepageDocumentSection">            
+                <div class="home_actions mb-0">
+                    <h3>
+                        <i class="icon-business text-primary"></i> Actions
+                    </h3>
+                </div>
+                <!--Surveys-->
+                <div id="to-do">
+                    <div class="carousel slide carousel-multi-item pb-2" data-ride="carousel"
+                    *ngIf="home_data.to_do_items.pending_surveys.length">
+                        <div class="clearfix sub_actions">
+                            <h4 class="text-primary float-left">
+                                <i class="icon-action"></i> Surveys
+                            </h4>
+                            <div class="controls-top float-right btn-group mb-2" *ngIf="home_data.to_do_items.pending_surveys.length > visible_limit['survey']">
+                                <a class="btn-floating btn btn-sm btn-primary text-white" (click)="get_slider_start_index(-1, home_data.to_do_items.pending_surveys, 'survey')"  data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+                                <a class="btn-floating btn btn-sm btn-primary text-white" (click)="get_slider_start_index(1, home_data.to_do_items.pending_surveys, 'survey')" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="carousel-inner" role="listbox">    
+                            <div class="carousel-item active">    
+                                <div class="row">                                    
+                                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3" *ngFor="let sur of home_data.to_do_items.pending_surveys.slice(start_indices['survey'], ending_indices['survey'])">
+                                        <div class="kanban-card position-relative">
+                                            <div class="kanban-meeting-info">
+                                                <div class="kanban-upcoming-meeting" routerLink="/survey/{{sur.id}}">
+                                                    <div *ngIf="sur.open_date" class="CalendarDateWrapper">
+                                                        <span class="CalendarDateWrap">
+                                                            <span class="kanban-upcoming-meeting-date">
+                                                                {{sur.open_date.day}}
+                                                            </span>
+                                                                <span>
+                                                                {{sur.open_date.month_year}}
+                                                            </span>
+                                                            <span>
+                                                                {{sur.open_date.time}}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="Info">
+                                                        <p class="text-truncate" *ngIf="sur.title">
+                                                            <b>{{sur.title}}</b>
+                                                        </p>
+                                                        <span class=" text-truncate" *ngIf="sur.description">
+                                                            Description: {{sur.description}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row d-flex justify-content-between">
+                                                    <div class="col">
+                                                        <div class="bs-btnwrap survey-top-buttons" routerLink="/home/survey/{{sur.id}}" [ngStyle]="{'background': '#f3f3f3'}">
+                                                            <a class="btn text-white">Start Survey</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>             
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>   
+                    </div>                          
+            
+                    <div *ngIf="home_data && home_data.to_do_items.pending_meetings1" class="">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="main-heading">
+                                    <h1>
+                                        Upcoming Meetings
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 mb-4" *ngFor="let meeting_object of home_data.to_do_items.pending_meetings">
+                                <div class="kanban-card kanban-meeting-info">
+                                    <a class="kanban-upcoming-meeting" routerLink="/meeting/{{meeting_object.id}}">
+                                        <div class="CalendarDateWrapper">
+                                            <span *ngIf="meeting_object.start" class="CalendarDateWrap">
+                                                <span class="kanban-upcoming-meeting-date">
+                                                    {{meeting_object.start_dt.day}}
+                                                </span>
+                                                <span>
+                                                    {{meeting_object.start_dt.month_year}}
+                                                </span>
+                                                <span>
+                                                    {{meeting_object.start_dt.time}}
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="Info">
+                                            <p *ngIf="meeting_object.name">
+                                                <b>{{meeting_object.name}}</b>
+                                            </p>
+                                            <span *ngIf="meeting_object.location" class="d-inline-block text-truncate">{{meeting_object.location}}</span>
+                                        </div>
+                                    </a>
+                                    <app-meetingresponse my_event="1" meeting_id="{{meeting_object.id}}" attendee_status="{{meeting_object.attendee_status}}" ></app-meetingresponse>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Documents-->
+                    
+                    <div *ngIf="home_data.to_do_items.pending_documents.length" id="multi-item-sign-docs" 
+                    class="carousel slide carousel-multi-item pb-2" data-ride="carousel">
+                        <div class="clearfix sub_actions">                                
+                            <h4 class="text-primary float-left">
+                                <i class="icon-draw-pencil"></i> E-Signature
+                            </h4>
+                            <div class="controls-top float-right btn-group mb-2" *ngIf="home_data.to_do_items.pending_documents.length > visible_limit['sign_doc']">
+                                <a class="btn-floating btn btn-sm btn-primary" (click)="get_slider_start_index(-1, home_data.to_do_items.pending_documents, 'sign_doc')" href="#multi-item-sign-docs" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+                                <a class="btn-floating btn btn-sm btn-primary" (click)="get_slider_start_index(1, home_data.to_do_items.pending_documents, 'sign_doc')" href="#multi-item-sign-docs" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="carousel-inner" role="listbox">    
+                            <div class="carousel-item active">    
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-4" *ngFor="let doc of home_data.to_do_items.pending_documents.slice(start_indices['sign_doc'], ending_indices['sign_doc'])">
+                                        <a class="DocumentWrapper gray-bg" routerLink="/signdoc/{{doc.id}}">
+                                            <div class="DocIcon">
+                                                <span class="rounded-circle">
+                                                    <i class="icon-e-sign"></i>
+                                                </span>
+                                            </div>
+                                            <div class="DocInfoVertical">
+                                                <div class="text-truncate">
+                                                    {{doc.name}}
+                                                </div>
+                                                <div *ngIf="doc && doc.meeting__name" class="DocMeeting">
+                                                    Meeting: {{doc.meeting__name}}
+                                                </div>
+                                                <div class="text-truncate">
+                                                    Status: {{doc.signature_status}}
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                 
+                    <!--Votings-->
+                    <div *ngIf="home_data.to_do_items.pending_votings.length" id="multi-item-voting" 
+                    class="carousel slide carousel-multi-item pb-2" data-ride="carousel">
+                        <div class="clearfix sub_actions">
+                            <h4 class="text-primary float-left">
+                                <i class="icon-voting"></i> Voting / Approvals
+                            </h4>
+                        <div class="controls-top float-right btn-group mb-2" 
+                                *ngIf="home_data.to_do_items.pending_votings.length > visible_limit['voting']">
+                                <a class="btn-floating btn btn-sm btn-primary" (click)="get_slider_start_index(-1, home_data.to_do_items.pending_votings, 'voting')" href="#multi-item-voting" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+                                <a class="btn-floating btn btn-sm btn-primary" (click)="get_slider_start_index(1, home_data.to_do_items.pending_votings, 'voting')" href="#multi-item-voting" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="carousel-inner" role="listbox">    
+                            <div class="carousel-item active"> 
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 col-lg-4 mb-3" *ngFor="let vote of home_data.to_do_items.pending_votings.slice(start_indices['voting'], ending_indices['voting'])">
+                                        <div class="kanban-card position-relative">
+                                            <div class="kanban-meeting-info">
+                                                <div class="kanban-upcoming-meeting" routerLink="/voting/{{vote.id}}">
+                                                    <div *ngIf="vote.open_date" class="CalendarDateWrapper">
+                                                        <span class="CalendarDateWrap">
+                                                            <span class="kanban-upcoming-meeting-date">
+                                                                {{vote.open_date.day}}
+                                                            </span>
+                                                                <span>
+                                                                {{vote.open_date.month_year}}
+                                                            </span>
+                                                            <span>
+                                                                {{vote.open_date.time}}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                    <div class="Info">
+                                                        <p class="text-truncate" *ngIf="vote.name">
+                                                            <b>{{vote.name}}</b>                                        
+                                                        </p>
+                                                        <span *ngIf="vote.voting_type_name">
+                                                            <strong>Voting Type: </strong>{{vote.voting_type_name}}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="row d-flex justify-content-between" routerLink="/voting/{{vote.id}}">
+                                                    <div class="col">
+                                                        <div class="bs-btnwrap survey-top-buttons">
+                                                            <a class="btn text-white">Details</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>             
+                                        </div>
+                                    </div>
+                                </div>                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>            
+    </div>
+    
+    <section *ngIf="home_data && (socketService.admin_mode || (home_data.doc_ids && home_data.doc_ids.length))" id="multi-item-docs"
+    class="carousel slide carousel-multi-item " data-ride="carousel">   
+        <div class="py-0 container">
+            <div class="HomepageDocumentSection">                
+                <div class="carousel-inner" role="listbox">
+                    <app-documents 
+                    parent_model="News" title="Documents" parent_field="news_id" parent_id="{{home_data.id}}"
+                    res_app="meetings" res_model="NewsDocument"></app-documents>
+                </div> 
+            </div>
+        </div>
+    </section>
+
+    <section *ngIf="home_data && home_data.video_ids && home_data.video_ids.length" id="multi-item-videos" 
+    class="carousel slide carousel-multi-item container py-0 pb-4" data-ride="carousel">
+		<div class="clearfix">
+			<div class="home_actions">
+				<h3><span class="head-icon-end"><i class="icon-play-button"></i> Videos</span></h3>
+				<div class="controls-top float-right btn-group mb-2" *ngIf="home_data.video_ids.length > visible_limit['news_video']">
+					<a class="btn-floating btn btn-sm btn-primary" (click)="get_slider_start_index(-1, home_data.video_ids, 'news_video')" href="#multi-item-videos" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+					<a class="btn-floating btn btn-sm btn-primary" (click)="get_slider_start_index(1, home_data.video_ids, 'news_video')" href="#multi-item-videos" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+				</div>
+			</div>
+		</div>
+        <div class="carousel-inner" role="listbox">    
+            <div class="carousel-item active"> 
+                <div class="row">
+                    <div class="video thumbnail col-sm-6 col-md-4 col-lg-3" *ngFor="let video of home_data.video_ids.slice(start_indices['news_video'], ending_indices['news_video'])">
+                        <iframe class="docThumbnail" frameborder="0" [src]="video.url"></iframe>
+                        <div class="videoOverLayWrapper" (click)="view_video(video.name, video.original_url)"></div>
+                        <h5 class="docname text-dark">{{video.name}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>    
+</div>
+<div class="modal fade video home-video-modal-style" id="videoModal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <button type="button" class="close" data-dismiss="modal"><i class="fa fa-times"></i> </button>
+            <div class="modal-body">
+                <div class="embed-responsive embed-responsive-16by9">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

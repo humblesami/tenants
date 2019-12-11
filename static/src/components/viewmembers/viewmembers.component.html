@@ -1,0 +1,61 @@
+<label class="pop-heading"> {{title ? title: 'User List' }} </label>
+<div class="roster">
+    <div class="user-modal-container">
+        <div class="main-full-seachbar">
+        <input type="text"
+            (keyup)="user_serach($event.target.value)"
+            placeholder="Search..."  class="form-control"/>
+        </div>
+            
+        <div class="bg-heading">
+            <div>
+                User Info
+            </div>
+            <div>
+                Status
+            </div>
+        </div>            
+        <div class="roster-height">  
+            <!-- <div *ngIf="!shown_users.length" class="row no-data">
+                <h4>No Users</h4>
+            </div> -->
+            <div class="d-flex py-2 mb-1 bg-roster rounded"
+            *ngFor="let obj of shown_users">
+                <div class="col-9">
+                    <div class="d-flex left-margin" 
+                    (click)="show_profile_summary(obj.id)"
+                    [ngStyle] = "{'cursor': 'pointer'}">
+                        <div class="d-block">
+                            <div class="img-flex img-circle">
+                                <img src="{{socketService.server_url}}{{obj.image}}"/>
+                            </div>                            
+                        </div>
+                        <div class="w-75 ml-1">
+                            <div class="text-truncate">
+                                {{obj.name}}
+                            </div>
+                            <div class="text-truncate">
+                                {{obj.email}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div  class="col-3 custom-control custom-checkbox">
+                        <input type="checkbox"
+                        disabled="disabled"
+                        [(ngModel)]="obj.selected"
+                        class="custom-control-input">
+                        <label class="custom-control-label"></label>
+                </div>
+            </div>   
+        </div>
+    </div>
+</div>    
+<div class="pop-bottom">
+    <div>
+        {{shown_users.length}} Record(s)
+    </div>
+    <div>
+        <button type="button" class="btn btn-danger" (click)="activeModal.close()">Close</button>
+    </div>
+</div>

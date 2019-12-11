@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+    {% if id %}
+    <table style="width: 100%;">
+        <tr>
+            <td>
+                <table style="width: 50%;min-width:480px;margin: 0 auto;border:1px solid #000;text-align: center;font-family: sans-serif;padding-top: 1rem;padding-bottom: 1rem;">
+                    <tr>
+                        <td>
+                            <img src="https://meetvue.com/static/assets/images/login-logo.png" alt="" style="width: 40%; min-width:100px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h2>{{name}}</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <a href="{{server_base_url}}/#/committees/{{id}}"
+                            style="background: #4b74b5;color:#fff;text-decoration: none;padding:7px;border-radius: 20px;display: inline-block;min-width: 70px;margin-left:5px">
+                        Click Here
+                        </a>
+                    </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+    {% endif %}
+<div id="div1"><h2>
+    {% if error %}
+        {{ error }}
+    {% elif success %}
+        {{ success }}
+    {% endif %}
+
+</h2></div>
+</body>
+</html>

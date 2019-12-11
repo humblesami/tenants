@@ -1,0 +1,79 @@
+﻿<app-breadcrumb *ngIf="!loaded_as_child" app="esign" model="signaturedoc" 
+create="1"
+routes='[{"title":"Actions", "link":"/actions"}]'
+title="e-Signature"></app-breadcrumb>
+
+<div class="router-outlet">
+    <div class="container">
+        <div class="kanban-headings">
+            <h3>
+                <i class="icon-draw-pencil text-primary"></i> E-Signature
+            </h3>
+            <div *ngIf="!loaded_as_child" class="MeetingBtnWrapper">
+                <div class="btn-group">
+                    <a routerLink="/actions" class="btn">All</a>
+                    <a routerLink="/votings" class="btn">Resolutions</a>
+                    <a routerLink="/signdocs" [ngClass]="{active: '/signdocs' == socketService.current_path}" class="btn">E-Signature</a>
+                    <a routerLink="/surveys" class="btn">Surveys</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+    <app-search *ngIf="!loaded_as_child" (onsearch)="get_list()"></app-search>
+    
+    <div *ngIf="!to_do_only" class="MeetingBtnWrapper StateFilterContainer">
+        <div class="btn-group">
+            <a [attr.state]="'to do'" (click)="get_records($event.target, 'to do')" class="btn">To Do</a>
+            <a [attr.state]="'in progress'" (click)="get_records($event.target, 'in progress')" class="btn">In Progress</a>
+            <a [attr.state]="'completed'" (click)="get_records($event.target, 'completed')" class="btn">Completed</a>
+            <a [attr.state]="'draft'" *ngIf="socketService.admin_mode" (click)="get_records($event.target, 'draft')" class="btn">Draft</a>
+        </div>
+    </div>
+
+    <div class="cards">
+            <app-paginator            
+            *ngIf="!loading && records.length && !loaded_as_child"
+            (reload_data)="get_list()">
+        </app-paginator>
+		<div class="row">
+			<div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-4"  *ngFor="let doc of records">
+				<a routerLink="/signdoc/{{doc.id}}" class="">
+					<div class="DocumentWrapper gray-bg">
+                        <div *ngIf="!doc.all.total && doc.id && socketService.admin_mode" class="doc-del-btn"
+                            (click)="delete_file($event, doc.id)">
+                            <i class="far fa-trash-alt pointer" ></i>
+                        </div>
+                        <div class="doc-del-btn d-flex">
+                            <div *ngIf="doc.all.total"
+                                (click)="open_results($event, doc.id)">
+                                <i class="fas fa-poll"></i>
+                            </div>
+                        </div>
+						<div class="DocIcon">
+							<span class="rounded-circle">
+								<i class="icon-e-sign" [ngClass]="{'text-muted': doc.sign_started}"></i>
+							</span>
+                        </div>
+						<div class="DocInfoVertical">
+							<div class="text-truncate">
+								{{doc.name}}
+							</div>
+							<div class="text-truncate">
+                                My Status: {{doc.signature_status}}
+                            </div>
+                            <div class="text-truncate">
+                                Overall: {{doc.all.status}}
+							</div>
+                        </div>
+					</div>
+				</a>
+			</div>
+		</div>
+    </div>
+    <div class="jumbotron text-center" *ngIf="!records.length">
+        <h1>No record found!</h1>
+        <hr>
+    </div>
+</div>

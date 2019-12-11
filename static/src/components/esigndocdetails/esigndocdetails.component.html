@@ -1,0 +1,165 @@
+﻿<app-breadcrumb app="esign" model="signaturedoc" 
+*ngIf="doc && doc.sign_count && !is_public && doc.doc_name"
+rid="{{doc.id}}" edit="1"
+routes='[{"title":"Actions", "link":"/actions"}, {"title":"E-Signature", "link":"/signdocs"}]'
+title="{{doc.doc_name}}"></app-breadcrumb>
+
+<app-breadcrumb app="esign" model="signaturedoc" 
+*ngIf="doc && !doc.sign_count && !is_public && doc.doc_name"
+rid="{{doc.id}}" delete="1" edit="1"
+routes='[{"title":"Actions", "link":"/actions"}, {"title":"Esignature", "link":"/signdocs"}]'
+title="{{doc.doc_name}}"></app-breadcrumb>
+
+<div class="router-outlet">
+    <link rel="stylesheet" href="/static/assets/css/esign.css" />
+    <div name="id" class="e_sign_doc_id" invisible="1" ></div>
+    <div class="sign-position dev_only" ></div>
+    <div id="holder">
+        <div class="container-fluid">
+            <div class="row doc-container" [ngClass]="{admin: !signature_started && socketService.admin_mode}">
+                <a id="fields-hide"><i class="fa fa-bars"></i></a>
+                <div id="doc-side-scroll">
+                    <div class="PdfButtonWrapper">
+                        <div class="PdfVerticalButtonWrapper dragabl-fields">
+                            <div class="fields-title">
+                                FIELDS
+                            </div>
+                            <div id="signature-position" signtype="signature" class="drag docselectbtn position_btns sign_psition">
+                                <i class="icon-draw-pencil"></i>
+                                <span class="field_type">Signature</span>
+                            </div>
+                            <div id="initial-position" signtype="initials" class="drag docselectbtn position_btns">
+                                <i class="fas fa-signature"></i>
+                                <span class="field_type">Initials</span>
+                            </div>
+                            <div id="date-position" signtype="date" class="drag docselectbtn position_btns">
+                                <i class="icon-calendar-empty"></i>
+                                <span class="field_type">Date</span>
+                            </div>
+                            <div id="text-position" signtype="name" class="drag docselectbtn position_btns">
+                                <i class="icon-user-single"></i>
+                                <span class="field_type">Name</span>
+                            </div>
+                            <div id="name-position" signtype="email" class="drag docselectbtn position_btns">
+                                <i class="fa fa-envelope"></i>
+                                <span class="field_type">Email</span>
+                            </div>
+                            <div id="phone-position" signtype="phone" class="drag docselectbtn position_btns">
+                                <i class="icon-call-answer"></i>
+                                <span class="field_type">Phone</span>
+                            </div>
+                            <div id="company-position" signtype="company" class="drag docselectbtn position_btns">
+                                <i class="icon-hotel"></i>
+                                <span class="field_type">Company</span>
+                            </div>
+                            <div id="phone-position" signtype="text" class="drag docselectbtn position_btns">
+                                <i class="fa fa-font"></i>
+                                <span class="field_type">Text</span>
+                            </div>
+                        </div>
+                        <div class="meetings_div">
+                            <div class="doc-subtitle">Attach to Meeting</div>
+                            <select id="dropdown_meeting">
+                                <option selected value="">Select Meeting</option>
+                                <option *ngFor="let meet of meetings" value="{{meet.id}}">{{meet.name}}</option>
+                            </select>
+                            <div class="doc-subtitle" class="check_box_send_all">
+                                <label class="check-plus-label-wrap">
+                                    <input id="check_box_send_all" type="checkbox"/>
+                                    <span>Send to all audience </span>
+								</label>
+                            </div>
+                        </div>
+        
+                        <button id="save-doc-data" class="btn btn-primary save_doc_data">
+                            Send
+                        </button>
+						<button id="edit-respondents" (click)="add_new_users()" class="mt-2 btn btn-primary btn-block">
+                            Edit Respondents
+                        </button>
+                    </div>
+                </div>
+                <div class="docWrapperContainer pr-0 pl-0">
+                    <div class="top_btns">
+                        <div class="PdfTopBtnsWrapper">
+							<div class="doc-manage-btn-wrap">
+                                <div class="btn  btn-sm doc_btn fa fa-chevron-left" id="prev" ></div>
+                                <div class="btn  btn-sm doc_btn fa fa-chevron-right" id="next" ></div>
+							</div>
+							<div class="doc-manage-btn-wrap">
+								<span class="pg_no"> <span style="font-weight: bold;" id="page_num" ></span> / <span id="page_count" ></span></span>
+							</div>
+							<div class="doc-manage-btn-wrap">
+								<div class="btn btn-sm doc_btn icon-zoom-in" id="zoomIn" title="Zoom In" ></div>
+								<div class="btn btn-sm doc_btn icon-zoom-out" id="zoomOut" title="Zoom Out" ></div>
+								<span style="display: inline-block;" id="scaleSelectContainer">
+									<select data-style="btn-primary" id="scaleSelect" title="Zoom" tabindex="23">
+										<option value="0.5">50%</option>
+										<option value="0.75">75%</option>
+										<option value="1">100%</option>
+										<option value="1.25">125%</option>
+										<option value="1.5">150%</option>
+										<option value="2">200%</option>
+										<option value="3">300%</option>
+										<option value="4">400%</option>
+									</select>
+								</span>
+
+							</div>
+
+                        </div>
+                    </div>
+                    <div id="viewer_container" style="position:relative;">
+                        <div id="page_container">
+                            <canvas id="the-canvas" ></canvas>
+                        </div>
+                    </div>
+                    <div id="btn_sign_guide">
+                        Start Signing
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="select_user_modal" tabindex="-1" role="dialog" aria-labelledby="SelectUserModal" aria-hidden="true">
+    <div class="modal-dialog modal-top-fixed" role="document">
+    <div class="modal-content">
+        <div class="modal-body">
+			<div></div>
+            <div *ngIf="add_users" style="display: flex" class="ng-select-user-list">
+                <ng-select
+                [items]="all_profile_users"
+                [multiple]="true"
+                [closeOnSelect]="true"
+                [hideSelected]="false"
+                [isOpen]="true"
+                bindLabel="name"
+                [searchable] = "true"
+                placeholder="Select User"                
+                [(ngModel)]="selected_respondents"
+                >
+                </ng-select>
+
+            </div>
+            <div *ngIf="!add_users" class="ng-select-user-list">
+                <ng-select
+                [items]="users_list"
+                [multiple]="false"
+                [closeOnSelect]="true"
+                [hideSelected]="false"
+                [isOpen]="true"
+                bindLabel="name"
+                [searchable] = "true"
+                (change)="setUserSelection()"
+                placeholder="Select User"                
+                [(ngModel)]="selectedUser"
+                >
+                </ng-select>
+            </div>
+			<button style="margin-left: 5px" (click)="close_users_modal()" class="btn btn-primary">Close</button>
+        </div>
+    </div>
+    </div>
+</div>

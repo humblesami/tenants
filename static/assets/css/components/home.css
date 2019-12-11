@@ -1,0 +1,615 @@
+/*Homepage TabBar setting*/
+.home-container{
+    padding-top: 20px;
+}
+.home{
+	background:#f1f4f2;
+    padding:0 10%;
+    padding:0;
+    position:relative;	
+    margin-top: -20px;
+}
+
+.home #collapsibleNavbar .active{
+    background:#ffffff;
+}
+
+.home div#collapsibleNavbar {
+    justify-content: center;
+    display:flex;
+}
+
+.home div#collapsibleNavbar button{
+    background: none;
+	color:#777a7e;
+	border:none;
+	flex-grow: 1;
+	font-size:18px;
+	
+	font-weight:500;
+	padding:20px 0;
+	position:relative;
+}
+
+.HomePageDiscription{
+    display:flex;
+    justify-content: space-between;
+}
+
+#calenderModal
+{
+    min-height: calc(100vh - 5px);
+}
+
+.HomepageDocumentSection{
+	margin-bottom: 1rem;
+	border-bottom: 10px solid #F5F5F5;
+	padding-bottom: 1rem;
+}
+.router-outlet .pl-4{
+    padding-left: 2rem!important;
+}
+.WelcomeContent{
+    padding-bottom:30px;
+    -webkit-flex:1 1 auto;
+    flex:1 1 auto;
+}
+
+.WelcomeContent h4.HomeTitle{
+    margin-bottom:20px;
+}
+.WelcomeContent h4.HomeTitle span{
+    position:relative;
+}
+
+.WelcomeContent h4.HomeTitle span:before{
+    border-top:1px solid #dddddd;
+    content:"";
+    position:absolute;
+    bottom:-7px;
+    left:0px;
+    width:100%;
+}
+
+.HomePageContentText{
+  width: 100%;
+  text-align: justify;
+}
+
+.HomePageContentImg {
+    margin-left: 20px;
+    margin-bottom:10px;
+    float: right;
+    border: 1px solid #ddd;
+    height: 300px;
+    width: 300px;
+    background: linear-gradient(to bottom, #f9f9f9, #f9f9f9);
+}
+.fc-more-cell{
+	background: darkgreen;
+	color: white;
+	border-radius: 5px;
+}
+@media (max-width: 767px) { 
+
+   .HomePageContentImg {
+        margin: 0px 0px 20px 0px;
+        flex-basis: 100%;
+        width: 100%;
+        float: none;
+    }
+
+    .HomePageContentText {
+        width: 100%;    
+    }
+    .router-outlet .pl-4{
+        padding-left: 1.5rem!important;
+    }
+    
+}
+
+
+#collapsibleNavbar>button::before
+{
+    width:1px;
+	height:50%;
+	background:#d8dce0;
+	content:"";
+	position:absolute;
+    top:25%;
+    left:0px;
+}
+
+#collapsibleNavbar button:nth-child(3)::after{	
+	left:0px;
+}
+
+#collapsibleNavbar button i{
+	display:block;
+	font-size:26px;
+	margin-bottom:5px;
+	}
+
+#collapsibleNavbar button:focus {
+    outline: 0px dotted;
+    outline: 0px auto -webkit-focus-ring-color;
+}
+
+
+#collapsibleNavbar button.active
+{
+    background:white;
+}
+
+btn.active{
+  background-color: #7c7bad;
+  color: white;
+  border-color: #7c7bad;
+}
+
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+#to-do .modal-header {
+    margin:25px 0;
+    padding: 10px 0;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.ToDoDocumentsItem{
+   padding-top:25px;
+}
+
+.light-blue-bg{
+   background: #f2f6fb !important;
+}
+
+.DocToDoText{
+    color:#313030;
+	font-size:13px;
+	font-weight:600;
+	text-transform:capitalize;
+	
+}
+
+.font-11{
+    font-size:11px;
+}
+
+.SignatureText{
+	font-weight:500;
+}
+
+.DocMeetingDetails{
+    color:#66676f;
+    font-size:11px;
+    font-weight:400;
+}
+.SurveysInfoBoxTitle{
+    padding: 12px;
+}
+.SurveysInfoBox {
+    background: #F3F3F3;
+    min-height: 110px;
+}
+.SurveysInfoBoxTitle h5 b{
+    font-weight: 700;
+    line-height: 1.3;
+    color: #515365;
+}
+.SurveysInfoBoxBtn{
+    border-top: 1px solid #E9E9E9;
+    padding: 12px;
+    text-align: center;
+}
+
+.VotingsInfoBox{
+    border: none;
+}
+.VotingsInfoBoxTitle h5 b{
+    font-weight: 700;
+    line-height: 1.3;
+    color: #515365;
+}
+
+.VotingsInfoBoxTitle h5 span{
+  display:block;
+  font-weight:400;
+  font-size:13px;
+}
+
+.SurveysInfoBoxTitle h5 span{
+  display:block;
+  font-weight:400;
+  font-size:13px;
+}
+
+.gray-bg{
+    background: #f3f3f3
+}
+
+.FormWrapper {
+    padding: 2%;
+    border-left: 5px solid #7c7bad;
+    background: #f3f3f3;
+}
+.FormWrapper textarea.form-control{
+    margin-bottom: 20px;
+    min-height: 150px;
+    resize: none;
+}
+.FormWrapper .form-control{
+    margin-bottom: 20px;
+}
+
+.cancelbtn, .signupbtn{
+    min-width: 130px;
+    font-size: 0.859em;
+    margin-right: 5px;
+}
+.home-survey-title .title{
+    font-size: 1.500em;
+    margin-bottom: 15px;
+}
+
+a.fc-more{
+    background-color: blue !important;
+    color: white !important;
+}
+.to-do-alram
+{
+    position: relative;
+}
+.to-do-alram i{
+    width: 30px;
+    margin: 0 auto;
+    position: relative;
+}
+
+span.to-do-count {
+    background: #dc3545;
+    color: white;
+    border-radius: 20px;
+    padding: 3px 6px 2px;
+    font-weight: bold;
+    font-size: 12px;
+    position: absolute;
+    top: -6px;
+    right: -11px;
+    border: 2px solid #ffffff;
+}
+.event-card label
+{
+    margin-bottom: 0;
+    font-weight: bold;
+}
+.event-card td {
+    padding-bottom: 10px;
+    padding-right: 20px;
+    font-size: 0.85rem;
+}
+.kanban-card{
+    border: none;
+}
+.kanban-card.survey
+{
+    width: 240px;
+    margin: 5px;
+}
+.kanban-card.survey::after {
+    content: '';
+    flex-grow: 1000000000;
+  }
+.CalendarDateWrapper {
+    white-space: nowrap;
+    width: 90px;
+}
+.kanban-meeting-head p {
+    color: #4D4F5C;
+    padding: 0;
+    font-size: 16px;
+    margin: 0 0 5px;
+}
+.SurveysInfoBoxBtn .btn:not(:disabled):not(.disabled){
+    padding: 5px 20px 5px 20px;
+}
+.docwrappercontainer{
+    margin-bottom: 10px;
+}
+@media (max-width: 575px) {
+
+
+.home div#collapsibleNavbar button {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 0;
+}
+
+.home div#collapsibleNavbar button i {
+    display: block;
+    font-size: 15px;
+}
+
+span.to-do-count{
+    right: -6px;
+    font-size: 9px;
+    top: -8px;
+    padding:3px 5px 2px;
+}
+
+}
+@media (min-width: 576px) and (max-width: 767px) {
+    
+}
+.video.thumbnail
+{
+    position: relative;
+}
+.docThumbnail
+{
+    width: 100%;
+}
+.videoOverLayWrapper
+{
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 160px;
+    z-index: 3;
+    cursor: pointer;
+}
+#event-summary tr
+{
+    display: none;
+}
+
+.home-about{
+    margin-top:20px; 
+}
+
+.homeabout-info{
+    background: #e6e6ea;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.homeabout-info p{
+    color: #757575;
+}
+.HomeCalendarHead{
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    margin-bottom:5px;
+    color: #2B2B2B; 
+}
+.HomeCalendarHead img{
+    margin-right: 10px;
+}
+.home-calendarwrapper{
+    background: #F3F3F3;
+    padding: 25px;
+}
+.full-calendar-btn{
+    text-align: center;
+    padding: 0 0 1rem;
+}
+.full-calendar-btn a{
+    display: inline-block;
+    padding: 7px 25px;
+    background: #4B74B5;
+    color: #ffffff;
+    border-radius: 25px;
+    font-size: 15px;
+    font-weight: 700;
+}
+.full-calendar-btn a:hover{
+    background: #638FC9;
+}
+ul {list-style-type: none;}
+
+.month {
+  padding: 20px 25px;
+  width: 100%;
+  background: #E9E9F0;
+  text-align: center;
+}
+
+.month ul {
+  margin: 0;
+  padding: 0;
+}
+
+.month ul li {
+  color: #A3A6B4;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.month .prev {
+  float: left;
+  padding-top: 10px;
+}
+
+.month .next {
+  float: right;
+  padding-top: 10px;
+}
+
+.weekdays {
+  margin: 0;
+  padding: 10px 0;
+  background-color: #ddd;
+}
+
+.weekdays li {
+  display: inline-block;
+  width: 13.6%;
+  color: #666;
+  text-align: center;
+}
+
+.days {
+  padding: 10px 0;
+  background: #eee;
+  margin: 0;
+}
+
+.days li {
+  list-style-type: none;
+  display: inline-block;
+  width: 13.6%;
+  text-align: center;
+  margin-bottom: 5px;
+  font-size:12px;
+  color: #777;
+}
+
+.days li .active {
+  padding: 5px;
+  background: #1abc9c;
+  color: white !important
+}
+
+.todoitembtn{
+	position: relative;
+}
+.todoitembtn:before{
+	display: block;
+    content: "";
+    position: absolute;
+    top: 50%;
+    height: 1px;
+    left: 0;
+    right: 0;
+    background: #dddddd;
+    transform: translateY(-50%);
+}
+.todoitembtn button{
+	webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #638FC9;
+    bottom: 0;
+    color: #ffffff;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-size: 15px;
+    font-weight: 400;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    padding: 7px 25px;
+    transition: background-color .1s linear,color .1s linear!important;
+    border: 0 solid;
+    flex: 0 auto;
+    margin: 15px auto;
+    border-radius: 20px;
+    position:relative;
+}
+.todoitembtn button:hover{
+	background-color: #4b74b5;
+}
+
+/* Add media queries for smaller screens */
+@media screen and (max-width:720px) {
+  .weekdays li, .days li {width: 13.1%;}
+  .DocumentWrapper{margin-left: 0px;}
+}
+
+@media screen and (max-width: 420px) {
+  .weekdays li, .days li {width: 12.5%;}
+  .days li .active {padding: 2px;}
+}
+
+@media screen and (max-width: 290px) {
+  .weekdays li, .days li {width: 12.2%;}
+}
+
+.home-video-modal-style{
+}
+
+.home-video-modal-style .modal-content {
+    background-color: #000000;
+        border-radius: 0;
+}
+.home-video-modal-style .modal-header, .home-video-modal-style .modal-body{
+	padding:0;
+	border:none;
+}
+.home-video-modal-style .close {
+	position: absolute;
+    top: -15px;
+    right: -15px;
+    margin: 2px;
+    padding: 0;
+    width: 27px;
+    height: 27px;
+    color: #ffffff;
+    opacity: 1;
+    background: #D75A4A;
+    z-index: 2;
+    border-radius: 50%;
+    font-size: 16px;
+}
+
+.home-video-modal-style .close i{
+	position:relative;
+	top: -1px;
+}
+.home-video-modal-style .close:hover {
+	opacity:1;
+	box-shadow:0px 0px 11px rgba(96, 96, 96, 0.25);
+}
+#to-do>div:not(:last-child){
+    border-bottom: 1px solid #ddd;
+}
+.sub_actions{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

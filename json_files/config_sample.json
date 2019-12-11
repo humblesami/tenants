@@ -1,0 +1,27 @@
+{
+    "server_base_url": "http://localhost:8000",
+    "socket_url": "http://localhost:3000",
+    "auth_server_url": "http://localhost:8000",
+    "ip2location":
+    {
+        "active":{
+            "base_url": "http://api.ipstack.com/",
+            "params": {
+                "access_key":"94bfb283cce53facd307167d1596b8c8"
+            },
+            "prefix": "http://api.ipstack.com/",
+            "postfix":"?access_key=94bfb283cce53facd307167d1596b8c8"
+        },
+        "other": {}
+    },
+    "default": {
+        "ENGINE": "django_tenants.postgresql_backend",
+        "NAME": "tt",
+        "USER": "odoo",
+        "PASSWORD": "123",
+        "HOST": ""
+    },
+    "domain": "localhost",
+    "port": "8001",
+    "https": 0
+}

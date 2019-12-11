@@ -1,0 +1,105 @@
+<app-breadcrumb 
+*ngIf="esignDetails"
+routes='[{"title":"Actions", "link":"/actions"}, {"title":"E-Signature", "link":"/signdocs"}, {"title":"{{esignDetails.name}}", "link":"/signdoc/{{esignDetails.id}}"}]'
+title="Results"></app-breadcrumb>
+<div class="router-outlet">
+    <link rel="stylesheet" href="/static/assets/css/survey.css" />
+    <div class="container" *ngIf="esignDetails">
+        <div class="form-details">
+            <div class="meeting-details-form">
+                <div class="container">
+                    <div class="row">
+                        <div *ngIf="esignDetails.name" class="col-sm-12">
+                            <div class="kanban-headings child-pages row justify-content-between">
+                                <h3>
+                                    <i class="icon-action text-primary"></i> {{esignDetails.name}}
+                                </h3>
+                            </div>
+                            <div class="w-50 ml-25">
+                                    <div class="canvas_warpper my-5">
+                                        <div style="height: 160px;width:160px;">
+                                                <canvas id="progress-chart"></canvas>
+                                        </div>
+                                    </div>
+                                <!-- <div >
+                                    
+                                </div> -->
+                                <div>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr *ngFor="let obj of esignDetails.progress_data">
+                                                <td [ngStyle]="{'background-color': obj.color}" style="width: 20px;height:20px;padding:0"></td>
+                                                <td>{{obj.option_name | firstToUpper}}</td>
+                                                <td>{{obj.option_result || 0}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 mr-b20" *ngIf="esignDetails.results">
+                        <div *ngFor="let result of esignDetails.results" class="row esignDetailsquestions">
+                            <div *ngIf="result.signature_assigned" class="col-sm-12 UserProfileDiscription">
+                                <div class="accordion" id="accordionExample">
+                                    <div class="card">
+                                        <a class="card-header" 
+                                        data-toggle="collapse" 
+                                        id="heading-{{result.id}}" 
+                                        [attr.data-target]="'#result-' + result.id"  
+                                        [ngClass]="{collapsed: !result.progress_data.length }"
+                                        [attr.aria-controls]="'#result-' + result.id">
+                                            <span>{{result.name}} - {{result.attempted_signatures}}/{{result.total_signatures}}</span>
+                                            <span class="float-right"><i class="fa"></i></span>
+                                        </a>
+                                        <div id="result-{{result.id}}" class="collapse" [ngClass]="{hide: result.progress_data.length }"
+                                        [attr.aria-labelledby]="'heading-' + result.id" data-parent="#accordionExample">
+                                            <div class="card-body" [ngClass]="{hideoverflow: !result.progress_data.length }">
+                                                <div *ngIf="result.signature_assigned">
+                                                    <div style="display: flex">
+                                                        
+                                                            <table class="table table-bordered">
+                                                                <tbody><tr>
+                                                                    <th>Assigned Type</th>
+                                                                    <th>Assigned by</th>
+                                                                    <th>Attempted At</th>
+                                                                </tr>
+                                                                <tr *ngFor="let signature_result of result.signature_results" >
+                                                                    <td>{{signature_result.assigned_type}}</td>
+                                                                    <td>{{signature_result.assigned_by}}</td>
+                                                                    <td *ngIf="signature_result.signed_at">{{signature_result.signed_at | date:'medium'}}</td>
+                                                                    <td *ngIf="!signature_result.signed_at">Pending</td>
+                                                                </tr>
+                                                            </tbody></table>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="result.progress_data.length" class="w-50 ml-25">
+                                                    <div class="canvas_warpper my-5">
+                                                        <div class="canvas_container">
+                                                                <canvas id="chartData-{{result.id}}"></canvas>
+                                                        </div>
+                                                        </div>
+                                                    <table class="table">
+                                                        <tbody>
+                                                            <tr *ngFor="let obj of result.progress_data">
+                                                                <td [ngStyle]="{'background-color': obj.color}" style="width: 20px;height:20px;padding:0"></td>
+                                                                <td>{{obj.option_name | firstToUpper}}</td>
+                                                                <td>{{obj.option_result || 0}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

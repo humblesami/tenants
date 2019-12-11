@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if latest_voting_list %}
+    {% for voting in latest_voting_list %}
+        <div>
+            <a href="/voting/{{ voting.id }}" class="btn">{{ voting.name }}</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No Votings are available.</p>
+{% endif %}
+{% endblock %}

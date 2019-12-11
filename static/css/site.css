@@ -1,0 +1,33 @@
+body
+{
+    padding:15px;
+}
+
+table, th, td {
+    border: 1px solid;
+}
+.block {
+    cursor: pointer;
+}
+auth.content {
+    background-color: lightgrey;
+    width: 300px;
+    border: 25px solid green;
+    padding: 25px;
+    margin: 25px;
+    text-align: center;
+}
+.menu-btn-container
+{
+    padding-bottom: 20px;
+}
+@media (max-width: 767px)
+{
+    .aligned .form-row > div {
+        width: calc(100vw - 70px);
+    }
+}
+.aligned label
+{
+    padding: 15px 0 0 0;
+}

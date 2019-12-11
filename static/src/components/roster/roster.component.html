@@ -1,0 +1,149 @@
+<label class="pop-heading">Roster</label>
+<div class="roster">
+    <div class="main-full-seachbar">
+        <input type="text"
+            (keyup)="search_roster($event.target.value)" 
+            placeholder="Search..."  class="form-control"/>
+    </div>
+    <div class="bg-heading roster-bg">
+        <div class="col-3 col-sm-4 ">
+            <label class="">
+                Attendees
+            </label>
+        </div>
+        <div class="col-3 col-sm-2">
+            <label class="">
+                Status
+            </label>
+        </div>
+        <div class="col-2 col-sm-2 custom-control custom-checkbox absent-all"
+        (click)="check_all($event.target)"> 
+            <div *ngIf="socketService.admin_mode && (meeting_type == 'completed' || meeting_type == 'ongoing')">
+                <input type="checkbox" 
+                [(ngModel)]="absent_all"
+                id="absent_all"                
+                class="custom-control-input">
+                <label class="custom-control-label"><span>Absent</span></label>
+            </div>
+            <div *ngIf="!socketService.admin_mode || (meeting_type != 'completed' &&  meeting_type != 'ongoing')">
+                <span>Absent</span>
+            </div>
+        </div>
+        <div class="col-2 col-sm-2 custom-control custom-checkbox inperson-all"
+        (click)="check_all($event.target)">
+            <div *ngIf="socketService.admin_mode && (meeting_type == 'completed' || meeting_type == 'ongoing')">
+                <input type="checkbox" 
+                [(ngModel)]="inperson_all"
+                id="inperson_all"
+                *ngIf="(meeting_type == 'completed' || meeting_type == 'ongoing')"
+                class="custom-control-input">
+                <label class="custom-control-label"><span>InPerson</span></label> 
+            </div>
+            <div *ngIf="!socketService.admin_mode || (meeting_type != 'completed' &&  meeting_type != 'ongoing')">
+                <span>InPerson</span>
+            </div>
+        </div>
+        <div class="col-2 col-sm-2 custom-control custom-checkbox online-all"
+        (click)="check_all($event.target)">
+            <div *ngIf="socketService.admin_mode && (meeting_type == 'completed' || meeting_type == 'ongoing')">
+                <input type="checkbox"
+                [(ngModel)]="online_all"
+                id="online_all"
+                class="custom-control-input">
+                <label class="custom-control-label"><span>Online</span></label>
+            </div>
+            <div *ngIf="!socketService.admin_mode || (meeting_type != 'completed' &&  meeting_type != 'ongoing')">
+                <span>Online</span>
+            </div>                
+        </div>
+    </div>
+    <!-- Attendance -->
+    <div class="roster-height">
+        <div class="d-flex py-2 mb-1 bg-roster rounded" *ngFor="let obj of attendees">
+            <div class="col-3 col-sm-4">
+                <div class="d-flex left-margin" (click)="open_dialog(obj.id)" [ngStyle] = "{'cursor': 'pointer'}">
+                    <div class="d-none d-md-block">
+                        <div class="img-flex img-circle">
+                            <img src="{{socketService.server_url}}{{obj.photo}}"/>
+                        </div>                            
+                    </div>
+                    <div class="w-75 ml-md-1">
+                        <div class="text-truncate">
+                            {{obj.name}}
+                        </div>
+                        <div class="text-truncate">
+                            {{obj.email}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3 col-sm-2">
+                {{obj.status}}
+            </div>
+            <div class="col col-sm-2 pl-1">
+                <div *ngIf=" socketService.admin_mode && (meeting_type == 'completed' || meeting_type == 'ongoing')">                
+                    <input *ngIf="obj.attendance=='absent'" class="absent" checked type="radio" name="{{obj.id}}"/>                    
+                    
+                    <input (click)="update_attendance(obj.id,'absent')" 
+                    class="absent" *ngIf="obj.attendance!='absent'"                     
+                    type="radio" name="{{obj.id}}" />
+                
+                    <input type="hidden" value="absent" />
+                    <input type="hidden" value="{{obj.id}}"/>
+                </div>
+                <div *ngIf="meeting_type == 'archived' || (!socketService.admin_mode && (meeting_type == 'completed' || meeting_type == 'ongoing')) ">
+                    <span *ngIf="obj.attendance == 'absent'">Yes</span>
+                    <span *ngIf="obj.attendance != 'absent'">-</span>
+                </div>
+                <div *ngIf="meeting_type == 'draft' || meeting_type == 'upcoming'">TBA</div>
+            </div>
+            <div class="col-2 col-sm-2 pl-1">
+                <div *ngIf="socketService.admin_mode && (meeting_type == 'completed' || meeting_type == 'ongoing')">
+                    <input *ngIf="obj.attendance=='inperson'" class="inperson" checked type="radio" 
+                    name="{{obj.id}}" 
+                    />
+                    <input (click)="update_attendance(obj.id,'inperson')" 
+                    class='inperson' *ngIf="obj.attendance!='inperson'"                     
+                    type="radio" name="{{obj.id}}" 
+                    />
+                    <input type="hidden" value="inperson" />
+                    <input type="hidden" value="{{obj.id}}" />
+                </div>
+                <div *ngIf="meeting_type == 'archived' || (!socketService.admin_mode && (meeting_type == 'completed' || meeting_type == 'ongoing') ) ">
+                    <span *ngIf="obj.attendance == 'inperson'">Yes</span>
+                    <span *ngIf="obj.attendance != 'inperson'">-</span>
+                </div>
+                <div *ngIf="meeting_type == 'draft' || meeting_type == 'upcoming'">TBA</div>
+            </div>
+            <div class="col-2 col-sm-2 pl-1">
+                <div *ngIf="socketService.admin_mode && (meeting_type == 'completed' || meeting_type == 'ongoing')">
+                    <input *ngIf="obj.attendance=='online'" checked class="online" type="radio" 
+                    name="{{obj.id}}" >
+                    <input (click)="update_attendance(obj.id,'online')" 
+                    class="online" *ngIf="obj.attendance!='online'"                     
+                    type="radio" name="{{obj.id}}" 
+                    />
+                    <input type="hidden" value="online" />
+                    <input type="hidden" value="{{obj.id}}" />
+                </div>
+                <div *ngIf="meeting_type == 'archived' || (!socketService.admin_mode && (meeting_type == 'completed' || meeting_type == 'ongoing') ) ">
+                    <span *ngIf="obj.attendance == 'online'">Yes</span>
+                    <span *ngIf="obj.attendance != 'online'">-</span>
+                </div>                
+                <div *ngIf="meeting_type == 'draft' || meeting_type == 'upcoming'">TBA</div>
+            </div>
+        </div>
+    </div>    
+</div>    
+<div class="pop-bottom">
+    <div>
+        {{attendees.length}} Record(s)
+    </div>
+    
+    <div>            
+        <button type="button" class="btn btn-primary"
+        *ngIf="socketService.admin_mode && (meeting_type=='completed' || meeting_type=='ongoing')"
+        (click)="submit_attendance($event)">Submit</button>
+        <button type="button" class="btn btn-danger" (click)="close_roster($event)">Close</button>
+    </div>
+</div>
