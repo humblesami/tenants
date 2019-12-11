@@ -91,8 +91,7 @@ class Command(BaseCommand):
             print('Database created')
             importlib.import_module('del')
             call_command('makemigrations')
-            call_command('makemigrations', 'authsignup', 'restoken')
             call_command('migrate')
-            call_command('loaddata', 'website/fixtures/data.json')
+            call_command('loaddata', 'website/fixtures/public.json')
         else:
             print('failed ' + res)

@@ -29,147 +29,146 @@ def get_payment_data(token):
     return plan, payment_in_progress
 
 
-def validate_payment_data(req_data):
-    company = req_data['company']
-    password = req_data['password']
-    amount = req_data['amountpay']
-    error = ''
-    already = Client.objects.filter(schema_name=company)
-    if already:
-        message = 'Company Already Exists'
-        if error:
-            error += ', ' + message
-    if not amount or not password:
-        message = 'Please provide all the fields'
-        if error:
-            error += ', ' + message
-    return error, company, password
-
-def subscribe(request, plan_id, req_token=None, error=None):
-    template_name = 'customers/subscribe.html'
-
-    token = None
-    req_data = request.POST
-    req_data = req_data.dict()
-    payment_in_progress_obj = None
-    payment_in_progress_dict = None
-
-    if req_token:
-        token = req_token
-        plan, payment_in_progress_obj = get_payment_data(req_token)
-        payment_in_progress_dict = payment_in_progress_obj.__dict__
-    elif req_data.get('token'):
-        token = req_data['token']
-        plan, payment_in_progress_obj = get_payment_data(token)
-        payment_in_progress_dict = payment_in_progress_obj.__dict__
-        req_data['company'] = payment_in_progress_dict['company']
-    else:
+def form_company_info(request, plan_id):
+    try:
+        template_name = 'customers/subscription/company_form.html'
         qs = Plan.objects.filter(id=plan_id).values('id', 'name', 'cost', 'days')
         plan = list(qs)[0]
-
-    if request.method != 'POST':
         plan['cents_cost'] = int(plan['cost']) * 100
         context = {
-            'key': settings.STRIPE_PUBLISHABLE_KEY,
             'plan': plan,
-            'error': ''
         }
-
-        if token:
-            context['token'] = token
-        if payment_in_progress_dict and payment_in_progress_dict['error']:
-            context['error'] = payment_in_progress_dict['error']
-        elif error:
-            context['error'] = error
-        if payment_in_progress_dict:
-            context['company'] = payment_in_progress_dict['company']
-        return render(request, template_name, context)
-    else:
-        req_data['key'] = settings.STRIPE_PUBLISHABLE_KEY
-        req_data['plan'] = plan
-        context = req_data
-        if token:
-            context['token'] = token
-        try:
-            print('Starting')
-            if token:
-                email = payment_in_progress_dict['email']
-                usd_amount = payment_in_progress_dict['amount']
-                company = payment_in_progress_dict['company']
-                method_id = payment_in_progress_dict['method_id']
-                transaction_id = payment_in_progress_dict['transaction_id']
-                password = req_data['password']
-                context['token'] = token
+        if request.method != 'POST':
+            return render(request, template_name, context)
+        else:
+            req_data = request.POST
+            company = req_data['company']
+            usd_amount = req_data['usd_amount']
+            error = ''
+            already = Client.objects.filter(schema_name=company)
+            if already:
+                message = 'Company Already Exists'
+                if error:
+                    error += ', ' + message
+            if not usd_amount:
+                message = 'Please provide all the fields'
+                if error:
+                    error += ', ' + message
+            if error:
+                redirect(request, '/subscriptions/' + req_data['plan_id'])
             else:
-                error, company, password = validate_payment_data(req_data)
-                if error:
-                    context['error'] = error
-                    return render(request, template_name, context)
-
-                print('validated')
-                cent_amount = req_data['amountpay']
-                cent_amount = int(cent_amount)
-                usd_amount = int(cent_amount) / 100
-                res = make_payment(req_data, cent_amount, usd_amount)
-                print('payment tried')
-                if not res.get('paid') and res.get('error'):
-                    return render(request, template_name, res)
-
-                payment_in_progress_obj = res['payment_in_progress']
-                error = res['error']
-                method_id = res['method_id']
-                payment_response = res['payment_response']
-                email = payment_response['billing_details']['name']
-                token = context['token'] = res['token']
-                transaction_id = payment_response['id']
-                if error:
-                    print('payment failed')
-                    return send_error(error, context, req_token, token, template_name, request, payment_in_progress_obj)
-                print('payment succeeded')
-            if not transaction_id:
-                print('payment failed no transaction id')
-                res = 'Invalid transaction id'
-                return send_error(res, context, req_token, token, template_name, request, payment_in_progress_obj)
-            with transaction.atomic():
-                plan_cost = PlanCost.objects.filter(plan_id=plan['id']).values('id', 'cost', 'days')
-                plan_cost = plan_cost[len(plan_cost) - 1]
-                subscription = Subscription(plan_id=plan['id'], plan_cost_id=plan_cost['id'])
-                subscription.amount = plan_cost['cost']
-                end_date = ws_methods.add_interval('days', plan_cost['days'])
-                subscription.end_date = end_date
-                subscription.save()
-
-                obj = Payment(subscription_id=subscription.id, transaction_id=transaction_id)
-                obj.method_id = method_id
+                payment_token = uuid.uuid4().hex[:20]
+                medium = PaymentMethod.objects.filter(name='Stripe')
+                if not medium:
+                    medium = PaymentMethod.objects.create(name='Stripe')
+                else:
+                    medium = medium[0]
+                method_id = medium.id
+                obj = PaymentInProgress(method_id=method_id, plan_id=req_data['plan_id'])
+                obj.company = company
+                obj.token = payment_token
                 obj.amount = usd_amount
                 obj.save()
-                print('creating tenant')
-                res = create_tenant(company, email, password, subscription.id, plan['id'], request)
-
-            if res == 'done':
-                payment_in_progress_obj.delete()
-                return redirect('/')
-            else:
-                return send_error(res, context, req_token, token, template_name, request, payment_in_progress_obj)
-        except:
-            res = produce_exception()
-            return send_error(res, context, req_token, token, template_name, request, payment_in_progress_obj)
-
-
-def send_error(res, context, req_token, token, template_name, request, payment_in_progress_obj):
-    error = res
-    context['error'] = error
-    try:
-        payment_in_progress_obj.error = error
-        payment_in_progress_obj.save()
+                redirect(request, '/subscriptions/payment/' + payment_token)
     except:
-        new_error = produce_exception()
-        pass
-    if not req_token and token:
-        path = urllib.parse.urljoin(request.path, token)
-        return redirect(path)
-    else:
+        res = produce_exception()
+        context['error'] = res
         return render(request, template_name, context)
+
+
+def form_payment(request, req_token):
+    payment_in_progress_obj = PaymentInProgress.objects.get(token=req_token)
+    plan_id = payment_in_progress_obj.plan_id
+    qs = Plan.objects.filter(id=plan_id).values('id', 'name', 'cost', 'days')
+    plan = list(qs)[0]
+    plan['cents_cost'] = int(plan['cost']) * 100
+    error = payment_in_progress_obj.error
+    template_name = 'customers/subscription/payment_form.html'
+    context = {
+        'token': req_token,
+        'error': error,
+        'plan': plan,
+        'key': settings.STRIPE_PUBLISHABLE_KEY
+    }
+    return render(request, template_name, context)
+
+
+def post_payment(request, req_token):
+    payment_in_progress_obj = PaymentInProgress.objects.get(token=req_token)
+    try:
+        req_data = request.POST
+        stripe_token = req_data['stripeToken']
+        amount = payment_in_progress_obj.amount * 100
+        charge = stripe.Charge.create(
+            amount=amount,
+            currency='usd',
+            description='Plan Subscription',
+            source=stripe_token,
+            capture=True)
+        payment_response = charge
+        print(charge)
+        failure_code = payment_response['failure_code']
+        if failure_code:
+            error = payment_response['failure_message']
+            payment_in_progress_obj.error = error
+            return redirect('/subscriptions/payment/' + req_token)
+        else:
+            email = payment_response['billing_details']['name']
+            payment_in_progress_obj.transaction_id = payment_response['id']
+            payment_in_progress_obj.email = email
+            payment_in_progress_obj.save()
+            return redirect('/subscriptions/create/' + req_token)
+    except:
+        payment_in_progress_obj.error = error
+        return redirect('/subscriptions/payment/' + req_token)
+
+
+def form_subscription(request, req_token):
+    template_name = 'customers/subscription_form.html'
+    payment_in_progress_obj = PaymentInProgress.objects.get(token=req_token)
+    payment_in_progress = payment_in_progress_obj.__dict__
+    return render(request, template_name, payment_in_progress)
+
+
+def post_subscription(request, req_token):
+    try:
+        payment_in_progress_obj = PaymentInProgress.objects.get(token=req_token)
+        payment_in_progress = payment_in_progress_obj.__dict__
+        plan_id = payment_in_progress['plan_id']
+        method_id = payment_in_progress['method_id']
+        transaction_id = payment_in_progress['transaction_id']
+        email = payment_in_progress['email']
+        amount = payment_in_progress['amount']
+        password = request.POST['password']
+
+        company = payment_in_progress['company']
+        with transaction.atomic():
+            plan_cost = PlanCost.objects.filter(plan_id=plan_id).values('id', 'cost', 'days')
+            plan_cost = plan_cost[len(plan_cost) - 1]
+            subscription = Subscription(plan_id=plan_id, plan_cost_id=plan_cost['id'])
+            subscription.amount = plan_cost['cost']
+            end_date = ws_methods.add_interval('days', plan_cost['days'])
+            subscription.end_date = end_date
+            subscription.save()
+
+            obj = Payment(subscription_id=subscription.id, transaction_id=transaction_id)
+            obj.method_id = method_id
+            obj.amount = amount
+            obj.save()
+            print('creating tenant')
+            res = create_tenant(company, email, password, subscription.id, plan_id, request)
+
+        if res == 'done':
+            payment_in_progress_obj.delete()
+            return redirect('/')
+        else:
+            payment_in_progress_obj.error = res
+            payment_in_progress_obj.save()
+            return redirect('/subscriptions/create/'+req_token)
+    except:
+        payment_in_progress_obj.error = res
+        payment_in_progress_obj.save()
+        return redirect('/subscriptions/create/' + req_token)
 
 
 def create_public_user(user_tenant, email, password):
@@ -182,6 +181,7 @@ def create_public_user(user_tenant, email, password):
         public_user = public_user [0]
     user_tenant.users.add(public_user)
     user_tenant.save()
+
 
 def create_tenant(t_name, email, password, subscription_id, plan_id, request):
     res = 'Unknown issue'
@@ -214,7 +214,6 @@ def create_tenant(t_name, email, password, subscription_id, plan_id, request):
                 # tenant_user.save()
 
                 call_command('loaddata', 'website/fixtures/data.json')
-
                 res = 'done'
             else:
                 res = 'Client with id' + t_name + ' already exists'

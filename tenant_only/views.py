@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from authsignup.models import AuthUser
-from website.models import PortalUser
+from website.models import UserAuthToken
 
 
 class Index(TemplateView):
@@ -26,7 +26,7 @@ class TokenIndex(TemplateView):
         if not logged_in and has_token:
             connection.set_schema_to_public()
             ContentType.objects.clear_cache()
-            portal_user = PortalUser.objects.filter(token=kwargs['token'])
+            portal_user = UserAuthToken.objects.filter(token=kwargs['token'])
             if portal_user:
                 portal_user = portal_user[0]
                 user_name = portal_user.username

@@ -153,7 +153,6 @@ TENANT_APPS = (
     'nested_admin',
     'restoken',
     'actions',
-    'website',
 )
 INSTALLED_APPS = list(set(TENANT_APPS + SHARED_APPS))
 

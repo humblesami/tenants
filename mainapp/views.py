@@ -5,7 +5,7 @@ from django.http.response import FileResponse
 from django_tenants.utils import get_tenant_model
 from django.contrib.auth import authenticate, login, logout
 
-from website.models import PortalUser
+from website.models import UserAuthToken
 from mainapp.settings import MEDIA_ROOT
 from mainapp.settings import server_base_url
 from mainapp.ws_methods import get_company_url
@@ -31,7 +31,7 @@ def login_page(request):
                     if len(tenants_list) == 1:
                         my_company = tenants_list[0]
                         auth_token = uuid.uuid4().hex[:20]
-                        PortalUser.objects.create(username=user.username, token=auth_token)
+                        UserAuthToken.objects.create(username=user.username, token=auth_token)
                         auth_token = '/login/'+auth_token
                         url = get_company_url(my_company.schema_name)
                         return redirect(url+auth_token)
