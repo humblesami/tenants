@@ -10,7 +10,14 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 class Command(BaseCommand):
     help = 'setting up db i.e. create db or drop db for dev purpose'
     settings_dir = os.path.dirname(__file__)
-    base_directory = settings_dir.replace('website/management/commands', '')
+    str = 'website/management/commands'
+    base_directory = ''
+    if str in settings_dir:
+        base_directory = settings_dir.replace(str, '')
+    else:
+        str = 'website\\management\\commands'
+        base_directory = settings_dir.replace(str, '')
+    print(base_directory)
     def connect_database(self, database_info = {}):
         con = None
         try:

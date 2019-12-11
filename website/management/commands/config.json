@@ -1,9 +1,0 @@
-{
-    "default": {
-        "ENGINE": "django_tenants.postgresql_backend",
-        "NAME": "tt",
-        "USER": "odoo",
-        "PASSWORD": "123",
-        "HOST": ""
-    }
-}

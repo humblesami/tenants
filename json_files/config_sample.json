@@ -16,12 +16,18 @@
     },
     "default": {
         "ENGINE": "django_tenants.postgresql_backend",
-        "NAME": "tt",
+        "NAME": "meet",
         "USER": "odoo",
         "PASSWORD": "123",
         "HOST": ""
     },
+    "email":{
+      "EMAIL_HOST" : "smtp.gmail.com",
+      "EMAIL_PORT" : "587",
+      "EMAIL_HOST_USER" : "sami.akram@digitslnet.com",
+      "EMAIL_HOST_PASSWORD" : ""
+    },
     "domain": "localhost",
-    "port": "8001",
+    "port": "8000",
     "https": 0
-}
+  }
