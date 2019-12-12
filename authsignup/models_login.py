@@ -70,7 +70,8 @@ def get_location_from_ip(ip):
 
 @receiver(user_logged_in)
 def user_logged_in_callback(sender, request, user, **kwargs):
-    ws_methods.threaded_operation(make_login_entry, args=(request, user))
+    if request.tenant and request.tenant.schema_name != 'public':
+        ws_methods.threaded_operation(make_login_entry, args=(request, user))
 
 
 def get_browser(agent):

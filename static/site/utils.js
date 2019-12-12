@@ -7,10 +7,15 @@
         },
         ajax : function(options){
             // console.log(options);
+            if(!options.type)
+            {
+                options.type = 'GET';
+            }
             $.ajax({
                 url: options.url,
                 data:options.data,
                 dataType: 'json',
+                type: options.type,
                 success:function(data){
                     try{
                         data = JSON.parse(data);
