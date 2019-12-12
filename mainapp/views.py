@@ -14,6 +14,7 @@ from mainapp.ws_methods import get_company_url
 def login_page(request):
     template_name = 'login.html'
     context = {}
+    logout(request)
     if request.method == 'POST':
         post_data = request.POST
         username = post_data.get('username')

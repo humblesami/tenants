@@ -20,7 +20,6 @@ urlpatterns = [
     path('rest/search', rest_api.search_ws, name = 'search_ws'),
     path('rest/search1', rest_api.search_session, name = 'search_session'),
     path('media/<str:folder>/<str:file>/', views.serve_protected_document, name='serve_protected_document'),
-    path('response-sumbitted', views.response_submitted, name='response_submitted'),
 
     url(r'^user/', include('authsignup.urls')),
     url(r'^', include('documents.urls')),
