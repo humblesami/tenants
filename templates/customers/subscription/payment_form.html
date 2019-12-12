@@ -20,31 +20,16 @@
     <div>{{error | safe}}</div>
     <div class="container">
         <div class="row d-flex justify-content-center">
-            <div class="col-lg-8">
-                <div class="WhiteBox">
-                    <div class="row d-flex justify-content-center align-items-center">
-                        <div class="col-md-7 col-lg-7">
-                            <div class="PaymentCreditCardForm FaxForm">
-                                <form id="payment_form" action="/subscriptions/post-payment/{{token}}" method="post" class="form">
-                                    {% csrf_token %}
-                                    <style>
-                                    .stripe-button-el, #company_name_error, #email_error, #password_error, #confirm_password_error
-                                    {
-                                        display:none;
-                                    }
-                                    </style>
-                                    <button type="submit">Pay Now</button>
-                                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                    data-key="{{key}}"
-                                    data-description="Odufax Charge"
-                                    data-amount="{{ plan.cents_cost }}"
-                                    data-locale="auto"></script>
-                                    <script src="/static/portal/pay.js"></script>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="PaymentCreditCardForm FaxForm">
+                <form id="payment_form" action="/subscriptions/post-payment/{{token}}" method="post" class="form">
+                    {% csrf_token %}
+                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="{{key}}"
+                    data-description="Odufax Charge"
+                    data-amount="{{ plan.cents_cost }}"
+                    data-locale="auto"></script>
+                    <script src="/static/portal/pay.js"></script>
+                </form>
             </div>
         </div>
     </div>

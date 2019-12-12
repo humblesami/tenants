@@ -126,7 +126,7 @@ def post_payment(request, req_token):
 
 
 def form_subscription(request, req_token):
-    template_name = 'customers/subscription_form.html'
+    template_name = 'customers/subscription/subscription_form.html'
     payment_in_progress_obj = PaymentInProgress.objects.get(token=req_token)
     payment_in_progress = payment_in_progress_obj.__dict__
     return render(request, template_name, payment_in_progress)
