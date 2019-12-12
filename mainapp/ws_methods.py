@@ -3,6 +3,8 @@ import sys
 import json
 import urllib
 import base64
+
+import pytz
 import requests
 import threading
 import traceback
@@ -37,6 +39,19 @@ from mainapp.settings import PROTOCOL, MAIN_URL
 def get_company_url(schema_name):
     url = PROTOCOL + '://' + schema_name + '.' + MAIN_URL
     return url
+
+
+def dt_now():
+    dt = datetime.now()
+    dt = dt.replace(tzinfo=pytz.utc)
+    return dt
+
+
+def diff_seconds(dt1, dt2=None):
+    if not dt2:
+        dt2 = dt_now()
+    diff = dt2 - dt1
+    return diff.seconds
 
 
 def add_interval(interval_type, inc, dt=None):

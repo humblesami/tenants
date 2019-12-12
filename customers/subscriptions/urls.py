@@ -1,15 +1,16 @@
 from django.conf.urls import url
 from django.urls import path
-from .views import form_company_info, form_payment, form_subscription
-from .views import post_payment, post_subscription
+from .views import subscription_form
 
 urlpatterns = [
-    # url(r'^(?P<plan_id>\d+)/(?P<request_id>)\d*$', SubscriptionForm.as_view()),
-    path('<int:plan_id>', form_company_info),
+    path('<int:plan_id>', subscription_form),
+    path('<int:plan_id>/<token>', subscription_form),
+    # path('post-form', subscribe),
 
-    path('payment/<req_token>', form_payment),
-    path('post-payment/<req_token>', post_payment),
-
-    path('create/<req_token>', form_subscription),
-    path('post-subscription/<req_token>', post_subscription),
+    # path('<int:plan_id>', form_company_info),
+    # path('payment/<req_token>', form_payment),
+    # path('post-payment/<req_token>', post_payment),
+    #
+    # path('create/<req_token>', form_subscription),
+    # path('post-subscription/<req_token>', post_subscription),
 ]

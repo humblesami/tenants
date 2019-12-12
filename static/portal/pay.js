@@ -2,7 +2,28 @@ $(function(){
     $('#server-wait').hide();
     $('#subscription_form').submit(function(){
         $('#server-wait').show();
-    })
+    });
+//    $('#server-wait').show();
+//    $('#subscription_form').submit(function(){
+//        e.preventDefault();
+//        var options = {
+//            url:'/subscriptions/post-form',
+//            type: 'POST',
+//            data:{
+//                company: $('#company').val(),
+//                sub_domain: $('#sub_domain').val(),
+//                password: $('#password').val(),
+//                amount: $('#usd_amount').val(),
+//                stripeToken: $('input[name="stripeToken"]').val(),
+//                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+//            },
+//            complete:function(){
+//                $('#server-wait').hide();
+//            }
+//        }
+//        console.log(options);
+//        window.js_utils.ajax(options);
+//    })
 //setTimeout(function(){
 //    $('#payment_form').submit();
 //}, 1000)
