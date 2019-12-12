@@ -115,31 +115,33 @@ TEMPLATES = [
 ]
 
 SHARED_APPS = (
-    'django_tenants',
-    'customers',
-    'website',
-    'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.auth',
+    # 'django.contrib.admin',
+    'mainapp.apps.CustomAdminConfig',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'emailthread',
+    'django_tenants',
+    'customers',
+    'website',
 )
 
 TENANT_APPS = (
-    'corsheaders',
-    'my_admin',
     'django.contrib.contenttypes',
-    'django.contrib.admin',
+    'django.contrib.auth',
+    # 'django.contrib.admin',
+    'mainapp.apps.CustomAdminConfig',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.auth',
+    'corsheaders',
     'tenant_only',
     'bootstrapform',
 
     'rest_framework',
     'rest_framework.authtoken',
-
+    'my_admin',
     'authcode',
     'authsignup',
     'ngapp',
