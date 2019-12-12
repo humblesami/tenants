@@ -46,16 +46,24 @@ def form_company_info(request, plan_id):
             usd_amount = req_data['usd_amount']
             error = ''
             already = Client.objects.filter(schema_name=company)
+            if not already:
+                already = PaymentInProgress.objects.filter(company=company)
+
             if already:
-                message = 'Company Already Exists'
+                message = 'Company with name "'+company+'" already exists'
                 if error:
                     error += ', ' + message
+                else:
+                    error = message
             if not usd_amount:
                 message = 'Please provide all the fields'
                 if error:
                     error += ', ' + message
+                else:
+                    error = message
             if error:
-                return redirect('/subscriptions/' + req_data['plan_id'])
+                context['error'] = error
+                return render(request, template_name, context)
             else:
                 payment_token = uuid.uuid4().hex[:20]
                 medium = PaymentMethod.objects.filter(name='Stripe')
@@ -70,7 +78,6 @@ def form_company_info(request, plan_id):
                 obj.amount = usd_amount
                 obj.save()
                 success_url = 'payment/' + payment_token
-                print('\n\n' + success_url + '\n\n')
                 return redirect(success_url)
     except:
         res = produce_exception()
@@ -108,7 +115,6 @@ def post_payment(request, req_token):
             source=stripe_token,
             capture=True)
         payment_response = charge
-        print(charge)
         failure_code = payment_response['failure_code']
         if failure_code:
             error = payment_response['failure_message']
@@ -128,6 +134,10 @@ def post_payment(request, req_token):
 def form_subscription(request, req_token):
     template_name = 'customers/subscription/subscription_form.html'
     payment_in_progress_obj = PaymentInProgress.objects.get(token=req_token)
+    if not payment_in_progress_obj.transaction_id:
+        payment_in_progress_obj.error = "You have not paid for this plan yet"
+        payment_in_progress_obj.save()
+        return redirect('/subscriptions/payment/' + req_token)
     payment_in_progress = payment_in_progress_obj.__dict__
     return render(request, template_name, payment_in_progress)
 
@@ -135,6 +145,10 @@ def form_subscription(request, req_token):
 def post_subscription(request, req_token):
     try:
         payment_in_progress_obj = PaymentInProgress.objects.get(token=req_token)
+        if not payment_in_progress_obj.transaction_id:
+            payment_in_progress_obj.error = "You have not paid for this plan yet"
+            payment_in_progress_obj.save()
+            return redirect('/subscriptions/payment/' + req_token)
         payment_in_progress = payment_in_progress_obj.__dict__
         plan_id = payment_in_progress['plan_id']
         method_id = payment_in_progress['method_id']
@@ -218,7 +232,7 @@ def create_tenant(t_name, email, password, subscription_id, plan_id, request):
                 call_command('loaddata', 'website/fixtures/data.json')
                 res = 'done'
             else:
-                res = 'Client with id' + t_name + ' already exists'
+                res = 'Client with name "' + t_name + '" already exists'
     except:
         res = ws_methods.produce_exception()
     request.tenant = public_tenant
@@ -260,7 +274,8 @@ def make_payment(req_data, cent_amount, usd_amount):
             message = payment_response['failure_message']
             if error:
                 message += ', ' + message
-            error = message
+            else:
+                error = message
             return {'error' : error}
         else:
             paid = 1

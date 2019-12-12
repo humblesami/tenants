@@ -5,6 +5,7 @@
 {% endblock %}
 {% block content %}
 <section class="curve-light-bg">
+    <link rel="stylesheet" href="/static/portal/pay.css">
     <div class="title-head">
         <div class="container">
             <div class="row">
@@ -17,17 +18,11 @@
             </div>
         </div>
     </div>
-    <div>{{error | safe}}</div>
+    <div class="error">{{error | safe}}</div>
     <div class="container">
         <div class="row d-flex justify-content-center">
             <form id="subscription_form" action="" method="post" class="form">
                 {% csrf_token %}
-                <style>
-                .stripe-button-el, #company_name_error, #email_error, #password_error, #confirm_password_error
-                {
-                    display:none;
-                }
-                </style>
                 <div class="col-12">
                     <div class="form-group">
                         <label>Company</label>

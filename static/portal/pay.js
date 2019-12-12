@@ -1,4 +1,8 @@
 $(function(){
+    $('#server-wait').hide();
+    $('#subscription_form').submit(function(){
+        $('#server-wait').show();
+    })
 //setTimeout(function(){
 //    $('#payment_form').submit();
 //}, 1000)

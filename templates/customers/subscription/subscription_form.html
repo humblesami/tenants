@@ -5,6 +5,7 @@
 {% endblock %}
 {% block content %}
 <section class="curve-light-bg">
+    <link rel="stylesheet" href="/static/portal/pay.css">
     <div class="title-head">
         <div class="container">
             <div class="row">
@@ -17,17 +18,20 @@
             </div>
         </div>
     </div>
-    <div>{{error | safe}}</div>
-    <div class="container">
-        <div class="row d-flex justify-content-center">
+    <div class="error">{{error | safe}}</div>
+    <div class="container subscription-form">
+        <div id="server-wait">
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                </div>
+                <div class="text">
+                    Please wait, we are initializing your company setup...
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex form-container justify-content-center">
             <form id="subscription_form" action="/subscriptions/post-subscription/{{token}}" method="post" class="form">
                 {% csrf_token %}
-                <style>
-                .stripe-button-el, #company_name_error, #email_error, #password_error, #confirm_password_error
-                {
-                    display:none;
-                }
-                </style>
                 <div class="col-12">
                     <div class="form-group">
                         <label>Password</label>
@@ -48,6 +52,7 @@
                 </div>
                 <div>{{token}}</div>
             </form>
+            <script src="/static/portal/pay.js"></script>
         </div>
     </div>
   </section>
