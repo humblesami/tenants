@@ -9,7 +9,6 @@
     var form  = $('.login-form:first');
     form.submit(function(e){
         var logged_in = false;
-        console.log(34423);
         e.preventDefault();
         form.find('button[type="submit"]:first').attr('disabled', 'disabled');
         $('#server-wait').show();

@@ -19,7 +19,7 @@
                     data: input_data
                 }
                 options.onSuccess = function(data){
-                    window.location = '/user/login';
+                    window.location = login_url;
                 };
                 options.type = 'get';
                 options.onError = function(data){

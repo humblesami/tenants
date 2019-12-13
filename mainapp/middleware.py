@@ -1,3 +1,4 @@
+import json
 import sys
 import traceback
 from django.db import connection
@@ -10,6 +11,8 @@ from django.http import JsonResponse, HttpResponse
 from django.contrib.contenttypes.models import ContentType
 from django.utils.deprecation import MiddlewareMixin  # todo change
 from django_tenants.utils import remove_www_and_dev, get_tenant_model
+
+from mainapp.settings import LOGIN_URL
 
 
 def create_public_tenant(tenant_model):
@@ -32,7 +35,8 @@ class TenantMiddleware(MiddlewareMixin):
         if request.is_ajax():
             response = response.content
             response = response.decode("utf-8")
-            response = produce_result(response)
+            response = produce_result_ajax(response)
+            return HttpResponse(response)
         elif response.status_code and response.status_code != 301 and response.status_code != 200 and response.status_code != 302 and request.path != '/favicon.ico':
             error_content = response.content.decode("utf-8")
             if not error_content:
@@ -52,6 +56,7 @@ class TenantMiddleware(MiddlewareMixin):
             selected_schema_name = 'public'
             tenant_model = get_tenant_model()
             request.main_url = request.scheme +'://' + settings.MAIN_URL
+            request.login_url = request.scheme +'://' + settings.MAIN_URL + settings.LOGIN_URL
             request.protocol = settings.PROTOCOL
             if hostname_without_port.startswith('login.'):
                 hostname_without_port = hostname_without_port.replace('login.', '')
@@ -100,6 +105,42 @@ def produce_exception():
         if not 'lib/python' in er and not 'lib\\' in er:
             error_message += " " + er
     return error_message
+
+
+def produce_result_ajax(res, args=None):
+    valid_res = False
+    try:
+        temp = json.loads(res)
+        if temp.get('error') or temp.get('data'):
+            valid_res = True
+    except:
+        pass
+    if valid_res:
+        return res
+    if isinstance(res, dict):
+        if 'error' not in res:
+            if 'data' in res:
+                res['error'] = ''
+            else:
+                res = {'data': res, 'error': ''}
+        else:
+            # Return ERROR data as it is
+            pass
+    elif type(res) == str:
+        if res == 'done':
+            res = {'error': '', 'data': 'done'}
+        else:
+            res = {'error': res}
+    elif isinstance(res, list):
+        res = {'error': '', 'data': res}
+    else:
+        if args:
+            args = ' in ' + args['app'] + '.' + args['model'] + '.' + args['method']
+        else:
+            args = ''
+        res = {'error': ' Invalid result type' + args}
+    json.dumps(res)
+    return res
 
 
 def produce_result(res, args=None):

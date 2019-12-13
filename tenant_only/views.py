@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection
 from django.contrib.auth import login
@@ -17,13 +19,15 @@ class Index(TemplateView):
 
 
 class TokenIndex(TemplateView):
-    template_name = "tenant_only/index.html"
+    # template_name = "tenant_only/index.html"
+    template_name = "authsignup/verify_code.html"
 
-    def dispatch(self, request, *args, **kwargs):
-        logged_in = request.user.id
+    def get_context_data(self, **kwargs):
+        context = {}
+        request = self.request
         has_token = kwargs.get('token')
         user_tenant = connection.tenant
-        if not logged_in and has_token:
+        if has_token:
             connection.set_schema_to_public()
             ContentType.objects.clear_cache()
             portal_user = UserAuthToken.objects.filter(token=kwargs['token'])
@@ -35,5 +39,6 @@ class TokenIndex(TemplateView):
                 user_list = AuthUser.objects.filter(username=user_name)
                 if user_list:
                     user = user_list[0]
-                    login(self.request, user)
-        return redirect('/')
+                    context = AuthUser.do_login(request, user, user.name)
+        context = json.dumps(context)
+        return { 'auth_user_data': context}

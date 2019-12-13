@@ -10,8 +10,9 @@
 
 {% block content %}
     <script>
-        console.log(Date());
+        var auth_my_data = '{{auth_user_data | safe}}';
     </script>
+    <script type="text/javascript" src="/static/assets/js/verify_code.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/assets/libs/bootstrap/bootstrap-4.2.1.css" />
     <div class="router-outlet Login-form-wrapper">
         <link rel="stylesheet" type="text/css" href="/static/assets/css/main.css" />
@@ -54,15 +55,8 @@
             </div>
         </div>
     </div>
-    {% endblock %}
-	    
-    {% block footer_javascript %}
 
-    <script>
-        console.log(Date());
-    </script>
-
-    <script async type="text/javascript" src="/static/assets/js/json.js"></script>
+    <script type="text/javascript" src="/static/assets/js/json.js"></script>
    
 	<link rel="stylesheet" type="text/css" href="/static/assets/css/boardsheet.css" />
 	<link rel="stylesheet" type="text/css" href="/static/assets/css/roboto-condensed-fontface.css" />
@@ -74,43 +68,15 @@
 	<link rel="stylesheet" type="text/css" href="/static/assets/annotator/shared/custom.css"/>
 	<link rel="stylesheet" type="text/css" href="/static/assets/css/emoji.css" />
 
-    <script type="text/javascript" src="/static/assets/js/verify_code.js"></script>
+
     <script type="text/javascript" src="/static/assets/libs/js/moment.js"></script>
-    
-    <script async type="text/javascript" src="/static/assets/libs/fullcalendar/fullcalendar.min.js"></script>
 
-	<script async type="text/javascript" src="/static/assets/libs/js/socket.io.js"></script>
-
-    <script async type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-	<script async src="/static/assets/libs/toggler/toggler.js"></script>
-	<script async type="text/javascript" src="/static/assets/libs/bootstrap/bootbox.js"></script>
 
     <link href="/static/assets/libs/toggler/toggler.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/assets/libs/select2/select2.css" />
     <link rel="stylesheet" href="/static/assets/libs/select2/default.theme.css" />
 
-    <script async type="text/javascript" src="/static/assets/libs/select2/select2.js"></script>
-
-    <script async type="text/javascript" src="/static/assets/emoji/js/emoji-picker.js"></script>
-    <script async type="text/javascript" src="/static/assets/js/chart.js"></script>
-
-	<script async type="text/javascript" src="/static/assets/annotator/shared/pdf.js"></script>
-	<script async type="text/javascript" src="/static/assets/annotator/shared/pdf.viewer.js"></script>
-	<script async type="text/javascript" src="/static/assets/annotator/annotator.js"></script>
-
-	<script async type="text/javascript" src="/static/assets/js/custom_chart.js"></script>
-    <script async type="text/javascript" src="/static/assets/js/custom_signature.js"></script>
-	<script async type="text/javascript" src="/static/assets/js/popup.js"></script>
-
-    <script async type="text/javascript" src="/static/assets/rtc/adapter.js"></script>
-    <script async type="text/javascript" src="/static/assets/rtc/RTCMultiConnection.min.js"></script>
-    <script async type="text/javascript" src="/static/assets/rtc/getScreenId.js"></script>
-    <script async type="text/javascript" src="/static/assets/rtc/getHTMLMediaElement.js"></script>
-    <script async type="text/javascript" src="/static/assets/rtc/conference.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/assets/css/secondary.css" />
 
-    <script>
-        console.log(Date());
-    </script>
+
     {% endblock %}

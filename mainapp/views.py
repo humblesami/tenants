@@ -43,6 +43,11 @@ def login_page(request):
     return render(request, template_name, context)
 
 
+def tenant_login(request):
+    logout(request)
+    return redirect(request.login_url)
+
+
 def tenant_logout(request):
     logout(request)
     return redirect(request.main_url + '/logout')

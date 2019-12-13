@@ -3,17 +3,19 @@ from django.urls import path, include
 from django.contrib import admin
 from django.views.generic import TemplateView
 
-from mainapp.views import tenant_logout
+from mainapp.views import tenant_logout, tenant_login
 from mainapp import rest_api
 from tenant_only.views import TokenIndex
 from .import views
 
 urlpatterns = [
     path('login/<token>', TokenIndex.as_view(), name="index"),
+    path('accounts/login', tenant_login, name = 'go to login page'),
     path('logout', tenant_logout),
     path('admin/', admin.site.urls),
     url(r'', include('ngapp.urls')),
-    url(r'^sw.js', (TemplateView.as_view(template_name="sw.js", content_type='application/javascript', )), name='sw.js'),
+    #tobe changed
+    # url(r'^sw.js', (TemplateView.as_view(template_name="sw.js", content_type='application/javascript', )), name='sw.js'),
     path('rest/public', rest_api.public, name = 'public'),
     path('rest/secure', rest_api.secure, name = 'secure'),
     path('rest/secure1', rest_api.session, name = 'session'),

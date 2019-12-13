@@ -336,7 +336,11 @@ class Profile(AuthUser):
             'name': profile_orm.get_two_factor_auth_display()
         }
         if profile_orm.signature_data:
-            profile['signature_data'] = profile_orm.signature_data.decode()
+            try:
+                profile['signature_data'] = profile_orm.signature_data.decode()
+            except:
+                #tobe removed
+                pass
         if profile['groups']:
             profile['group'] = profile['groups'][0]['name']
         profile['admin_full_name'] = assistant_name

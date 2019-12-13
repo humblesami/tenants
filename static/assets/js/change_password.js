@@ -107,7 +107,7 @@
             }
             options.onSuccess = function(data){
                 if(data == 'done'){
-                    window.location = site_config.server_base_url + '/user/login';
+                    window.location = login_url;
                 }
                 else
                 {

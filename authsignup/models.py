@@ -157,18 +157,14 @@ class AuthUser(user_model, CustomModel):
 
 
     @classmethod
-    def do_login(cls, request, user, name, referer_address):
-        login(request, user)
+    def do_login(cls, request, user, name):
         token = Token.objects.filter(user=user)
         if token:
             token = token[0]
 
-        if 'localhost' in referer_address:
-            if not token:
-                token = Token.objects.create(user=user)
-        else:
-            token.delete()
-            token = Token.objects.create(user=user)
+        login(request, user)
+        token.delete()
+        token = Token.objects.create(user=user)
 
         user_groups = list(user.groups.all().values())
         user_data = {'username': user.username, 'name': name, 'id': user.id, 'token': token.key, 'groups':user_groups }

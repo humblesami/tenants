@@ -7,6 +7,7 @@
         is_public_route: is_public_route
     } 
     function add_public_class(){        
+        // console.trace();
         $('body').removeClass('user').addClass('public');
     }
     function add_user_class(){
@@ -17,6 +18,7 @@
         {
             return;
         }
+        // console.log(111232);
         var user_cookie = localStorage.getItem('user');
         if (user_cookie) {
             var last_activity = localStorage.getItem('last_activity');
@@ -30,7 +32,7 @@
                 last_activity = new Date(last_activity);
                 var diff = (time_now - last_activity) /1000;
                 // console.log('Last activity', diff, window.location.hostname, Date());
-                if(window.location.hostname != 'localhost' && diff > 30)
+                if(window.location.hostname != 'localhost' && diff > 300)
                 {
                     go_to_login();
                     return;
@@ -38,7 +40,7 @@
             }
             user_cookie = JSON.parse(user_cookie);
             if (user_cookie.token) {
-                var error = undefined;
+                var auth_error = undefined;
                 var ajax_options = {
                     url: site_config.server_base_url + '/user/verify-token',
                     async: false,
@@ -51,12 +53,16 @@
                         {
                             er = er.responseJSON.detail;
                         }
-                        error = er;
-                        console.log(er);
+                        auth_error = er;
+                        console.log(auth_error);
                     },
                     complete:function(){
                         // console.log(error, public_route);
-                        if(!error)
+                        if(auth_error)
+                        {
+                            $('body').html(auth_error.responseText);
+                        }
+                        if(!auth_error)
                         {
                             localStorage.setItem('last_activity', Date());
                             add_user_class();
@@ -95,15 +101,17 @@
         if(!url)
         {
             url = get_cpath_name();
-        }
-        let public_routes = [
-            '/user/login',
+        }        
+        let public_routes = [            
             '/user/forgot-password',
+            '/forgot-password',
             '/user/reset-password',
-            '/login','/forgot-password',
-            '/logout','/reset-password',
+            '/reset-password',
+            '/accounts/login',
+            '/login',            
+            '/logout',            
             '/token-sign-doc',
-            '/thanks',
+            '/thanks',            
             '/feedback',
             '/public-voting/',
             '/public-meeting/',
@@ -120,14 +128,19 @@
         return false;
     }
     window['is_public_route'] = is_public_route;
-    function go_to_login() {
+    function go_to_login() {      
+        if(site_config.block_login_redirect)
+        {
+            console.trace();
+            return;
+        }
         localStorage.removeItem('user');
         add_public_class()
         if(!wl_str.endsWith('login'))
         {
             if(wl_str.indexOf('4200') == -1)
             {
-                window.location = '/user/login';
+                window.location = login_url;
             }
             else{
                 window.location = '/#/login';

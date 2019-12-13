@@ -9,7 +9,7 @@ function dn_rpc_object(options) {
         console.log('No data and arguments for request ',options);
         return;
     }
-    console.log(site_config.server_base_url, req_url);
+    // console.log(site_config.server_base_url, req_url);
     var input_data = options.data;    
     if (input_data.no_loader)
         options.no_loader = 1;
@@ -99,6 +99,14 @@ function dn_rpc_object(options) {
 
     options.success = function(response) {
         var result = false;
+        console.log(response);
+        return;
+        try{
+            response = JSON.parse(response);
+        }
+        catch(er){
+
+        }
         if (!response) {
             console.log("Undefined response", url_with_params);            
         } else if (response.data) {
@@ -130,8 +138,8 @@ function dn_rpc_object(options) {
         if (!options.show_loader && !options.no_loader)
             site_functions.hideLoader(loading_text);
     };
-    options.error = function(err) {   
-        console.log('status '+err.status);
+    options.error = function(err) {
+        console.log(err, 'status '+err.status);        
         if(err.status == 0)
         {
             err = 'Could not connect to server '+site_config.server_base_url;

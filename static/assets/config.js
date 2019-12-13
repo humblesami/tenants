@@ -18,37 +18,38 @@ var site_config_local = {
 	show_logs : ['socket', 'ajax_before'] //, 'ajax_success'
 };
 
-var network_config = {
-	server_base_url:'http://172.16.21.170:8000',
-	live : false,
-	site_url: '',
-    chat_server : 'http://172.16.21.170:'+chat_ser_port,
-	show_logs : ['socket','ajax_before','ajax_success']
-};
-
-var network_config_https = {
-	server_base_url:'https://172.16.21.170:8000',
-	live : false,
-	site_url: '',
-    chat_server : 'https://172.16.21.170:'+chat_ser_port,
-	show_logs : ['socket','ajax_before','ajax_success']
-};
 
 var site_config = {};
 var is_localhost = false;
-var current_site_base_url = window.location.protocol+'//' + window.location.hostname + '';
+var site_port = window.location.port;
+if(site_port)
+{
+    site_port = ':'+site_port
+}
+var current_site_base_url = window.location.protocol+'//' + window.location.hostname + site_port;
+
+let root_host_name = '';
+(function(){
+    let h_arr = window.location.hostname.toString().split('.');    
+    if(h_arr.length > 1)
+    {
+        h_arr.splice(0,1);
+        root_host_name = h_arr.join('.');
+        root_host_name = window.location.protocol + '//' + root_host_name + site_port;        
+    }
+})()
 if(current_site_base_url.indexOf('localhost') > -1)
 {
     site_config = site_config_local;
+    site_config.server_base_url = site_config.site_url = current_site_base_url;    
     is_localhost = true;
 }
 else
-{
+{    
     site_config = site_config_live;
     site_config.server_base_url = site_config.site_url = current_site_base_url;
 	is_localhost = false;
 }
-
 window['site_url'] = site_config.site_url;
 window['server_url'] = site_config.server_base_url;
 
@@ -61,4 +62,6 @@ if(is_localhost)
 }
 site_config.trace_request = 1;
 window['site_config'] = site_config;
-console.log(site_config);
+var login_url = root_host_name+'/accounts/login';
+site_config.block_login_redirect = 1;
+// console.log(site_config);

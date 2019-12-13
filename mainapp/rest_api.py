@@ -286,10 +286,4 @@ def produce_result(res, args=None):
         print(res['data'])
         print('\n\n\n')
         return produce_exception()
-        # dir = os.path.dirname(os.path.realpath(__file__))
-        # ar = dir.split('/')
-        # ar = ar[:-1]
-        # dir = ('/').join(ar)
-        # with open(dir + '/error_log.txt', "a+") as f:
-        #     f.write(args + '\n\n' + res['data'])
     return HttpResponse(res)

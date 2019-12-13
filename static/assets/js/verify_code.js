@@ -1,16 +1,14 @@
 (function(){
+    let auth_code_data = JSON.parse(auth_my_data);
+    localStorage.setItem('user', auth_my_data);
+    localStorage.setItem('last_activity', Date());
+    if(!auth_code_data.auth_type){
+        window.location = '/';
+    }
+
     $('.login-form:first input').keyup(function(){
         $(this).find('.login-feedback').html('');
-    });    
-    var auth_code_data = localStorage.getItem('auth_code_data');
-    try{
-        auth_code_data = JSON.parse(auth_code_data);
-    }
-    catch(er){
-        auth_code_data = {
-            
-        }
-    }
+    });
     
     var auth_code_message = 'Please check your '+auth_code_data.auth_type+' to get latest verification code just received';
     $('.auth_code_message').html(auth_code_message);

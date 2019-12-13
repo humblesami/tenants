@@ -8,11 +8,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def login(request, next=None):
-    redirect(request.main_url+'/accounts/login')
+    redirect(request.login_url)
 
 def logout_user(request):
     logout(request)
-    redirect(request.main_url+'/accounts/login')
+    redirect(request.login_url)
 
 def ping(request):
     return HttpResponse('available')
