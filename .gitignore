@@ -5,3 +5,4 @@ db.sql*
 /.vscode
 /uploaded_files
 config.json
+node_modules

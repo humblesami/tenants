@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="188.144" height="74.716" viewBox="0 0 188.144 74.716">
+  <defs>
+    <filter id="Ellipse_1" x="20.874" y="0" width="39.98" height="39.969" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4.5" result="blur"/>
+      <feFlood flood-color="#fe8a71" flood-opacity="0.141"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Ellipse_1_copy" x="0" y="31.738" width="39.984" height="39.964" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4.5" result="blur-2"/>
+      <feFlood flood-color="#fe8a71" flood-opacity="0.141"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Ellipse_1_copy_2" x="39.636" y="33.726" width="39.98" height="39.964" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4.5" result="blur-3"/>
+      <feFlood flood-color="#fe8a71" flood-opacity="0.141"/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Shape_1" x="8.354" y="10.237" width="58.247" height="41.981" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4.5" result="blur-4"/>
+      <feFlood flood-color="#fe8a71" flood-opacity="0.141"/>
+      <feComposite operator="in" in2="blur-4"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Shape_1_copy" x="23.644" y="15.411" width="49.326" height="57.862" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4.5" result="blur-5"/>
+      <feFlood flood-color="#fe8a71" flood-opacity="0.141"/>
+      <feComposite operator="in" in2="blur-5"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Shape_1_copy_2" x="7.28" y="19.739" width="50.869" height="54.977" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4.5" result="blur-6"/>
+      <feFlood flood-color="#fe8a71" flood-opacity="0.141"/>
+      <feComposite operator="in" in2="blur-6"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_173" data-name="Group 173" transform="translate(-302.975 -71.215)">
+    <g id="Group_172" data-name="Group 172" transform="translate(316.475 80.715)">
+      <g transform="matrix(1, 0, 0, 1, -13.5, -9.5)" filter="url(#Ellipse_1)">
+        <ellipse id="Ellipse_1-2" data-name="Ellipse 1" cx="6.49" cy="6.484" rx="6.49" ry="6.484" transform="translate(34.37 9.5)" fill="#53e0db"/>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, -13.5, -9.5)" filter="url(#Ellipse_1_copy)">
+        <ellipse id="Ellipse_1_copy-2" data-name="Ellipse 1 copy" cx="6.492" cy="6.482" rx="6.492" ry="6.482" transform="translate(13.5 41.24)" fill="#686868"/>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, -13.5, -9.5)" filter="url(#Ellipse_1_copy_2)">
+        <ellipse id="Ellipse_1_copy_2-2" data-name="Ellipse 1 copy 2" cx="6.49" cy="6.482" rx="6.49" ry="6.482" transform="translate(53.14 43.23)" fill="#686868"/>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, -13.5, -9.5)" filter="url(#Shape_1)">
+        <path id="Shape_1-2" data-name="Shape 1" d="M358.129,253.746s-9.654,2.6-12.528,12.7c-.072,0,15.7-15.729,30.41,2.283a16.825,16.825,0,0,0-.73-12.4c0-.1-4.181-2.448-4.181-2.448S364.813,262.3,358.129,253.746Z" transform="translate(-323.75 -234.01)" fill="#53e0db"/>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, -13.5, -9.5)" filter="url(#Shape_1_copy)">
+        <path id="Shape_1_copy-2" data-name="Shape 1 copy" d="M498.563,315.312s2.537-9.7-4.8-17.22c.036-.063,5.861,21.484-17.1,25.329a16.825,16.825,0,0,0,11.134,5.533c.083.048,4.433-2.455,4.433-2.455S487.813,316.876,498.563,315.312Z" transform="translate(-439.52 -273.18)" fill="#686868"/>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, -13.5, -9.5)" filter="url(#Shape_1_copy_2)">
+        <path id="Shape_1_copy_2-2" data-name="Shape 1 copy 2" d="M342.53,357.851s7.569,7.4,17.736,4.743c.037.062-21.561-5.535-13.539-27.4a16.825,16.825,0,0,0-10.315,6.943c-.083.049.2,4.184.2,4.184S346.491,347.732,342.53,357.851Z" transform="translate(-315.62 -305.96)" fill="#686868"/>
+      </g>
+    </g>
+    <text id="BoardSheet" transform="translate(374.622 106.721)" fill="#3059c9" font-size="21" font-family="SegoeUI, Segoe UI" letter-spacing="0.03em"><tspan x="0" y="0">BoardSheet</tspan></text>
+    <text id="Simplified_Board_Management" data-name="Simplified Board Management" transform="translate(379.118 120.329)" fill="#141414" font-size="8" font-family="MVBoli, MV Boli"><tspan x="0" y="0">Simplified Board Management</tspan></text>
+  </g>
+</svg>

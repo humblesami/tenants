@@ -1,0 +1,32 @@
+
+.survey-form-container textarea.form-control{
+    margin-bottom: 20px;
+    min-height: 150px;
+    resize: none;
+}
+.survey-form-container .form-control{
+    margin-bottom: 20px;
+}
+
+.cancelbtn, .signupbtn{
+    min-width: 130px;
+    font-size: 0.859em;
+    margin-right: 5px;
+}
+.home-survey-title .title{
+    font-size: 1.500em;
+    margin-bottom: 15px;
+}
+
+a.fc-more{
+    background-color: blue !important;
+    color: white !important;
+}
+
+.radio-wrap{
+    margin-bottom:15px; 
+}
+.row.submit
+{
+    padding-top: 30px;
+}

@@ -1,0 +1,74 @@
+.surveyDetailsquestions label{
+	color:#4B74B5;
+	font-size:18px;
+}
+
+.surveyDetailsquestions h4{
+	color:#737373;
+	font-size:16px;
+	line-height:19px;
+}
+
+.hideoverflow{
+	min-height:150px;
+	max-height: 250px;
+    overflow: auto;
+}
+
+.card .card-header{
+	background-color: #4B74B5;
+	color: #ffffff;
+	border-radius:0px;
+}
+
+.card-header.collapsed .fa:before {  
+content: "\f067";
+}
+
+.card-header .fa:before {
+content: "\f068";
+}
+
+.readmore{
+	color: #4B74B5 !important;
+	font-weight: bold
+}
+.surveyDetailsquestions label{
+	word-break: break-all;
+}
+.card-header .float-right{
+    border-radius: 50%;
+    border: 2px solid #fff;
+    padding: 0 3px;
+}
+@media screen and (min-width:992px){
+	.rounded-circle{
+		max-width: 70px;
+	}
+}
+@media screen and (max-width:380px){
+	.rounded-circle{
+		max-width: 135%;
+	}
+	.surveyDetailsquestions label{
+		font-size: 0.9rem;
+		font-weight: bold;
+	}
+}
+.progress-chart{
+	/* position: absolute; */
+    /* z-index: 999; */
+    width: 75px;
+    /* height: 57px; */
+    /* right: 0px; */
+    top: 0px;
+}
+ canvas#progress-chart{
+	margin-bottom: 5px;
+}
+
+@media screen and (max-width:767px){
+	.m-top{
+		margin-top: 0.5rem;
+	}
+}

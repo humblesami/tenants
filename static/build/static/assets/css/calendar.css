@@ -1,0 +1,7 @@
+#calenderModal .modal-body{ padding:1rem 1rem 0; }
+#calenderModal .upcomingButton{ border-top: 0 !important; padding:0; }
+#calenderModal .upcomingButton button{ padding: 7px; font-size: 0.85rem; max-width: 120px; }
+#calenderModal .modal-footer{ margin-top:.5rem; border-style: solid; border-radius: 0; border: 0; border-top: 1px solid #e5e5e5; }
+#main-div>app-calendar .fc-view-container{margin-bottom: 60px;}
+.fc-time-grid-container{height: auto !important;}
+

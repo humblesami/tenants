@@ -1,0 +1,15 @@
+{
+    "name": "Board Sheet",
+    "short_name": "Board Sheet",
+    "description": "boardsheet",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fff",
+    "theme_color": "#0A0302",
+    "icons": [
+        {
+        "sizes": "160x160",
+        "src": "/static/assets/test.jpg"
+        }
+    ]
+}

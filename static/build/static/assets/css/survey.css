@@ -1,0 +1,11 @@
+.canvas_container{
+    width:50%; 
+    height:50%;
+    padding:4px; border: 1px solid; border-radius:50%;
+}
+.canvas_warpper
+{
+    width: 100%;
+    display: flex;
+    justify-content: center;    
+}
