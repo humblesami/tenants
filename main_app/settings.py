@@ -2,6 +2,7 @@ import json
 import sys
 import os
 
+ip2location = {}
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 ADMINS = (
@@ -37,6 +38,10 @@ config_info = {
 with open(config_path, 'r') as site_config:
     config_info = json.load(site_config)
     DATABASES['default'] = config_info['default']
+    ip2location = config_info["ip2location"]["active"]
+    SOCKET_SERVER_URL = config_info['socket_url']
+    server_base_url = config_info['server_base_url']
+    AUTH_SERVER_URL = config_info['auth_server_url']
 
 TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
@@ -88,6 +93,8 @@ SHARED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'authsignup',
+    'restoken',
 )
 
 TENANT_APPS = (
@@ -98,6 +105,9 @@ TENANT_APPS = (
     'django.contrib.auth',
     'auth_t',
     'tenant_only',
+    'chat',
+    'meetings',
+    'documents',
 )
 INSTALLED_APPS = list(set(TENANT_APPS + SHARED_APPS))
 

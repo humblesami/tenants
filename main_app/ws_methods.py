@@ -20,6 +20,12 @@ def get_company_url(schema_name):
     url = PROTOCOL + '://' + schema_name + '.' + MAIN_URL
     return url
 
+
+def set_obj_attrs(dict_key_values, py_obj):
+    for prop in dict_key_values:
+        py_obj. __setattr__(prop, dict_key_values[prop])
+
+
 def add_interval(interval_type, inc, dt=None):
     inc = int(inc)
     if not dt:
