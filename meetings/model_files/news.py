@@ -1,8 +1,8 @@
 from django.apps import apps
 from django.db import models
 from documents.file import File
-# from survey.models import Survey
-# from esign.models import SignatureDoc
+from survey.models import Survey
+from esign.models import SignatureDoc
 from main_app.models import CustomModel
 from meetings.model_files.event import Event
 
@@ -44,8 +44,11 @@ class News(CustomModel):
             news_docs.append({'name': doc.name, 'id': doc.id})
 
         voting_model = apps.get_model('voting', 'Voting')
+        pending_sign_docs = SignatureDoc.pending_sign_docs(request.user.id)
         home_object['to_do_items'] = {
             'pending_meetings':  Event.get_pending_meetings(uid),
+            'pending_surveys': Survey.get_pending_surveys(request.user),
+            'pending_documents': pending_sign_docs,
             'pending_votings': voting_model.get_pending_votings(request.user),
         }
         home_object['doc_ids'] = news_docs

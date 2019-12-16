@@ -93,8 +93,6 @@ SHARED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'authsignup',
-    'restoken',
 )
 
 TENANT_APPS = (
@@ -105,9 +103,14 @@ TENANT_APPS = (
     'django.contrib.auth',
     'auth_t',
     'tenant_only',
+    'actions',
+    'authsignup',
+    'restoken',
     'chat',
     'meetings',
     'documents',
+    'esign', 
+    'survey',
 )
 INSTALLED_APPS = list(set(TENANT_APPS + SHARED_APPS))
 
