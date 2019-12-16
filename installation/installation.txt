@@ -2,6 +2,10 @@ pip3 install Django==2.2
 django-admin startproject myproject
 pip3 install -r requirements.txt
 
+
+sudo apt-get --purge remove postgresql-*
+sudo rm -Rf /etc/postgresql /var/lib/postgresql
+
 config local
 
 {
@@ -56,7 +60,6 @@ DATABASES = {
 }
 
 sudo apt-get install postgresql postgresql-contrib libpq-dev
-sudo -u postgres psql;
 CREATE USER odoo WITH PASSWORD '123';
 ALTER USER odoo WITH SUPERUSER;
 \password odoo user_name;
