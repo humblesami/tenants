@@ -1,0 +1,537 @@
+[
+{
+ "model": "auth.user",
+ "pk": 1,
+ "fields": {
+  "password": "pbkdf2_sha256$30000$4qybUPscjFTq$CvNaiVIFYlwXLVPUQlOk8hlE7duE93Bdv1LyIMj2RRo=",
+  "last_login": "2017-03-22T05:38:02.728Z",
+  "is_superuser": true,
+  "username": "ps250112",
+  "first_name": "",
+  "last_name": "",
+  "email": "",
+  "is_staff": true,
+  "is_active": true,
+  "date_joined": "2017-03-15T11:01:44.764Z",
+  "groups": [],
+  "user_permissions": []
+ }
+},
+{
+ "model": "auth.user",
+ "pk": 2,
+ "fields": {
+  "password": "pbkdf2_sha256$30000$9I20UakFTpfx$y7eJAH51Uet6UY3A56g+JLEiG4qvks9XyGZnXy5B0E4=",
+  "last_login": "2017-03-19T11:21:55.386Z",
+  "is_superuser": true,
+  "username": "pierre",
+  "first_name": "",
+  "last_name": "",
+  "email": "",
+  "is_staff": true,
+  "is_active": true,
+  "date_joined": "2017-03-19T11:14:45.991Z",
+  "groups": [],
+  "user_permissions": []
+ }
+},
+{
+ "model": "auth.user",
+ "pk": 3,
+ "fields": {
+  "password": "pbkdf2_sha256$120000$ZyPtmKmTQ7dQ$iIrgpOV5gKvjx4fOdzTzNx0v6/GwebY+4GetticBKec=",
+  "last_login": "2018-12-10T15:05:40.209Z",
+  "is_superuser": true,
+  "username": "zhu",
+  "first_name": "",
+  "last_name": "",
+  "email": "",
+  "is_staff": true,
+  "is_active": true,
+  "date_joined": "2018-12-05T09:06:24Z",
+  "groups": [],
+  "user_permissions": []
+ }
+},
+{
+ "model": "survey.survey",
+ "pk": 1,
+ "fields": {
+  "name": "Test surv\u00eby",
+  "description": "Lorem ipsum dolor sit am\u00ebt, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "is_published": true,
+  "need_logged_user": true,
+  "display_by_question": false,
+  "template": ""
+ }
+},
+{
+ "model": "survey.survey",
+ "pk": 2,
+ "fields": {
+  "name": "Short Surv\u00eby",
+  "description": "Lorem ipsum dolor sit am\u00ebt, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  "is_published": true,
+  "need_logged_user": false,
+  "display_by_question": false,
+  "template": ""
+ }
+},
+{
+ "model": "survey.survey",
+ "pk": 3,
+ "fields": {
+  "name": "Unicode\u95ee\u5377",
+  "description": "\u8fd9\u662f\u4e00\u4e2a\u7528\u4e8e\u6d4b\u8bd5\u9009\u9879\u4e2d\u542b\u6709 Unicode \u5b57\u7b26\u7684 Survey",
+  "is_published": true,
+  "need_logged_user": false,
+  "display_by_question": false,
+  "template": null
+ }
+},
+{
+ "model": "survey.category",
+ "pk": 1,
+ "fields": {
+  "name": "Lorem",
+  "survey": 1,
+  "order": 1,
+  "description": "Lorem description"
+ }
+},
+{
+ "model": "survey.category",
+ "pk": 2,
+ "fields": {
+  "name": "Ipsum",
+  "survey": 1,
+  "order": 2,
+  "description": "Ipsum description"
+ }
+},
+{
+ "model": "survey.category",
+ "pk": 3,
+ "fields": {
+  "name": "Dolor",
+  "survey": 1,
+  "order": 3,
+  "description": "Dolor description"
+ }
+},
+{
+ "model": "survey.question",
+ "pk": 1,
+ "fields": {
+  "text": "Lorem ipsum dolor sit am\u00ebt, <strong> consectetur </strong> adipiscing elit.",
+  "order": 1,
+  "required": true,
+  "category": 1,
+  "survey": 1,
+  "type": "select-multiple",
+  "choices": "Y\u00ebs, no, Maybe"
+ }
+},
+{
+ "model": "survey.question",
+ "pk": 2,
+ "fields": {
+  "text": "Ipsum dolor sit am\u00ebt, <strong> consectetur </strong>  adipiscing elit.",
+  "order": 2,
+  "required": false,
+  "category": 2,
+  "survey": 1,
+  "type": "radio",
+  "choices": "Y\u00ebs, No"
+ }
+},
+{
+ "model": "survey.question",
+ "pk": 3,
+ "fields": {
+  "text": "Dolor sit am\u00ebt, <strong> consectetur</strong>  adipiscing elit.",
+  "order": 3,
+  "required": false,
+  "category": 3,
+  "survey": 1,
+  "type": "text",
+  "choices": ""
+ }
+},
+{
+ "model": "survey.question",
+ "pk": 4,
+ "fields": {
+  "text": "Lorem ipsum dolor sit am\u00ebt, consectetur<strong>  adipiscing </strong> elit.",
+  "order": 4,
+  "required": false,
+  "category": 1,
+  "survey": 1,
+  "type": "select",
+  "choices": "Y\u00ebs, No, Maybe"
+ }
+},
+{
+ "model": "survey.question",
+ "pk": 5,
+ "fields": {
+  "text": "Ipsum dolor sit am\u00ebt, consectetur <strong> adipiscing </strong> elit.",
+  "order": 5,
+  "required": true,
+  "category": 2,
+  "survey": 1,
+  "type": "integer",
+  "choices": ""
+ }
+},
+{
+ "model": "survey.question",
+ "pk": 6,
+ "fields": {
+  "text": "Dolor sit am\u00ebt, consectetur<strong>  adipiscing</strong>  elit.",
+  "order": 6,
+  "required": true,
+  "category": 3,
+  "survey": 1,
+  "type": "select-multiple",
+  "choices": "Y\u00ebs, No , Maybe, Whatever"
+ }
+},
+{
+ "model": "survey.question",
+ "pk": 7,
+ "fields": {
+  "text": "Lorem?",
+  "order": 1,
+  "required": true,
+  "category": null,
+  "survey": 2,
+  "type": "select-multiple",
+  "choices": "1, 2, 3, 4, 5"
+ }
+},
+{
+ "model": "survey.question",
+ "pk": 8,
+ "fields": {
+  "text": "Ipsum?",
+  "order": 2,
+  "required": false,
+  "category": null,
+  "survey": 2,
+  "type": "radio",
+  "choices": "1, 2, 3, 4, 5"
+ }
+},
+{
+ "model": "survey.question",
+ "pk": 9,
+ "fields": {
+  "text": "\u65e0\u5584\u65e0\u6076\u5fc3\u4e4b\u4f53\uff0c\u6709\u5584\u6709\u6076\u610f\u4e4b\u52a8",
+  "order": 1,
+  "required": true,
+  "category": null,
+  "survey": 3,
+  "type": "radio",
+  "choices": "\u826f\u77e5,\u683c\u7269"
+ }
+},
+{
+ "model": "survey.question",
+ "pk": 10,
+ "fields": {
+  "text": "\u77e5\u5584\u77e5\u6076\u662f\u826f\u77e5\uff0c\u4e3a\u5584\u53bb\u6076\u662f\u683c\u7269",
+  "order": 2,
+  "required": true,
+  "category": null,
+  "survey": 3,
+  "type": "radio",
+  "choices": "\u9633\u660e,\u8056\u9ece"
+ }
+},
+{
+ "model": "survey.response",
+ "pk": 8,
+ "fields": {
+  "created": "2017-03-19T11:33:22.379Z",
+  "updated": "2017-03-19T12:04:11.997Z",
+  "survey": 2,
+  "user": [
+   "pierre"
+  ],
+  "interview_uuid": "5bc13b731b7a41599c6cbacd7f7b54f3"
+ }
+},
+{
+ "model": "survey.response",
+ "pk": 10,
+ "fields": {
+  "created": "2017-03-19T11:59:00.802Z",
+  "updated": "2017-03-19T12:20:11.501Z",
+  "survey": 1,
+  "user": [
+   "pierre"
+  ],
+  "interview_uuid": "37fe2707287743dcbe6d5de6cbec7407"
+ }
+},
+{
+ "model": "survey.response",
+ "pk": 11,
+ "fields": {
+  "created": "2017-03-20T05:12:03.007Z",
+  "updated": "2017-03-23T03:34:32.340Z",
+  "survey": 2,
+  "user": [
+   "ps250112"
+  ],
+  "interview_uuid": "663b61b63fdc485080450add65a8a324"
+ }
+},
+{
+ "model": "survey.response",
+ "pk": 12,
+ "fields": {
+  "created": "2017-03-22T08:24:43.468Z",
+  "updated": "2017-03-22T10:27:59.183Z",
+  "survey": 1,
+  "user": [
+   "ps250112"
+  ],
+  "interview_uuid": "e9b616a8adc24902aa4bc2fa2d57d4bb"
+ }
+},
+{
+ "model": "survey.response",
+ "pk": 13,
+ "fields": {
+  "created": "2018-12-05T09:11:21.884Z",
+  "updated": "2018-12-10T15:00:46.463Z",
+  "survey": 3,
+  "user": [
+   "zhu"
+  ],
+  "interview_uuid": "f41ed01a4a33473fb99cd8618ee60c05"
+ }
+},
+{
+ "model": "survey.response",
+ "pk": 14,
+ "fields": {
+  "created": "2018-12-12T07:45:37.455Z",
+  "updated": "2018-12-12T07:45:37.455Z",
+  "survey": 3,
+  "user": null,
+  "interview_uuid": "4c5833ba1cad4a18b3e4baf767e932d6"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 31,
+ "fields": {
+  "question": 7,
+  "response": 8,
+  "created": "2017-03-19T11:57:56.650Z",
+  "updated": "2017-07-10T15:07:35.304Z",
+  "body": "[u'2', u'4']"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 32,
+ "fields": {
+  "question": 3,
+  "response": 10,
+  "created": "2017-03-19T11:59:00.819Z",
+  "updated": "2017-07-10T15:07:35.287Z",
+  "body": "Text for a response"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 33,
+ "fields": {
+  "question": 2,
+  "response": 10,
+  "created": "2017-03-19T11:59:00.848Z",
+  "updated": "2017-07-10T15:07:35.295Z",
+  "body": "No"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 34,
+ "fields": {
+  "question": 1,
+  "response": 10,
+  "created": "2017-03-19T11:59:00.884Z",
+  "updated": "2017-07-10T15:07:35.306Z",
+  "body": "[u'Y\u00ebs', u'Maybe']"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 35,
+ "fields": {
+  "question": 6,
+  "response": 10,
+  "created": "2017-03-19T11:59:00.902Z",
+  "updated": "2017-07-10T15:07:35.307Z",
+  "body": "[u'No', u'Whatever']"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 36,
+ "fields": {
+  "question": 5,
+  "response": 10,
+  "created": "2017-03-19T11:59:00.933Z",
+  "updated": "2017-07-10T15:07:35.291Z",
+  "body": "2"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 37,
+ "fields": {
+  "question": 4,
+  "response": 10,
+  "created": "2017-03-19T11:59:00.950Z",
+  "updated": "2017-07-10T15:07:35.300Z",
+  "body": ""
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 38,
+ "fields": {
+  "question": 8,
+  "response": 11,
+  "created": "2017-03-20T05:12:03.076Z",
+  "updated": "2017-07-10T15:07:35.297Z",
+  "body": "5"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 39,
+ "fields": {
+  "question": 7,
+  "response": 11,
+  "created": "2017-03-20T05:12:03.093Z",
+  "updated": "2017-07-10T15:07:35.308Z",
+  "body": "[u'2']"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 40,
+ "fields": {
+  "question": 3,
+  "response": 12,
+  "created": "2017-03-22T08:24:43.531Z",
+  "updated": "2017-07-10T15:07:35.289Z",
+  "body": ""
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 41,
+ "fields": {
+  "question": 2,
+  "response": 12,
+  "created": "2017-03-22T08:24:43.546Z",
+  "updated": "2017-07-10T15:07:35.298Z",
+  "body": "Y\u00ebs"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 42,
+ "fields": {
+  "question": 1,
+  "response": 12,
+  "created": "2017-03-22T08:24:43.560Z",
+  "updated": "2017-07-10T15:07:35.309Z",
+  "body": "[u'Y\u00ebs']"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 43,
+ "fields": {
+  "question": 6,
+  "response": 12,
+  "created": "2017-03-22T08:24:43.582Z",
+  "updated": "2017-07-10T15:07:35.311Z",
+  "body": "[u'Y\u00ebs']"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 44,
+ "fields": {
+  "question": 5,
+  "response": 12,
+  "created": "2017-03-22T08:24:43.595Z",
+  "updated": "2017-07-10T15:07:35.293Z",
+  "body": "1"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 45,
+ "fields": {
+  "question": 4,
+  "response": 12,
+  "created": "2017-03-22T08:24:43.617Z",
+  "updated": "2017-07-10T15:07:35.301Z",
+  "body": ""
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 46,
+ "fields": {
+  "question": 9,
+  "response": 13,
+  "created": "2018-12-05T09:11:21.897Z",
+  "updated": "2018-12-10T15:00:46.479Z",
+  "body": "\u683c\u7269"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 47,
+ "fields": {
+  "question": 10,
+  "response": 13,
+  "created": "2018-12-10T15:00:46.495Z",
+  "updated": "2018-12-10T15:00:46.495Z",
+  "body": "\u9633\u660e"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 48,
+ "fields": {
+  "question": 9,
+  "response": 14,
+  "created": "2018-12-12T07:45:37.469Z",
+  "updated": "2018-12-12T07:45:37.469Z",
+  "body": "\u826f\u77e5"
+ }
+},
+{
+ "model": "survey.answer",
+ "pk": 49,
+ "fields": {
+  "question": 10,
+  "response": 14,
+  "created": "2018-12-12T07:45:37.475Z",
+  "updated": "2018-12-12T07:45:37.475Z",
+  "body": "\u8056\u9ece"
+ }
+}
+]

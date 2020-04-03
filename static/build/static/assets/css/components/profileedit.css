@@ -1,0 +1,375 @@
+.ProFileHeadWrap {
+    font-size: 1rem;
+}
+.ProfileUserNameJonbWrapper{
+	text-align:center;
+}
+.UserProfileNameTittle{
+	color:#3059C9;
+	font-size:25px;
+}
+.UserProfileDiscripTittle{
+	color:#444444;
+	font-size:16px;
+}
+
+.details-card h3{
+    margin: 25px 0;
+    font-size: 1.7em;
+}
+input[type=text], input[type=password] {
+    width: 100%;
+    padding:0 10px;
+    margin: 5px 0 10px 0;
+    display: block;
+    border: 1px solid #dedee8;
+    height: 38px;
+    line-height: 38px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+hr {
+    border: 1px solid #f1f1f1;
+    margin: 25px 0 25px 0;
+}
+
+/* Set a style for all buttons */
+/* button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+} */
+
+/* button:hover {
+    opacity:1;
+} */
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+    padding: 14px 20px;
+    background-color: #f44336;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn {
+    float: left;
+    width: 100%;
+}
+
+.signupbtn {
+    width: 100%;
+}
+
+/* Add padding to container elements */
+
+/* Clear floats */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+    .cancelbtn, .signupbtn {
+        width: 100%;
+    }
+}
+
+
+/*Success Snackbar*/
+
+.snackbar-success {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #54C036;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+    z-index: 999;
+}
+
+.snackbar-success.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+/*ERROR SNACKBAR*/
+
+
+.snackbar-error {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #ff0033;
+    color: white;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    bottom: 30px;
+    font-size: 17px;
+    z-index: 999;
+}
+
+.snackbar-error.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+/*=============================
+last-login-details
+=============================*/
+
+.last-login-details {
+    background: #f8f8f8;
+    padding-bottom: 10px;
+    /* box-shadow: 1px 1px 119px #00000038; */
+}
+
+.last-login-details h3 {
+    margin: 10px 0;
+    padding: 0;
+    color: #313030;
+}
+
+.last-login-details span {
+    display: block;
+    color: #797979;
+}
+
+/* input[type="date"]:before {
+    position: absolute;
+    top: 3px; left: 3px;
+    content: attr(data-date);
+    display: inline-block;
+    color: black;
+} */
+
+/* input[type="date"] {
+    position: relative;
+    width: 150px; height: 20px;
+    color: white;
+}
+
+
+input[type="date"]::-webkit-datetime-edit, input::-webkit-inner-spin-button, input::-webkit-clear-button {
+    display: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 3px;
+    right: 0;
+    color: black;
+    opacity: 1;
+} */
+
+input[type="date"] {
+    position: relative;
+}
+
+/* create a new arrow, because we are going to mess up the native one
+see "List of symbols" below if you want another, you could also try to add a font-awesome icon.. */
+input[type="date"]:after {
+    content: "\25BC"; 
+    color: #555;
+    padding: 0 5px;
+}
+
+/* change color of symbol on hover */
+input[type="date"]:hover:after {
+    color: #bf1400;
+}
+
+/* make the native arrow invisible and stretch it over the whole field so you can click anywhere in the input field to trigger the native datepicker*/
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+}
+
+/* adjust increase/decrease button */
+input[type="date"]::-webkit-inner-spin-button {
+    z-index: 1;
+}
+
+ /* adjust clear button */
+input[type="date"]::-webkit-clear-button {
+    z-index: 1;
+}
+
+.date-overlay{
+    position: absolute;
+    border: 0px;
+    padding: 5px;
+    margin: 3px 0px 0px 5px;
+}
+
+.docwrappercontainer .resume-edit-control-btn
+{
+     text-align: center;
+    position: absolute;
+    top: -15px;
+    right: -18px;
+    font-size: 16px;
+    background: #ffffff;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.57);
+    padding: 3px 6px;
+    border-radius: 5px;
+}
+.modal-footer
+{
+    display: none;
+}
+
+.modal-body .router-outlet {
+    height: calc(100vh - 130px);
+    overflow: auto;
+    padding-top: 5px;
+    margin: -16px;
+    padding: 15px;
+}
+
+/* .edit-buttons.edit-mode {
+    justify-content: center;
+    position: absolute;
+    z-index: 14;
+    width: 100%;
+    left: 15px;
+    bottom: -31px;
+    border-radius: 5px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 0;
+} */
+
+.top-header-author.edit-author-thumb {
+    text-align: left;
+}
+
+.upload-resume-edit-section{
+	border: 1px dashed #4b74b5;
+    margin: 0 auto;
+    border-radius: 4px;
+    padding:1rem;
+    max-width:90%;
+    position: relative;
+}
+
+.upload-resume-edit-section .DocIcon{
+	height:auto;
+}
+.resume-delete-confirm{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.resume-delete-confirm  button{
+	margin: 3px;
+    padding: 0;
+    font-size: 15px;
+    min-width: 70px;
+    height: 28px;
+    line-height: 28px;
+}
+.resume-delete-confirm-wrap{
+	background:#ffffff;
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+}
+
+.red-btn-bg{ background: #FF5454 !important; }
+.blue-btn-bg { background: #4B74B5 !important; }
+
+.update-signature-edit-section{
+    border: 1px dashed #4b74b5;
+    border-radius: 4px;
+    max-width: 90%;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    height: 85px;
+}
+img.strt_sign {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+.resume-edit-control.UpdateAddSignBtn{
+	color:#ffffff;
+}

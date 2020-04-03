@@ -1,0 +1,95 @@
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 45, in form_company_info
+    company = req_data['company']
+ KeyError: 'company'
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 45, in form_company_info
+    company = req_data['company']
+ KeyError: 'company'
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 45, in form_company_info
+    company = req_data['company']
+ KeyError: 'company'
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 44, in form_company_info
+    req_data = request.POST_
+ AttributeError: 'WSGIRequest' object has no attribute 'POST_'
+
+ Traceback (most recent call last):
+ KeyError: 'usd_amount'
+ 
+During handling of the above exception, another exception occurred:
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 46, in form_company_info
+    usd_amount = req_data['usd_amount']
+ django.utils.datastructures.MultiValueDictKeyError: 'usd_amount'
+
+ Traceback (most recent call last):
+ KeyError: 'usd_amount'
+ 
+During handling of the above exception, another exception occurred:
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 46, in form_company_info
+    usd_amount = req_data['usd_amount']
+ django.utils.datastructures.MultiValueDictKeyError: 'usd_amount'
+
+ Traceback (most recent call last):
+ KeyError: 'plan'
+ 
+During handling of the above exception, another exception occurred:
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 68, in form_company_info
+    obj = PaymentInProgress(method_id=method_id, plan_id=req_data['plan']['id'])
+ django.utils.datastructures.MultiValueDictKeyError: 'plan'
+
+ Traceback (most recent call last):
+ KeyError: 'plan'
+ 
+During handling of the above exception, another exception occurred:
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 67, in form_company_info
+    obj = PaymentInProgress(method_id=method_id, plan_id=req_data['plan']['id'])
+ django.utils.datastructures.MultiValueDictKeyError: 'plan'
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 72, in form_company_info
+    redirect(request, '/subscriptions/payment/' + payment_token)
+ django.urls.exceptions.NoReverseMatch: Reverse for '<WSGIRequest: POST '/subscriptions/2'>' not found. '<WSGIRequest: POST '/subscriptions/2'>' is not a valid view function or pattern name.
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 72, in form_company_info
+    redirect(request, '/subscriptions/payment/' + payment_token)
+ django.urls.exceptions.NoReverseMatch: Reverse for '<WSGIRequest: POST '/subscriptions/2'>' not found. '<WSGIRequest: POST '/subscriptions/2'>' is not a valid view function or pattern name.
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 72, in form_company_info
+    redirect(request, '/subscriptions/payment/' + payment_token)
+ django.urls.exceptions.NoReverseMatch: Reverse for '<WSGIRequest: POST '/subscriptions/2'>' not found. '<WSGIRequest: POST '/subscriptions/2'>' is not a valid view function or pattern name.
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 72, in form_company_info
+    return redirect(request, '/subscriptions/payment/' + payment_token)
+ django.urls.exceptions.NoReverseMatch: Reverse for '<WSGIRequest: POST '/subscriptions/2'>' not found. '<WSGIRequest: POST '/subscriptions/2'>' is not a valid view function or pattern name.
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 72, in form_company_info
+    return redirect(request, '/subscriptions/payment/' + payment_token)
+ django.urls.exceptions.NoReverseMatch: Reverse for '<WSGIRequest: POST '/subscriptions/2'>' not found. '<WSGIRequest: POST '/subscriptions/2'>' is not a valid view function or pattern name.
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 72, in form_company_info
+    return redirect(request, '/subscriptions/payment/' + payment_token)
+ django.urls.exceptions.NoReverseMatch: Reverse for '<WSGIRequest: POST '/subscriptions/2'>' not found. '<WSGIRequest: POST '/subscriptions/2'>' is not a valid view function or pattern name.
+
+ Traceback (most recent call last):
+   File "/home/sami/django/portal/customers/subscriptions/views.py", line 72, in form_company_info
+    return redirect(request, '/subscriptions/payment/' + payment_token)
+ django.urls.exceptions.NoReverseMatch: Reverse for '<WSGIRequest: POST '/subscriptions/2'>' not found. '<WSGIRequest: POST '/subscriptions/2'>' is not a valid view function or pattern name.
+

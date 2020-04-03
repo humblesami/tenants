@@ -1,0 +1,48 @@
+.modal-header, .modal-footer{
+    background-color: #eeeeee !important;
+}
+
+.bordered{
+    border: 1px solid #808080;
+}
+
+button.check-time-btn {    
+	width: 30px;
+	height: 30px;
+	background: green;
+	border: none;
+	color:white;
+	margin: 3px;
+	border-radius: 40px;
+	font-size: 17px;
+	}
+.DocText .edit-btn{
+	float: right;
+}
+.resource-info{
+	width: 70%;
+	display: inline-block;
+	margin-bottom: -6px;
+}
+.resources .search_options{
+	display: none;
+	position: absolute;
+    top: 1.2rem;
+    right: 6rem;
+}
+.resources .search_options>span{
+	margin-right: 10px;
+}
+.resources .search_options>span>label{
+	margin-left: 10px;
+}
+.sub.search{
+	position: relative;
+}
+@media screen and (max-width:768px){
+	.resources .search_options{
+		position: relative;
+		top: 0;
+		right: 0;
+	}
+}

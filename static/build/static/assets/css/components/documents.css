@@ -1,0 +1,15 @@
+
+button.check-time-btn {    
+	width: 30px;
+	height: 30px;
+	background: green;
+	border: none;
+	color:white;
+	margin: 3px;
+	border-radius: 40px;
+	font-size: 17px;
+	}
+
+.dlc-file-picker{
+    display: none;
+}

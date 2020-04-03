@@ -1,0 +1,142 @@
+generic:
+    document_option: 11pt
+    document_class: article
+    header: |
+        \usepackage{pgf-pie}
+        \usepackage{pgfplots}
+        \pgfplotsset{compat=1.13}
+        \usepackage{pgfplotstable}
+        \usetikzlibrary{patterns}
+        \usepackage[section]{placeins}
+        \usetikzlibrary{arrows,shadows}
+        \usepackage[utf8]{inputenc}
+        \title{My title}
+        \author{John Doe\\\\Associate Survey Branch Manager}
+    intro: |
+        \maketitle{}
+        \section*{Introduction}
+        This report has been automatically generated.
+    footer:
+        This is the footer.
+
+Short Survëy:
+    footer:
+        Short survey footer.
+
+Unicode问卷:
+    header: |
+        \usepackage[UTF8]{ctex}
+        \usepackage{pgf-pie}
+        \usepackage{pgfplots}
+        \pgfplotsset{compat=1.13}
+        \usepackage{pgfplotstable}
+        \usetikzlibrary{patterns}
+        \usepackage[section]{placeins}
+        \usetikzlibrary{arrows,shadows}
+        \title{中国的例子}
+    intro: |
+        \maketitle{}
+
+Test Management Survëy:
+    footer:
+        Test management footer.
+
+    chart:
+        group_together:
+            1é:
+                - 1e
+                - 1é
+                - 1ë
+            2é:
+                - 2e
+                - 2é
+                - 2ë
+            3é:
+                - 3e
+                - 3é
+                - 3ë
+        color:
+            "": "white!100"
+
+            "1b": "green!80"
+            "1a": "cyan!50"
+            "1é": "red!80"
+            "1": "yellow!70"
+
+            "2b": "green!80"
+            "2a": "cyan!50"
+            "2é": "red!80"
+            "2": "yellow!70"
+
+            "3b": "green!80"
+            "3a": "cyan!50"
+            "3é": "red!80"
+            "3": "yellow!70"
+
+Test survëy:
+    document_class: report
+
+    intro:
+        \maketitle{}
+        \section*{Introduction}
+        This is a report for Test Survëy. It permit to test question specific
+        configurations and various chart and pie options.
+
+    chart:
+        radius: 3
+
+    questions:
+        # 1
+        Lorem ipsum dolor sit amët, <strong> consectetur </strong> adipiscing elit.:
+            multiple_charts:
+                Polar pin:
+                    type: polar
+                    text: pin
+                    radius: 1
+                Sankey:
+                    type: sankey
+                    question: Dolor sit amët, consectetur<strong>  adipiscing</strong>  elit.
+
+        # 2
+        Ipsum dolor sit amët, <strong> consectetur </strong>  adipiscing elit.:
+            chart:
+                pos: 8, 0
+                explode: 0.5
+
+        # 3
+        Dolor sit amët, <strong> consectetur</strong>  adipiscing elit.:
+            chart:
+                type: square
+                color: {"Text for a response": "yellow!70", "": "white!100"}
+
+        # 4
+        Ipsum dolor sit amët, <strong> consectetur </strong>  adipiscing elit.:
+            chart:
+                type: survey.tests.exporter.tex.CustomQuestion2TexChild
+
+        # 5
+        Ipsum dolor sit amët, consectetur <strong> adipiscing </strong> elit.:
+            chart:
+                min_cardinality: 1
+                rotate: 20
+                style: "drop shadow"
+                scale_font: True
+                after_number: "\\%"
+                before_number: "\\$"
+                sum: 3
+
+        # 6
+        Dolor sit amët, consectetur<strong>  adipiscing</strong>  elit.:
+            multiple_charts:
+                Sub Sub Section with radius=3 :
+                    color: {"Yës": "blue!50", "No": "red!50",
+                            "Whatever": "red!50!blue!50"}
+                    radius: 3
+                Sub Sub Section with text=pin :
+                    group_together: {"Nah": ["No", "Whatever"], "K.": ["Yës"]}
+                    color: {"Nah": "blue!33!red!66", "K.": "blue!50"}
+                    text: pin
+            chart:
+                radius: 1
+                type: cloud
+                text: inside

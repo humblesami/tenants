@@ -1,0 +1,60 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+{% block field_sets %}
+{{ block.super }}
+{% load static %}
+    <script src="{% static '/assets/libs/jquery/jquery-2.2.4.js' %}"></script>
+    <script src="{% static '/assets/libs/js/moment.js' %}"></script>
+    <script src="/static/assets/js/mask.js"></script>
+    <script src="{% static '/assets/js/custom_duration_validator.js' %}"></script>
+    <script src="/static/assets/js/validator.js"></script>
+    <script src="/static/admin/js/topic_position.js"></script>
+    <script>
+        (function(){
+            var BATTUTA_KEY="00000000000000000000000000000000";
+            url="https://geo-battuta.net/api/country/all/?key="+BATTUTA_KEY+"&callback=?";
+            function fill_regions(selected){
+                countryCode=$("#id_country").val().toLowerCase();
+                url="https://geo-battuta.net/api/region/"
+                +countryCode
+                +"/all/?key="+BATTUTA_KEY+"&callback=?";
+                $.getJSON(url,function(regions)
+                {
+                    $('.field-state select').find('option').remove();
+                    if (regions.length)
+                    {
+                        $('.field-state input').val(regions[0].region);
+                    }
+                    else
+                    {
+                        $('.field-state input').val('');
+                    }
+                    for(let region of regions)
+                    {
+                        $('.field-state select').append(`<option value="${region.region}">${region.region}</option>`);
+                    }
+                    if (selected)
+                    {
+                        $('.field-state select option[value="'+selected+'"]').attr('selected', 'selected');
+                    }
+                });
+            }
+            let selectedCountry = $("#id_country").val();
+            if (selectedCountry)
+            {
+                let state = $('.field-state input').val();
+                fill_regions(state);
+            }
+            $('.field-state input').hide();
+            let select = `<select id="states" name="states" class="states"></select>`;
+            $('.field-state div').append(select);
+            $('.field-state select').change(()=>{
+                $('.field-state input').val($('.field-state select').val());
+            });
+            $("#id_country").on("change",function()
+            {
+                fill_regions();
+            });
+        })();
+    </script>
+{% endblock %}

@@ -1,0 +1,27 @@
+.nav-icon button{
+	background: var(--header-icon-color);
+    border-radius: 50% !important;
+    padding: 0;
+    color: #ffffff;
+    outline: none;
+    font-size: 16px;
+    border: none;
+    opacity: 0.9;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+	cursor: pointer;
+	position: relative;
+	margin: 0 5px;
+}
+
+@media (max-width: 575px) {
+    button.showmouseawaybutton.notification-icon{
+        font-size: 10px;
+        width: 26px;
+        height: 26px;
+        margin: 0 3px;
+    }
+}

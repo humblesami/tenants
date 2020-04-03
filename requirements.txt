@@ -1,2 +1,5 @@
-django-tenants
-stripe
+django==2.2
+django-tenants==2.2.3
+requests==2.22.0
+urllib3==1.25.7
+stripe==2.41.0

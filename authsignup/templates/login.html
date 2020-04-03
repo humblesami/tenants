@@ -1,0 +1,102 @@
+{% extends 'header.html' %}
+{% block headcontent %}
+    <style>
+    button[type="submit"]:disabled{
+        background-color: grey;
+    }
+    </style>
+{% endblock %}
+{% block content %} 
+    <script>
+        console.log(Date());
+    </script>
+    <style>
+    .Login-form-wrapper{
+        overflow: hidden;
+    }
+    .Login-form-wrapper .hide-small{
+        display: none;    
+    }
+    .login-logo-image{
+        display: none;
+    }
+    </style>
+    <div id="server-wait"
+    style="position: fixed;
+        z-index: 27;
+        top: 0;
+        left: 0;
+        opacity: 1;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;"
+        class="loadingoverlay">
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+            </div>
+            <div class="text">
+                Loading Login Page...
+            </div>
+        </div>
+    </div>
+    <div class="router-outlet Login-form-wrapper">            
+        <span class="loginshape01"><img class="img-fluid" src_url="/static/assets/images/loginshape-01.png" /> </span>
+        <span class="loginshape02"><img class="img-fluid" src_url="/static/assets/images/loginshape-02.png" /> </span>
+        <span class="loginshape03"><img class="img-fluid" src_url="/static/assets/images/loginshape-03.png" /> </span>
+        <div class="container-wrapper">
+            <div class="container">
+                <div class="row d-flex justify-content-center align-items-center">
+                    <div class="form-container col-sm-12 col-md-6 col-xl-5">
+                        <div class="login-form-div">
+                            <form class="login-form text-center">
+                                <img class="login-logo-image" src="/static/assets/images/logo.png" src_url="/static/assets/images/logo.png" />
+                                <div class="member-login-box">
+                                    <img src_url="/static/assets/images/member-icon.png" />
+                                    <span>Member Login</span>
+                                </div>
+                                <div class="form-group input-label-icon">
+                                    <img class="img-fluid user-icon" src_url="/static/assets/images/login-user.png" />
+                                    <input id="username" placeholder="Username" type="text" class="form-control" />
+                                </div>
+                                <div class="form-group input-label-icon">
+                                    <img class="img-fluid" src_url="/static/assets/images/lock-icon.png" />
+                                    <input id="password" placeholder="Password" type="password" class="form-control" />
+                                </div>
+                                <div class="login-feedback" style="text-align:center; color:red; padding-bottom:10px"></div>
+                                <div class="form-group text-center pl-5 pr-5 mb-2">
+                                    <button type="submit" disabled class="login-btn">Login</button>
+                                </div>
+                                <div style="display:none" class="form-group forgot text-center">
+                                <a class="forgot" href="/#/forgot-password">Forgot Password?</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>                
+                    <div class="col-md-6 hide-small">
+                        <img class="login-image" async src="/static/assets/images/login-vector.png"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    {{ block.super }}
+    <link rel="stylesheet" href="/static/assets/css/login.css" />
+    <script>
+        (function(){
+            $('#server-wait').hide();
+            var elm = document.getElementById('username');
+            setTimeout(function(){
+                elm.select();
+            }, 800);
+            $('.Login-form-wrapper').find('button[type="submit"]:first').removeAttr('disabled');
+        })()
+        $('.form-group.forgot').show();
+        console.log(Date(), 'all loaded ');
+    </script>
+    <script type="text/javascript" src="/static/assets/js/login.js"></script>
+{% endblock %}
