@@ -1,5 +1,6 @@
 django==2.2
 django-tenants==2.2.3
+django-tenant-users==0.3.12
 requests==2.22.0
 urllib3==1.25.7
 stripe==2.41.0
