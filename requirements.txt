@@ -1,4 +1,4 @@
-django==2.2
+django==2.2.10
 django-tenants==2.2.3
 django-tenant-users==0.3.12
 requests==2.22.0
