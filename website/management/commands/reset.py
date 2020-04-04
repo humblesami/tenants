@@ -93,6 +93,6 @@ class Command(BaseCommand):
             call_command('makemigrations')
             call_command('makemigrations', 'website', 'tenant_only' ,'customers', 'auth_t')
             call_command('migrate')
-            call_command('loaddata', 'website/fixtures/data.json')
+            # call_command('loaddata', 'website/fixtures/data.json')
         else:
             print('failed ' + res)

@@ -1,6 +1,3 @@
-import os
-import uuid
-
 from .models_login import *
 from restoken.models import PostUserToken
 from main_app.models import CustomModel
@@ -25,7 +22,6 @@ class DualAuth(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
-# Create your models here.
 class AuthUser(user_model, CustomModel):
     name = models.CharField(max_length=200, default='', blank=True)
     image = models.ImageField(upload_to='profile/', default='profile/default.png', null=True)
@@ -34,50 +30,6 @@ class AuthUser(user_model, CustomModel):
     mobile_verified = models.BooleanField(null=True, default=False)
     mobile_phone = models.CharField(max_length=30, blank=True)
     image_updated = models.BooleanField(default=False)
-
-    def save(self, *args, **kwargs):
-        creating = False
-        if self.pk:
-            creating = True
-        super(AuthUser, self).save(*args, **kwargs)
-
-    # def save(self, *args, **kwargs):
-    #     creating = False
-    #     if self.two_factor_auth and self.two_factor_auth == 2 and not self.mobile_verified:
-    #         return
-    #     profile_obj = AuthUser.objects.filter(pk=self.pk)
-    #     if not profile_obj:
-    #         creating = True
-    #         self.is_staff = True
-    #         if self.email and not self.username:
-    #             self.username = self.email
-    #         self.image = ws_methods.generate_default_image(self.fullname())
-    #     self.name = self.fullname()
-    #     if profile_obj:
-    #         profile_obj = profile_obj[0]
-    #         if self.image != profile_obj.image:
-    #             self.image_updated = True
-    #         if not self.image_updated:
-    #             if self.name != profile_obj.name:
-    #                 curr_dir = os.path.dirname(__file__) + '/images'
-    #                 try:
-    #                     os.remove(curr_dir + profile_obj.image.url)
-    #                 except:
-    #                     pass
-    #                 self.image = ws_methods.generate_default_image(self.name)
-    #
-    #     random_password = None
-    #     if self.password and len(self.password) <= 15:
-    #         random_password = self.password
-    #     super(AuthUser, self).save(*args, **kwargs)
-    #     if creating:
-    #         if not self.is_superuser:
-    #             if not random_password:
-    #                 random_password = uuid.uuid4().hex[:8]
-    #             self.password_reset_on_creation_email(random_password)
-    #     if random_password:
-    #         self.set_password(random_password)
-    #         super(AuthUser, self).save(*args, **kwargs)
 
     def fullname(self):
         user = self
@@ -117,7 +69,6 @@ class AuthUser(user_model, CustomModel):
         except:
             res = ws_methods.get_error_message()
             return res
-
 
     @classmethod
     def do_login(cls, request, user, name, referer_address):
@@ -248,7 +199,7 @@ class AuthUser(user_model, CustomModel):
         return 'done'
 
     @classmethod
-    def send_mobile_verfication_code(cls, request, params):
+    def send_mobile_verification_code(cls, request, params):
         user = request.user
         user = AuthUser.objects.get(pk=user.id)
         mobile_phone = params['mobile_phone']
