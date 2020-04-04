@@ -3,6 +3,7 @@
 .idea
 db.sql*
 *.pyc
+__pycache__
 /.vscode
 /uploaded_files
 config.json
