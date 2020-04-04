@@ -1,8 +1,9 @@
 /**/migrations
-/.idea
+.idea
 db.sql*
 *.pyc
 /.vscode
 /uploaded_files
 config.json
 node_modules
+static/build
