@@ -3,7 +3,6 @@ import re
 import base64
 import urllib
 import subprocess
-from PIL import Image
 from fpdf import FPDF
 from PyPDF2 import PdfFileReader
 from urllib.request import urlopen
