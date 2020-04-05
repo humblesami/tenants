@@ -164,20 +164,19 @@ WSGI_APPLICATION = 'mainapp.wsgi.application'
 
 TENANT_MODEL = "customers.Client"  # app.Model
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
-TENANT_DOMAIN = config_info['domain']
 
 SERVER_PORT = config_info['port']
 SERVER_PORT_STR = ''
 if SERVER_PORT:
     SERVER_PORT_STR = ':' + str(SERVER_PORT)
-DOMAIN_NAME = TENANT_DOMAIN
+
 PROTOCOL = 'http'
 if config_info['https']:
     PROTOCOL = 'https'
-MAIN_URL = DOMAIN_NAME + SERVER_PORT_STR
-# SESSION_COOKIE_NAME = 'fdfdsedfsoodsd'
-# SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN + SERVER_PORT_STR
-LOGIN_URL = '/accounts/login'
+
+server_domain = config_info['server_domain']
+MAIN_URL = PROTOCOL + '://' + server_domain + SERVER_PORT_STR
+LOGIN_URL = MAIN_URL + '/accounts/login'
 
 PUBLIC_TENANT = None
 

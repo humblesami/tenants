@@ -12,7 +12,7 @@ from django.contrib.contenttypes.models import ContentType
 from customers.model_files.payemts import PaymentInProgress
 from mainapp import ws_methods
 from website.models import UserAuthToken
-from mainapp.settings import SERVER_PORT_STR, TENANT_DOMAIN
+from mainapp.settings import SERVER_PORT_STR, server_domain
 
 
 class CheckForExisting(View):
@@ -131,7 +131,7 @@ def create_tenant(t_name, request):
                 owner.set_password('123')
                 owner.save()
 
-                domain_url = t_name + '.' + TENANT_DOMAIN
+                domain_url = t_name + '.' + server_domain
                 company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
                 company.save()
                 company.users.add(owner)

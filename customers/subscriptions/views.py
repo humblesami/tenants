@@ -14,7 +14,7 @@ from customers.model_files.subscription import Subscription
 from customers.model_files.payemts import Payment, PaymentMethod, PaymentInProgress
 
 from mainapp import settings, ws_methods
-from mainapp.settings import TENANT_DOMAIN
+from mainapp.settings import server_domain
 from mainapp.ws_methods import produce_exception
 
 
@@ -181,7 +181,7 @@ def create_tenant(email, subscription_id, request):
                 schema_owner = User.objects.create(username='owner@'+sub_domain+'.com')
                 schema_owner.save()
 
-                domain_url = sub_domain + '.' + TENANT_DOMAIN
+                domain_url = sub_domain + '.' + server_domain
                 company = tenant_model(schema_name=sub_domain, name=company, owner_id=schema_owner.id, domain_url=domain_url)
                 company.subscription_id = subscription_id
                 company.plan_id = plan_id

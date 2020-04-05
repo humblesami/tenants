@@ -69,5 +69,6 @@ def serve_protected_document(request,folder, file):
     response = FileResponse(open(path,'rb'))
     return response
 
+
 def response_submitted(request):
     return render(request,'mainapp/response_submitted.html', {'server_base_url': server_base_url})

@@ -21,9 +21,16 @@
     <script type="text/javascript" src="static/assets/config.js" id="config_script"></script>    
 </head>
 <body class="app sidebar-mini rtl sidenav-toggled public">
+    {% if error %}
+        <span>{{ error }} | <a href="{{public_url}}">Main Website</a>
+    {% else %}
+            You are a valid client
+            <span>{{ name }} - {{ id }}</span>
+            | <a href="{{main_url}}">Main Website</a> | <a href="{{main_url}}">Public Home</a>
+    {% endif %}
     <script type="text/javascript" src="static/assets/authsignup/auth.js"></script>
     <link rel="stylesheet" type="text/css" href="static/assets/libs/bootstrap/bootstrap-4.2.1.css" />
-    
+
     <div id="server-wait"
         style="position: absolute;
             z-index: 27;

@@ -2,7 +2,6 @@ import json
 import sys
 import traceback
 from django.db import connection
-from django.conf import settings
 from django.shortcuts import render
 from django.db import utils, transaction
 from django.contrib.auth.models import User
@@ -12,7 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.deprecation import MiddlewareMixin  # todo change
 from django_tenants.utils import remove_www_and_dev, get_tenant_model
 
-from mainapp.settings import LOGIN_URL
+from mainapp.settings import PUBLIC_SCHEMA_URLCONF, PROTOCOL, server_domain, SERVER_PORT_STR, MAIN_URL, LOGIN_URL
 
 
 def create_public_tenant(tenant_model):
@@ -22,7 +21,7 @@ def create_public_tenant(tenant_model):
             owner.set_password('123')
             owner.save()
             t_name = 'public'
-            domain_url = settings.TENANT_DOMAIN
+            domain_url = server_domain
             company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
             company.save()
             return company
@@ -55,9 +54,9 @@ class TenantMiddleware(MiddlewareMixin):
             hostname_without_port = remove_www_and_dev(request.get_host().split(':')[0])
             selected_schema_name = 'public'
             tenant_model = get_tenant_model()
-            request.main_url = request.scheme +'://' + settings.MAIN_URL
-            request.login_url = request.scheme +'://' + settings.MAIN_URL + settings.LOGIN_URL
-            request.protocol = settings.PROTOCOL
+            request.main_url = MAIN_URL
+            request.login_url = LOGIN_URL
+            request.protocol = PROTOCOL
             if hostname_without_port.startswith('login.'):
                 hostname_without_port = hostname_without_port.replace('login.', '')
 
@@ -72,7 +71,7 @@ class TenantMiddleware(MiddlewareMixin):
                     'status': 'Invalid Client'
                 }
                 not_found = {'error': 'This subdomain does not exist => '+hostname_without_port, 'error_code': 404}
-                if hostname_without_port != settings.TENANT_DOMAIN:
+                if hostname_without_port != server_domain:
                     return render(request, 'error.html', not_found)
                 tenant = tenant_model.objects.filter(schema_name='public')
                 if not tenant:
@@ -86,14 +85,15 @@ class TenantMiddleware(MiddlewareMixin):
                     tenant = tenant[0]
                     request.tenant = tenant
                     selected_schema_name = tenant.schema_name
+                    request.home_url = PROTOCOL + "//" + selected_schema_name + '.' + server_domain + SERVER_PORT_STR
         except utils.DatabaseError:
-            request.urlconf = settings.PUBLIC_SCHEMA_URLCONF
+            request.urlconf = PUBLIC_SCHEMA_URLCONF
             return
 
         connection.set_tenant(request.tenant, False)
         ContentType.objects.clear_cache()
         if selected_schema_name == 'public':
-            request.urlconf = settings.PUBLIC_SCHEMA_URLCONF
+            request.urlconf = PUBLIC_SCHEMA_URLCONF
 
 
 def produce_exception():
