@@ -140,7 +140,7 @@
         {
             if(wl_str.indexOf('4200') == -1)
             {
-                window.location = login_url;
+                window.location = site_config.login_url;
             }
             else{
                 window.location = '/#/login';

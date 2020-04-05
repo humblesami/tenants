@@ -266,7 +266,7 @@
         },
         emoji_picker:{
             script_paths : ['static/assets/emoji/js/emoji-picker.js'],
-            style_paths:['static/assets/css/emoji.css'],
+            style_paths:['static/assets/emjoin/emoji.css'],
             load: function(on_load){
                 var obj_this = this;    
                 load_lib(obj_this, on_load);
@@ -281,7 +281,7 @@
             }
         },
         mask: {
-            script_paths : ['static/assets/js/mask.js'],
+            script_paths : ['static/assets/utils/mask.js'],
             style_paths : [],
             load: function(on_load){            
                 var obj_this = this;

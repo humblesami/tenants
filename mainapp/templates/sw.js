@@ -7,7 +7,7 @@
             return cache.addAll([
                 'user/offline',                
                 '/static/assets/favicon.ico',
-                '/static/assets/css/login.css',
+                '/static/assets/authsignup/login.css',
             ]).then(function(){
                 console.log('Assets added to cache');
             }).catch(err => console.log('Error while fetching assets', err));

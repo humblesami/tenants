@@ -5,8 +5,7 @@
     <base href="/#/" />
     <meta charset="utf-8">
     <script type="text/javascript" src="/static/assets/utils/check_user.js"></script>
-    <link rel="manifest" href="/static/assets/manifest.json">
-    <link rel="apple-touch-icon" href="/static/assets/test.jpg" sizes="160x160">
+    <!-- Path to manifest.json -->
     <!-- <meta http-equiv="Content-type" content="application/x-www-form-urlencoded; charset=UTF-8"/> -->
     <meta name="theme-color" content="#0A0302">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,12 +16,12 @@
 
 	<title>Boardsheet</title>
 	<link rel="shortcut icon" href="">
-    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
     <script type="text/javascript" src="static/assets/libs/jquery/jquery-2.2.4.js"></script>
     <script type="text/javascript" src="static/assets/config.js" id="config_script"></script>    
 </head>
 <body class="app sidebar-mini rtl sidenav-toggled public">
-    <script type="text/javascript" src="static/assets/utils/auth.js"></script>
+    <script type="text/javascript" src="static/assets/authsignup/auth.js"></script>
     <link rel="stylesheet" type="text/css" href="static/assets/libs/bootstrap/bootstrap-4.2.1.css" />
     
     <div id="server-wait"
@@ -60,12 +59,9 @@
     <script type="text/javascript" src="static/assets/utils/libs_load.js"></script>
     <script type="text/javascript" src="/static/assets/libs/bootstrap/popper.min.js"></script>
     <script type="text/javascript" src="/static/assets/libs/bootstrap/bootstrap-4.1.1.js"></script>
-    
-	<link rel="stylesheet" type="text/css" href="static/assets/css/boardsheet1.css" />
-	<link rel="stylesheet" type="text/css" href="static/assets/css/boardsheet.css" />
 
-
-    <link rel="stylesheet" type="text/css" href="static/assets/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="static/assets/boardsheet.css" />
+    <link rel="stylesheet" type="text/css" href="static/assets/main.css" />
     <script type="text/javascript" src="static/assets/utils/json.js"></script>
     <script type="text/javascript" src="static/assets/utils/datetime.js"></script>
     <script type="text/javascript" src="static/assets/utils/simple_ajax.js"></script>
@@ -75,9 +71,8 @@
     </script>
     <app-root></app-root>    
 
-	<script type="text/javascript" src="static/assets/js/custom_chart.js"></script>
-	<script type="text/javascript" src="static/assets/js/popup.js"></script>
-    <script src="static/assets/js/mask.js"></script>
+	<script type="text/javascript" src="static/assets/utils/popup.js"></script>
+    <script src="static/assets/utils/mask.js"></script>
         
 
     <div class="onedrive_iframe" style="display:none">
@@ -86,27 +81,6 @@
         </iframe>
     </div>
 
-    <script type="text/javascript">
-        (function(){
-            function on_onedrive_sdk_loaded(btn){
-                var active_cloud_picker = $(btn).closest('.cloud_pickers_container');
-                var current_cloud_number = $(".cloud_pickers_container").index(active_cloud_picker);
-                var input_type = active_cloud_picker.attr('input_type');
-                var redirect_uri = site_config.server_base_url + '/temp/onedrive?picker_index='+current_cloud_number+'&file_type='+input_type;
-                // console.log(redirect_uri, 1233);
-                $('.onedrive_iframe iframe').attr('src', redirect_uri);
-            }
-            function one_drive_click(){
-                var btn = this;
-                on_onedrive_sdk_loaded(btn);
-            }
-            $('body').on('click', '.one_drive_picker', one_drive_click);
-        })();
-    </script>
-    <link rel="stylesheet" type="text/css" href="static/assets/css/secondary.css" />
-
-    <script type="text/javascript" src="static/build/runtime.js"></script>
-    <script type="text/javascript" src="static/build/polyfills.js"></script>
-    <script type="text/javascript" src="static/build/main.js.gz"></script>
+    <link rel="stylesheet" type="text/css" href="static/assets/secondary.css" />
 </body>
 </html>

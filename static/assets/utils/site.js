@@ -34,7 +34,7 @@ var dn_current_site_user = {
         $('body').removeClass('public').addClass('user');
     },
     logout: function(navigate) {
-        if(location_now() == login_url)
+        if(location_now() == site_config.login_url)
         {
             return;
         }
@@ -140,7 +140,7 @@ var site_functions = {
         {
             if(location_now().indexOf('4200') == -1)
             {
-                window.location = login_url;
+                window.location = site_config.login_url;
             }
             else{
                 window.location = '/#/login';
