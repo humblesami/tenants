@@ -1,66 +1,45 @@
 [
     {
-        "model": "customers.Plan",
+        "model": "auth.Group",
         "pk": 1,
         "fields": {
-            "name": "Economy",
-            "description": "Love",
-            "cost": "10",
-            "days": "30"
+            "name": "Admin"
         }
     },
     {
-        "model": "customers.PlanCost",
-        "pk": 1,
-        "fields": {
-            "plan_id": "1",
-            "cost": "10",
-            "days": "30"
-        }
-    },
-    {
-        "model": "customers.Plan",
+        "model": "auth.Group",
         "pk": 2,
         "fields": {
-            "name": "Professional",
-            "description": "Deep Love",
-            "cost": "50",
-            "days": "100"
+            "name": "Director"
         }
     },
     {
-        "model": "customers.PlanCost",
-        "pk": 2,
-        "fields": {
-            "plan_id": "2",
-            "cost": "50",
-            "days": "100"
-        }
-    },
-    {
-        "model": "customers.Plan",
+        "model": "auth.Group",
         "pk": 3,
         "fields": {
-            "name": "Ultimate",
-            "description": "Love at full",
-            "cost": "100",
-            "days": "300"
+            "name": "Staff"
         }
     },
     {
-        "model": "customers.PlanCost",
-        "pk": 3,
-        "fields": {
-            "plan_id": "3",
-            "cost": "100",
-            "days": "300"
-        }
-    },
-    {
-        "model": "customers.PaymentMethod",
         "pk": 1,
+        "model": "auth.user",
         "fields": {
-            "name": "Stripe"
+            "username": "sa",
+            "first_name": "Faize",
+            "last_name": "Ansari",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "groups": [1],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$150000$IcCUgVA4XXlg$zcfM9BdEPRQ3AR9J6A6jfRLnfT+2jUUvmp2XqLHj0ok=",
+            "email": "muhammad.faizan@digitalnet.com"
+        }
+    },
+    {
+        "model": "authsignup.AuthUser",
+        "fields": {
+            "user_ptr_id": 1
         }
     }
 ]

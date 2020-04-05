@@ -2,11 +2,11 @@
 <html lang="en"><head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="/static/libs/bootstrap-4.2.1.css">
-    <link rel="stylesheet" href="/static/site/site.css">
-    <script src="/static/libs/jquery-2.2.4.js"></script>
-    <script src="/static/site/utils.js"></script>
-    <script src="/static/site/site.js"></script>
+    <link rel="stylesheet" href="/static/assets/libs/bootstrap/bootstrap-4.2.1.css">
+    <link rel="stylesheet" href="/static/assets/site/site.css">
+    <script src="/static/assets/libs/jquery/jquery-2.2.4.js"></script>
+    <script src="/static/assets/site/utils.js"></script>
+    <script src="/static/assets/site/site.js"></script>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
     {% block header %}
         <a href="/">Home</a>
         {% if not request.user.id %}
-            | <a href="{{request.main_url}}/accounts/login">Login</a>
+            | <a href="{{request.login_url}}">Login</a>
         {% endif %}
         {% if request.user.id %}
            

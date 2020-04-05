@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.apps import apps
 from django.contrib import admin
 
-from main_app import ws_methods
+from mainapp import ws_methods
 from documents.file import File
 from authsignup.models import AuthUser
 
@@ -324,24 +324,6 @@ class Comment(models.Model):
                 res_id=params['res_id'],
             )
 
-        sql = "select un.id from chat_usernotification un "
-        sql += " join chat_sendernotification sn on sn.id = un.sender_notification_id"
-        sql += " join chat_notification n on sn.notification_id=n.id"
-        sql += " join chat_postaddress pa on pa.id=n.post_address_id"
-        sql += " where pa.res_app='meetings' and res_model='event' and res_id=1"
-        # objs = UserNotification.objects.raw(sql)
-
-        # with connection.cursor() as cursor:
-        #     cursor.execute(sql)
-        #     row = cursor.fetchall()
-
-        # sql1 = "update chat_usernotification set read=True where id in("+sql+")"
-
-        # with connection.cursor() as cursor:
-        #     cursor.execute(sql1)
-        #     row = cursor.fetchone()
-
-        # objs = UserNotification.objects.raw(sql)
         parents = {
 
         }

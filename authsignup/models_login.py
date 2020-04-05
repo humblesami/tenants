@@ -1,8 +1,8 @@
 import json
 import httpagentparser
 
-from main_app import ws_methods
-from main_app.settings import ip2location
+from mainapp import ws_methods
+from mainapp.settings import ip2location
 
 from django.db import models
 from django.dispatch import receiver
@@ -67,10 +67,11 @@ def get_location_from_ip(ip):
     res = json.loads(res)
     return res
 
-
-@receiver(user_logged_in)
-def user_logged_in_callback(sender, request, user, **kwargs):
-    ws_methods.threaded_operation(make_login_entry, args=(request, user))
+#tobe changed
+# @receiver(user_logged_in)
+# def user_logged_in_callback(sender, request, user, **kwargs):
+#     if request.tenant and request.tenant.schema_name != 'public':
+#         ws_methods.threaded_operation(make_login_entry, args=(request, user))
 
 
 def get_browser(agent):

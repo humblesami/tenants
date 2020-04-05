@@ -5,11 +5,11 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 
+from authsignup.models import AuthUser
 from documents.file import File
 from chat.models import Notification
-from main_app.ws_methods import set_obj_attrs
-from meetings.model_files.user import Profile
-from main_app.models import CustomModel
+from mainapp.ws_methods import set_obj_attrs
+from mainapp.models import CustomModel
 from operator import itemgetter
 import bisect
 
@@ -18,7 +18,7 @@ class AnnotationDocument(CustomModel):
     version = models.IntegerField(default=0)
     file = models.ForeignKey(File, on_delete=models.CASCADE, null=True)
     doc_name = models.CharField(max_length=100, null=True)
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         nam = 'Unnamed'
@@ -527,7 +527,7 @@ class PointAnnotation(Annotation):
 class CommentAnnotation(CustomModel):
     body = models.CharField(max_length=500)
     point = models.ForeignKey(PointAnnotation, on_delete=models.CASCADE)
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, null=True)
     uuid = models.CharField(max_length=200)
 
     @classmethod
@@ -560,24 +560,8 @@ class CommentAnnotation(CustomModel):
                 if not existing_point:
                     res['new_point'] = 1
                 doc_type = params['doc_type']
-                res_model = ''
                 file_id = params['file_id']
 
-                if len(comment_body) > 20:                    
-                    comment_body = '=> '+ comment_body[0: 20] + '...'
-                text = 'You have new comment '+ comment_body + ' on '
-                if doc_type == 'meeting':
-                    res_model = 'MeetingDocument'
-                    model = apps.get_model('meetings', res_model)
-                    obj = model.objects.get(pk = file_id)
-                    text += ' meeting document '+obj.name+ ' in '+obj.meeting.name
-                elif doc_type == 'topic':
-                    res_model = 'AgendaDocument'
-                    model = apps.get_model('meetings', res_model)
-                    obj = model.objects.get(pk = file_id)
-                    text += ' an agenda-topic-document '+obj.name+ ' in meeting=>'+obj.agenda.event.name
-                else:
-                    raise ValidationError('Invalid document type '+doc_type)
                 params = {
                     'res_app': 'documents',
                     'res_model': 'PointAnnotation',

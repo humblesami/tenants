@@ -1,0 +1,7 @@
+.form-row {
+    display: table-row !important;
+    }
+
+    .empty-form {
+    display: none !important;
+}

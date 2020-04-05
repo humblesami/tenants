@@ -1,19 +1,13 @@
-from django.shortcuts import render
+import os
+import json
+from mainapp import ws_methods
+from documents.file import File
+from django.db import transaction
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
-
-from documents.annotation import AnnotationDocument
-from mainapp import ws_methods
-from django.db import transaction
-from meetings.model_files.user import Profile
-from documents.file import File
 from django.core.files import File as DjangoFile
-from django.core.files.temp import NamedTemporaryFile
-from urllib.request import urlopen
-import urllib
-import json
-import os
+from documents.annotation import AnnotationDocument
+from django.views.decorators.csrf import csrf_exempt
 
 
 @csrf_exempt

@@ -1,3 +1,0 @@
-Test survëy:
-    chart:
-        type: survey.tests.exporter.DoesNotExist

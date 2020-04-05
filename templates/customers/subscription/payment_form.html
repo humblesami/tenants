@@ -1,0 +1,38 @@
+{% extends 'base_public.html' %}
+{% block head %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}
+{% block content %}
+<section class="curve-light-bg">
+    <link rel="stylesheet" href="/static/assets/portal/pay.css">
+    <div class="title-head">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <h2>Payment</h2>
+                    <h6>Plan Name : {{plan.name }}</h6>
+                    <h6>Cost : {{ plan.cost }}</h6>
+                    <h6>Valid for : {{plan.days }} days</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>{{error | safe}}</div>
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="PaymentCreditCardForm FaxForm">
+                <form id="payment_form" action="/subscriptions/post-payment/{{token}}" method="post" class="form">
+                    {% csrf_token %}
+                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                    data-key="{{key}}"
+                    data-description="Odufax Charge"
+                    data-amount="{{ plan.cents_cost }}"
+                    data-locale="auto"></script>
+                    <script src="/static/assets/portal/pay.js"></script>
+                </form>
+            </div>
+        </div>
+    </div>
+  </section>
+{% endblock %}

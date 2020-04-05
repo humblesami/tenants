@@ -10,9 +10,9 @@ from django_tenants.utils import get_tenant_model
 from django.contrib.contenttypes.models import ContentType
 
 from customers.model_files.payemts import PaymentInProgress
-from main_app import ws_methods
-from website.models import PortalUser
-from main_app.settings import SERVER_PORT_STR, TENANT_DOMAIN
+from mainapp import ws_methods
+from website.models import UserAuthToken
+from mainapp.settings import SERVER_PORT_STR, TENANT_DOMAIN
 
 
 class CheckForExisting(View):
@@ -109,7 +109,7 @@ def my_companies(request):
             tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
             tenants_list = list(tenants_list)
             auth_token = uuid.uuid4().hex[:20]
-            PortalUser.objects.create(username=user.username, token=auth_token)
+            UserAuthToken.objects.create(username=user.username, token=auth_token)
             auth_token = '/login/'+auth_token
             if len(tenants_list) == 1:
                 my_company = tenants_list[0]

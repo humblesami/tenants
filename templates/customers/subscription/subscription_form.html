@@ -1,0 +1,59 @@
+{% extends 'base_public.html' %}
+{% block head %}
+    <script type="text/javascript">
+    </script>
+{% endblock %}
+{% block content %}
+<section class="curve-light-bg">
+    <link rel="stylesheet" href="/static/assets/portal/pay.css">
+    <div class="title-head">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <h2>Payment</h2>
+                    <h6>Plan Name : {{plan.name }}</h6>
+                    <h6>Cost : {{ plan.cost }}</h6>
+                    <h6>Valid for : {{plan.days }} days</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="error">{{error | safe}}</div>
+    <div class="container subscription-form">
+        <div id="server-wait">
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                </div>
+                <div class="text">
+                    Please wait, we are initializing your company setup...
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex form-container justify-content-center">
+            <form id="subscription_form" action="/subscriptions/post-subscription/{{token}}" method="post" class="form">
+                {% csrf_token %}
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" required name="password" id="password" />
+                        <div>
+                        <p id="password_error" class="alert alert-danger">Please Add Password</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" required name="confirm_password" id="confirm_password" />
+                        <div>
+                        <p id="confirm_password_error" class="alert alert-danger">Password must match</p></div>
+                    </div>
+                    <input class="form-control" type="hidden" class="form-control" required name="amountpay" id="amount2" value="{{ plan.cents_cost }}" />
+                    <div class="form-group" >
+                        <button class="btn btn-primary" id="btn_add_request">Subscribe</button>
+                    </div>
+                </div>
+                <div>{{token}}</div>
+            </form>
+            <script src="/static/assets/portal/pay.js"></script>
+        </div>
+    </div>
+  </section>
+{% endblock %}

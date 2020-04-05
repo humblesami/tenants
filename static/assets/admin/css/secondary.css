@@ -1,0 +1,120 @@
+/* div.field-two_factor_auth
+{
+    display: none;
+} */
+.select2-container--admin-autocomplete .select2-selection--multiple,.select2-container--admin-autocomplete .select2-selection--single {
+    background-color: #fff;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    border-radius:0;
+}
+.aligned .form-row input[type="text"]{
+    padding: 0;
+}
+.inline-related{
+    border: 2px solid #eee;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+.inline-related h3 span.delete label{
+    margin-left: 0;
+    font-size: 13px;
+    font-weight: bold;
+}
+.inline-related fieldset{
+    padding-left: 10px;
+    padding-bottom: 10px;
+    width: 98%;
+}
+.has-inlines.inline-related fieldset{
+    padding-left: 0;
+}
+.form-row {
+    padding: 15px 0px 5px;
+}
+.inline-related h3,
+.inline-related fieldset.module h3{
+    padding: 10px 5px 10px;
+    cursor: pointer;
+}
+h3.djn-drag-handler b,.inline-related fieldset.module h3 b{
+    padding-left: 0.7rem;
+    font-size: 0.8rem;
+}
+input[type=checkbox]{
+    margin:-2px 3px 0 5px;
+}
+.field-attachment label{
+    float: left;
+}
+.inline-group h2{
+    margin: 0px;
+    padding: 0.5rem 0 1rem;
+}
+#content h1{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+#questions-group textarea{
+    height: 70px;
+}
+.form-row.errors{
+    border:none;
+}
+#id_is_published {
+    margin-top:-4px;
+}
+.inline-group .tabular td.original p{
+    padding: 2px 20px;
+}
+
+@media screen and (max-width:768px){
+    .aligned p.file-upload{
+        margin-left: 0;
+    }
+    .inline-related h3 span.delete{
+        flex:none !important;
+    }
+    h3.djn-drag-handler b, .inline-related fieldset.module h3 b{
+        padding-left: 0;
+    }
+    .inline-related .module,
+    .djn-group .djn-group-nested{
+        padding-bottom: 10px !important;
+    }
+    #questions-group textarea{
+        width: auto;
+    }
+    .inline-group{
+        overflow: hidden;
+    }
+    p.datetime input {
+        margin: -10px 0px 10px 9px;
+    }
+}
+@media screen and (max-width:480px){
+    p.datetime input {
+        margin: -10px 0px 10px 9px !important;
+    }
+    .datetimeshortcuts{
+        margin-top: 0px !important;
+    }
+}
+.popup #container{
+    overflow-y:hidden;
+}
+fieldset.module{
+    overflow-y: hidden;
+}
+.popup #container .related-widget-wrapper-link.add-related {
+    display: none;
+}
+
+.popup #container .related-widget-wrapper-link.change-related{
+    display: none;
+}
+.popup.delete-confirmation #content>h2:last-of-type,
+.popup.delete-confirmation #content>ul:last-of-type
+{
+    display: none;
+}

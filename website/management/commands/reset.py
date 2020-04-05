@@ -10,7 +10,14 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 class Command(BaseCommand):
     help = 'setting up db i.e. create db or drop db for dev purpose'
     settings_dir = os.path.dirname(__file__)
-    base_directory = settings_dir.replace('website/management/commands', '')
+    str = 'website/management/commands'
+    base_directory = ''
+    if str in settings_dir:
+        base_directory = settings_dir.replace(str, '')
+    else:
+        str = 'website\\management\\commands'
+        base_directory = settings_dir.replace(str, '')
+    print(base_directory)
     def connect_database(self, database_info = {}):
         con = None
         try:
@@ -91,8 +98,7 @@ class Command(BaseCommand):
             print('Database created')
             importlib.import_module('del')
             call_command('makemigrations')
-            call_command('makemigrations', 'website', 'tenant_only' ,'customers', 'auth_t')
             call_command('migrate')
-            call_command('loaddata', 'website/fixtures/data.json')
+            call_command('loaddata', 'website/fixtures/public.json')
         else:
             print('failed ' + res)

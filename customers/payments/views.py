@@ -1,5 +1,5 @@
 import stripe
-from main_app import settings
+from mainapp import settings
 from django.views.generic import TemplateView
 from customers.model_files.payemts import Payment
 

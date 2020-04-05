@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Git Pull</title>
+    <style>
+        input {
+            display: block;
+            width: 100%;
+        }
+        button
+        {
+            cursor: pointer;
+        }
+        .form-controls>div
+        {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <div class="form-controls">
+            <div>
+                <label>Remote Adrress:</label> <input required name="remote" value="github.com/DigitalNet/HopeVUE" />
+            </div>
+            <div>
+                <label>Branch:</label> <input required name="branch" value="meet"  />
+            </div>
+            <div>
+                <label>User Name:</label> <input required name="uname" value="humblesami" />
+            </div>
+            <div>
+                <label>Password:</label> <input required name="password" type="password"  value="" />
+            </div>
+            <div>
+                <label>Commit Message:</label> <input name="message" placeholder="You have to fill this box to push code, otherwise it will be pulled" type="message"   />
+            </div>
+        </div>
+        <div>
+            <button type="submit">Execute</button>
+        </div>
+    </form>
+    <script src="js/jquery.js"></script>
+    <script src="js/git.js"></script>
+</body>
+</html>

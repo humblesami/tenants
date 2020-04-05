@@ -3,7 +3,6 @@ import re
 import base64
 import urllib
 import subprocess
-from PIL import Image
 from fpdf import FPDF
 from PyPDF2 import PdfFileReader
 from urllib.request import urlopen
@@ -16,8 +15,8 @@ from django.core.files import File as DjangoFile
 from django.core.exceptions import ValidationError
 from django.core.files.temp import NamedTemporaryFile
 
-from main_app.models import CustomModel
-from main_app import settings, ws_methods
+from mainapp.models import CustomModel
+from mainapp import settings, ws_methods
 
 
 def validate_file_extension(value):
@@ -318,50 +317,11 @@ class File(CustomModel):
         pdf_doc = base64.b64encode(pdf_doc)
         data_url = pdf_doc.decode('utf-8')
 
-        breadcrumb = []
-        mention_list = []
-        is_respondent = False
-        file_type = file_obj.file_type
-        if file_type == 'meeting':
-            breadcrumb = file_obj.meetingdocument.breadcrumb
-            mention_list = file_obj.meetingdocument.meeting.get_attendees()
-            respondents = file_obj.meetingdocument.meeting.get_audience()
-            if request.user.id in respondents:
-                is_respondent = True
-        elif file_type == 'topic':
-            breadcrumb = file_obj.agendadocument.breadcrumb
-            mention_list = file_obj.agendadocument.agenda.get_attendees()
-            respondents = file_obj.agendadocument.agenda.event.get_audience()
-            if request.user.id in respondents:
-                is_respondent = True
-        elif file_type == 'voting':
-            breadcrumb = file_obj.votingdocument.breadcrumb
-        elif file_type == 'resource':
-            breadcrumb = file_obj.resourcedocument.breadcrumb
-        elif file_type == 'home':
-            breadcrumb = file_obj.newsdocument.breadcrumb
-        elif file_type == 'resume':
-            breadcrumb.append({'title': 'Profiles', 'link': '/profiles/directors'})
-            profile_obj = file_obj.profile
-            groups = list(profile_obj.groups.all())
-            if groups:
-                group = groups[0]
-                group_name = ''
-                if group.name != 'Staff':
-                    group_name = group.name + 's'
-                else:
-                    group_name = group.name
-                breadcrumb.append({'title': group_name, 'link': '/profiles/' + group_name.lower()})
-            breadcrumb.append({'title': profile_obj.name, 'link': '/' + group.name.lower() + '/' + str(profile_obj.id)})
-
         doc = {
             'id': file_id,
             "url": url,
             "data_url": data_url,
             'doc_name': file_obj.name,
-            'breadcrumb': breadcrumb,
-            'is_respondent': is_respondent,
-            'mention_list': mention_list
         }
         return {'data': doc}
 
@@ -373,48 +333,10 @@ class File(CustomModel):
         pdf_doc = pdf_doc.read()
         pdf_doc = base64.b64encode(pdf_doc)
         result = pdf_doc.decode('utf-8')
-        breadcrumb = []
-        mention_list = []
-        is_respondent = False
-        file_type = file_obj.file_type
-        if file_type == 'meeting':
-            breadcrumb = file_obj.meetingdocument.breadcrumb
-            mention_list = file_obj.meetingdocument.meeting.get_attendees()
-            respondents = file_obj.meetingdocument.meeting.get_audience()
-            if request.user.id in respondents:
-                is_respondent = True
-        elif file_type == 'topic':
-            breadcrumb = file_obj.agendadocument.breadcrumb
-            mention_list = file_obj.agendadocument.agenda.get_attendees()
-            respondents = file_obj.agendadocument.topic.meeting.get_audience()
-            if request.user.id in respondents:
-                is_respondent = True
-        elif file_type == 'voting':
-            breadcrumb = file_obj.votingdocument.breadcrumb
-        elif file_type == 'resource':
-            breadcrumb = file_obj.resourcedocument.breadcrumb
-        elif file_type == 'home':
-            breadcrumb = file_obj.newsdocument.breadcrumb
-        elif file_type == 'resume':
-            breadcrumb.append({'title': 'Profiles', 'link': '/profiles/directors'})
-            profile_obj = file_obj.profile
-            groups = list(profile_obj.groups.all())
-            if groups:
-                group = groups[0]
-                group_name = ''
-                if group.name != 'Staff':
-                    group_name = group.name + 's'
-                else:
-                    group_name = group.name
-                breadcrumb.append({'title': group_name, 'link': '/profiles/' + group_name.lower()})
-            breadcrumb.append({'title': profile_obj.name, 'link': '/' + group.name.lower() + '/' + str(profile_obj.id)})
         doc = {
             'id': file_id,
             "data_url": result,
             'doc_name': file_obj.name,
             'type': file_obj.file_type,
-            'breadcrumb': breadcrumb,
-            'mention_list': mention_list,
-            'is_respondent': is_respondent
         }
         return {'data': doc}

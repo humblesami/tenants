@@ -1,5 +1,5 @@
 from django.contrib import admin
-from main_app.admin import BaseAdmin, BaseInlineAdmin
+from mainapp.admin import BaseAdmin, BaseInlineAdmin
 from .annotation import *
 
 
