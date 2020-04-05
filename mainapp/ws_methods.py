@@ -1,5 +1,4 @@
 import os
-import sys
 import json
 import urllib
 import base64
@@ -7,7 +6,6 @@ import base64
 import pytz
 import requests
 import threading
-import traceback
 from random import randint
 from urllib.parse import urlsplit
 from urllib.request import urlopen
@@ -16,7 +14,6 @@ from PIL import ImageFont, Image, ImageDraw
 from rest_framework.authtoken.models import Token
 
 from django.apps import apps
-from datetime import datetime
 from django.db.models import Q
 from django.db import connection
 from django.contrib.auth import login
@@ -71,7 +68,6 @@ def add_interval(interval_type, inc, dt=None):
     if interval_type == 'seconds':
         dt = dt + timedelta(seconds=inc)
     return dt
-
 
 
 def now_str():
@@ -321,11 +317,13 @@ def check_auth_token(request,values):
 
     return user.id
 
+
 def replace_key_in_dict(values, old_key, new_key):
     for obj in values:
         obj[new_key] = obj.pop(old_key)
 
     return values
+
 
 def threaded_operation(operation, args):
     obj = threading.Thread(target=operation, args=args)
