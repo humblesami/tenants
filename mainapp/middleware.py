@@ -84,11 +84,10 @@ class TenantMiddleware(MiddlewareMixin):
                     tenant = tenant[0]
                     request.tenant = tenant
                     selected_schema_name = tenant.schema_name
-                    request.home_url = PROTOCOL + "//" + selected_schema_name + '.' + server_domain + SERVER_PORT_STR
         except utils.DatabaseError:
             request.urlconf = PUBLIC_SCHEMA_URLCONF
             return
-
+        request.home_url = PROTOCOL + "//" + selected_schema_name + '.' + server_domain + SERVER_PORT_STR
         connection.set_tenant(request.tenant, False)
         ContentType.objects.clear_cache()
         if selected_schema_name == 'public':

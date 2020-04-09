@@ -174,10 +174,10 @@ class AuthUser(user_model, CustomModel):
         except:
             pass        
         """ Creating Peronsl Folder if not exists """
-        folder_model = ws_methods.get_model('resources', 'Folder')
-        method_to_call =  getattr(folder_model, 'create_personal_folder')
+        # folder_model = ws_methods.get_model('resources', 'Folder')
+        # method_to_call =  getattr(folder_model, 'create_personal_folder')
         request.user = user
-        method_to_call(folder_model, request, {})
+        # method_to_call(folder_model, request, {})
         """Deleting All Temp Files"""
         ws_methods.delete_all_temp_files(request, user.id)
         return user_data

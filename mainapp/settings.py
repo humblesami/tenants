@@ -3,7 +3,7 @@ import sys
 import os
 
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
