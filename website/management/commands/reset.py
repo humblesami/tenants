@@ -98,6 +98,8 @@ class Command(BaseCommand):
             print('Database created')
             importlib.import_module('del')
             call_command('makemigrations')
+            # call_command('makemigrations', 'website', 'tenant_only', 'customers')
+            # call_command('makemigrations', 'chat')
             call_command('migrate')
             call_command('loaddata', 'website/fixtures/public.json')
         else:

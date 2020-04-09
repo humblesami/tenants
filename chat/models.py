@@ -759,22 +759,22 @@ class Message(models.Model):
 
         return {'data': 'File Saved Successfully' }
 
-    @classmethod
-    def move_to_other_folder(cls, request, params):
-        file_id_is = params['file_id']
-        folder_id  = params['folder_id']
-
-        file = File.objects.get(pk=file_id_is)
-        folder = Folder.objects.get(pk=folder_id ,created_by_id=request.user.id )
-        doc = ResourceDocument(folder_id=folder.id, attachment=file.attachment, file_name=file.file_name, name=file.name, access_token='Messenger')
-        doc.save()
-
-        doc = MessageDocument.objects.get(pk=file_id_is)
-        doc.moved = True
-        doc.save()
-        data = {"data":"File Move Successfully"}
-        
-        return data
+    # @classmethod
+    # def move_to_other_folder(cls, request, params):
+    #     file_id_is = params['file_id']
+    #     folder_id  = params['folder_id']
+    #
+    #     file = File.objects.get(pk=file_id_is)
+    #     folder = Folder.objects.get(pk=folder_id ,created_by_id=request.user.id )
+    #     doc = ResourceDocument(folder_id=folder.id, attachment=file.attachment, file_name=file.file_name, name=file.name, access_token='Messenger')
+    #     doc.save()
+    #
+    #     doc = MessageDocument.objects.get(pk=file_id_is)
+    #     doc.moved = True
+    #     doc.save()
+    #     data = {"data":"File Move Successfully"}
+    #
+    #     return data
 
     @classmethod
     def get_old_messages(cls, request, params):
@@ -813,7 +813,7 @@ class MessageDocument(File):
     moved = models.BooleanField(default=False)
 
 
-admin.site.register(Comment)
+# admin.site.register(Comment)
 admin.site.register(Message)
 admin.site.register(Notification)
 admin.site.register(NotificationType)

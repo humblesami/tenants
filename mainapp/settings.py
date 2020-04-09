@@ -3,7 +3,7 @@ import sys
 import os
 
 DEBUG = True
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -61,10 +61,10 @@ MEDIA_URL = ''
 
 PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
 # CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    'localhost:4200',
-    '127.0.0.1:4200',
-)
+# CORS_ORIGIN_WHITELIST = (
+#     'localhost:4200',
+#     '127.0.0.1:4200',
+# )
 
 
 REST_FRAMEWORK = {
@@ -115,8 +115,8 @@ TEMPLATES = [
 SHARED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.auth',
-    # 'django.contrib.admin',
-    'mainapp.apps.CustomAdminConfig',
+    'django.contrib.admin',
+    # 'mainapp.apps.CustomAdminConfig',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -128,18 +128,19 @@ SHARED_APPS = (
 
 TENANT_APPS = (
     'django.contrib.contenttypes',
+    'django.contrib.admin',
+    # 'mainapp.apps.CustomAdminConfig',
     'django.contrib.auth',
-    # 'django.contrib.admin',
-    'mainapp.apps.CustomAdminConfig',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'corsheaders',
+    'django.contrib.staticfiles',
+    # 'corsheaders',
     'tenant_only',
     'bootstrapform',
-
     'rest_framework',
     'rest_framework.authtoken',
     'my_admin',
+    'emailthread',
     'authcode',
     'authsignup',
     'ngapp',
