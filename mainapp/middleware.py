@@ -21,8 +21,8 @@ def create_public_tenant(tenant_model):
             owner.set_password('123')
             owner.save()
             t_name = 'public'
-            domain_url = server_domain
-            company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
+            domain_name = server_domain
+            company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_name=domain_name)
             company.save()
             return company
     except:
@@ -59,7 +59,7 @@ class TenantMiddleware(MiddlewareMixin):
             if hostname_without_port.startswith('login.'):
                 hostname_without_port = hostname_without_port.replace('login.', '')
 
-            tenant = tenant_model.objects.filter(domain_url=hostname_without_port)
+            tenant = tenant_model.objects.filter(domain_name=hostname_without_port)
             if tenant:
                 tenant = tenant[0]
                 request.tenant = tenant
@@ -87,11 +87,13 @@ class TenantMiddleware(MiddlewareMixin):
         except utils.DatabaseError:
             request.urlconf = PUBLIC_SCHEMA_URLCONF
             return
-        request.home_url = PROTOCOL + "//" + selected_schema_name + '.' + server_domain + SERVER_PORT_STR
         connection.set_tenant(request.tenant, False)
         ContentType.objects.clear_cache()
         if selected_schema_name == 'public':
+            request.home_url = PROTOCOL + "://" + server_domain + SERVER_PORT_STR
             request.urlconf = PUBLIC_SCHEMA_URLCONF
+        else:
+            request.home_url = PROTOCOL + "://" + selected_schema_name + '.' + server_domain + SERVER_PORT_STR
 
 
 def produce_exception():

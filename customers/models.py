@@ -11,10 +11,10 @@ class Client(TenantMixin):
     owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='superuser')
     users = models.ManyToManyField(User)
     active_plan = models.ForeignKey(Plan, on_delete=models.CASCADE, null=True)
-    domain_url = models.CharField(max_length=64, default='')
+    domain_name = models.CharField(max_length=64, default='')
 
     def __str__(self):
-        return self.domain_url + '-' + str(self.id)
+        return self.domain_name + '-' + str(self.id)
 
     def delete_tenant(self):
         self.delete(force_drop=True)

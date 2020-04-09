@@ -91,7 +91,7 @@ def get_customer_list(user):
         tenant_model = get_tenant_model()
         tenants_list = tenant_model.objects.all()
         tenants_list = tenants_list.prefetch_related('domains').all()
-        tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
+        tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_name'))
     return tenants_list
 
 
@@ -106,7 +106,7 @@ def my_companies(request):
         tenants_list = tenant_model.objects.filter(users__email__in=[user.email]).exclude(schema_name='public')
         if tenants_list:
             tenants_list = tenants_list.prefetch_related('domains').all()
-            tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
+            tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_name'))
             tenants_list = list(tenants_list)
             auth_token = uuid.uuid4().hex[:20]
             UserAuthToken.objects.create(username=user.username, token=auth_token)
@@ -131,8 +131,8 @@ def create_tenant(t_name, request):
                 owner.set_password('123')
                 owner.save()
 
-                domain_url = t_name + '.' + server_domain
-                company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
+                domain_name = t_name + '.' + server_domain
+                company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_name=domain_name)
                 company.save()
                 company.users.add(owner)
 

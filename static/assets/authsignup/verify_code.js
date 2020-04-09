@@ -1,6 +1,6 @@
 (function(){
-    let auth_code_data = JSON.parse(auth_my_data);
-    localStorage.setItem('user', auth_my_data);
+    let auth_code_data = localStorage.getItem('auth_code_data');
+    auth_code_data = JSON.parse(auth_code_data);
     localStorage.setItem('last_activity', Date());
     if(!auth_code_data.auth_type){
         window.location = '/';

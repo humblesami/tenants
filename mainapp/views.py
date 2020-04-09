@@ -12,7 +12,7 @@ from mainapp.ws_methods import get_company_url
 
 
 def login_page(request):
-    template_name = 'login.html'
+    template_name = 'authsignup/login.html'
     context = {}
     logout(request)
     if request.method == 'POST':
@@ -34,8 +34,8 @@ def login_page(request):
                         auth_token = uuid.uuid4().hex[:20]
                         UserAuthToken.objects.create(username=user.username, token=auth_token)
                         auth_token = '/login/'+auth_token
-                        url = get_company_url(my_company.schema_name)
-                        return redirect(url+auth_token)
+                        home_url = get_company_url(my_company.schema_name)
+                        return redirect(home_url+auth_token)
             return redirect('/')
         else:
             context = {'error': 'Invalid credentials', 'input': {'username': username, 'next_url': next_url}}

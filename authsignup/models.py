@@ -206,7 +206,7 @@ class AuthUser(user_model, CustomModel):
 
             auth_type = None
             if auth_user.two_factor_auth:
-                auth_type = auth_user.get_two_factor_auth_display()
+                auth_type = auth_user.two_factor_auth
             if auth_type:
                 if not referer_address.endswith('localhost:4200/'):
                     auth_type = auth_type.lower()

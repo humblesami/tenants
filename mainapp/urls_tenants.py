@@ -5,12 +5,12 @@ from django.views.generic import RedirectView
 
 from mainapp.views import tenant_logout, tenant_login
 from mainapp import rest_api
-from tenant_only.views import TokenIndex
+from tenant_only.views import token_index
 from .import views
 
 urlpatterns = [
     url(r'^favicon\.ico$',RedirectView.as_view(url='/static/favicon.ico')),
-    path('login/<token>', TokenIndex.as_view(), name="index"),
+    path('login/<token>', token_index, name="index"),
     path('accounts/login', tenant_login, name = 'go to login page'),
     path('logout', tenant_logout),
     path('admin/', admin.site.urls),

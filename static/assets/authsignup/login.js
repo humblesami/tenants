@@ -7,9 +7,11 @@
         $(this).find('.login-feedback').html('');
     });
     var form  = $('.login-form:first');
+    console.log(455);
     form.submit(function(e){
         var logged_in = false;
         e.preventDefault();
+        alert(4343);
         form.find('button[type="submit"]:first').attr('disabled', 'disabled');
         $('#server-wait').show();
         var input_data = {
@@ -32,9 +34,10 @@
         $('#server-wait').show();
         options.onSuccess = function(data){
             logged_in = true;
+            console.log(data);
+            alert(444);
             $('#server-wait').show();
             form.find('button[type="submit"]:first').removeAttr('disabled');
-            // console.log(data);
             if(data.uuid && data.auth_type && data.status)
             {
                 data = JSON.stringify(data);

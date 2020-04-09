@@ -181,8 +181,8 @@ def create_tenant(email, subscription_id, request):
                 schema_owner = User.objects.create(username='owner@'+sub_domain+'.com')
                 schema_owner.save()
 
-                domain_url = sub_domain + '.' + server_domain
-                company = tenant_model(schema_name=sub_domain, name=company, owner_id=schema_owner.id, domain_url=domain_url)
+                domain_name = sub_domain + '.' + server_domain
+                company = tenant_model(schema_name=sub_domain, name=company, owner_id=schema_owner.id, domain_name=domain_name)
                 company.subscription_id = subscription_id
                 company.plan_id = plan_id
                 company.save()

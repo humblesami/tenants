@@ -30,11 +30,11 @@ import sys
 import traceback
 from datetime import datetime
 from datetime import timedelta
-from mainapp.settings import PROTOCOL, MAIN_URL
+from mainapp.settings import PROTOCOL, server_domain, SERVER_PORT_STR
 
 
 def get_company_url(schema_name):
-    url = PROTOCOL + '://' + schema_name + '.' + MAIN_URL
+    url = PROTOCOL + '://' + schema_name + '.' + server_domain + SERVER_PORT_STR
     return url
 
 
