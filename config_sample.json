@@ -1,5 +1,6 @@
 {
     "server_base_url": "http://localhost:8000",
+    "server_domain": "localhost",
     "socket_url": "http://localhost:3000",
     "auth_server_url": "http://localhost:8000",
     "ip2location":

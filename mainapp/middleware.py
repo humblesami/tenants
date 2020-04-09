@@ -52,7 +52,6 @@ class TenantMiddleware(MiddlewareMixin):
         try:
             connection.set_schema_to_public()
             hostname_without_port = remove_www_and_dev(request.get_host().split(':')[0])
-            selected_schema_name = 'public'
             tenant_model = get_tenant_model()
             request.main_url = MAIN_URL
             request.login_url = LOGIN_URL

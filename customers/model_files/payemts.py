@@ -36,7 +36,6 @@ class PaymentInProgress(models.Model):
 
     UniqueConstraint(fields=['company'], name='unique_company_payment_promise')
 
-
     def save(self, *args, **kwargs):
         creating = True
         if self.pk:
@@ -47,7 +46,7 @@ class PaymentInProgress(models.Model):
                 obj = obj[0]
                 if obj.check_company():
                     raise ValidationError('Company already exists')
-        super(PaymentInProgress, self).save(args, kwargs)
+        return super(PaymentInProgress, self).save(args, kwargs)
 
     @classmethod
     def company_exists(cls, company):

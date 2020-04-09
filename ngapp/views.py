@@ -2,6 +2,7 @@ from mainapp import ws_methods, settings
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
+
 def index(request):
     user = request.user
     context = {'uid': None}

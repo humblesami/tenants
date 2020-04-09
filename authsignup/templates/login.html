@@ -52,6 +52,7 @@
                     <div class="form-container col-sm-12 col-md-6 col-xl-5">
                         <div class="login-form-div">
                             <form class="login-form text-center">
+                                {% csrf_token %}
                                 <img class="login-logo-image" src="/static/assets/images/logo.png" src_url="/static/assets/images/logo.png" />
                                 <div class="member-login-box">
                                     <img src_url="/static/assets/images/member-icon.png" />
