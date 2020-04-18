@@ -13,6 +13,7 @@ def index(request):
             'name': ws_methods.get_user_name(user),
             'id': user.id,
             'main_url': main_url,
+            'is_staff': user.is_staff,
             'home_url': request.home_url,
             'login': user.username
         }

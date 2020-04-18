@@ -1,5 +1,6 @@
 import os
 import uuid
+from typing import Dict, List, Any, Union
 
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection
@@ -135,26 +136,26 @@ class AuthUser(user_model, CustomModel):
             if not self.email:
                 return 'User email not exists in system'
 
-            thread_data = {}
-            thread_data['subject'] = 'Password Rest'
-            thread_data['audience'] = [self.id]
-            thread_data['template_data'] = {
-                'url': server_base_url + '/user/reset-password/',
-                'password': random_password
-            }
-            thread_data['template_name'] = 'user/user_creation_password_reset.html'
-            thread_data['token_required'] = 1
-            thread_data['post_info'] = {
-                'res_app': 'authsignup',
-                'res_model': 'AuthUser',
-                'res_id': self.id
+            thread_data = {
+                'subject': 'Password Rest',
+                'audience': [self.id],
+                'template_data': {
+                    'url': server_base_url + '/user/reset-password/',
+                    'password': random_password
+                },
+                'template_name': 'user/user_creation_password_reset.html',
+                'token_required': 1,
+                'post_info': {
+                    'res_app': 'authsignup',
+                    'res_model': 'AuthUser',
+                    'res_id': self.id
+                }
             }
             ws_methods.send_email_on_creation(thread_data)
             return 'done'
         except:
             res = ws_methods.get_error_message()
             return res
-
 
     @classmethod
     def do_login(cls, request, user, name):

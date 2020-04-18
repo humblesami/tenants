@@ -27,6 +27,9 @@
             You are a valid client
             <span>{{ name }} - {{ id }}</span>
             | <a href="{{home_url}}">Home</a> | <a href="{{main_url}}">Public Home</a>
+            {% if is_staff %}
+            | <a href="{{home_url}}/admin">Admin</a>
+            {% endif %}
     {% endif %}
     <script type="text/javascript" src="static/assets/authsignup/auth.js"></script>
     <link rel="stylesheet" type="text/css" href="static/assets/libs/bootstrap/bootstrap-4.2.1.css" />
