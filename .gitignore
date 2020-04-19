@@ -1,13 +1,8 @@
 /**/migrations
-/**/migrations/*
-/.idea
+!/**/migrations/__init__.py
 .idea
-.idea/*
-/.idea/*
 db.*
 *.pyc
+*.po
 .vscode
-.vscode/*
-/.vscode
-/.vscode/*
-
+config.json

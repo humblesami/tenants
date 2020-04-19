@@ -101,7 +101,8 @@ SHARED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'my_stripe'
+    'my_stripe',
+    'website'
 )
 
 TENANT_APPS = (
@@ -133,7 +134,7 @@ WSGI_APPLICATION = 'main_app.wsgi.application'
 TENANT_MODEL = "customers.Client"  # app.Model
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
 TENANT_DOMAIN = 'localhost'
-SERVER_PORT = 8001
+SERVER_PORT = 8000
 SERVER_PORT_STR = ':' + str(SERVER_PORT)
 # SESSION_COOKIE_DOMAIN = '.' + TENANT_DOMAIN + SERVER_PORT_STR
 DOMAIN_NAME = TENANT_DOMAIN + SERVER_PORT_STR

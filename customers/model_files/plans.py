@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 
 
@@ -11,7 +13,7 @@ class Plan(models.Model):
 class PlanCost(models.Model):
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
     cost = models.IntegerField(default=0)
-    from_date = models.DateField(default=None)
+    from_date = models.DateField(default=datetime.now,blank=True)
     days = models.IntegerField(default=0)
 
     def save(self, kw, **args):
