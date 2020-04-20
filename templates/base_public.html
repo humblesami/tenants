@@ -2,5 +2,8 @@
 {% block header %}
     <h4>
         <a href="/">Customers</a> | <a href="/admin/">Admin</a> | <a href="/stripe/payments">Payments</a>
+        {% if user %}
+            | {{user.username}}
+        {% endif %}
     </h4>
 {% endblock %}

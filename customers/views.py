@@ -16,6 +16,7 @@ class Create(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = {}
+        user = self.request.user
         try:
             tenant_name = self.request.POST.get('name')
             if not tenant_name:
@@ -30,8 +31,9 @@ class Create(TemplateView):
                 context['message'] = 'Successfully created '+tenant_name
         except:
             context['error'] = ws_methods.produce_exception()
-        context['list'] = get_customer_list(self.request.user)
+        context['list'] = get_customer_list(user)
         context['port'] = SERVER_PORT_STR
+        context['user'] = user
         return context
 
 
@@ -43,24 +45,28 @@ class Delete(TemplateView):
         res = 'Unknown status'
         customer_id = self.request.GET['id']
         context = {}
+        user = self.request.user
         try:
             TenantModel = get_tenant_model()
-            TenantModel.objects.get(pk = customer_id).delete_tenant()
-            context = {'list': get_customer_list(self.request.user)}
+            TenantModel.objects.get(pk = customer_id).delete_tenant(user)
+            context = {'list': get_customer_list()}
         except:
             res = ws_methods.produce_exception()
-            context = {'error': res, 'list': get_customer_list(self.request.user)}
+            context = {'error': res, 'list': get_customer_list(user)}
         context['port'] = SERVER_PORT_STR
+        context['user'] = user
         return context
 
 
 class TenantView(TemplateView):
-    
+
     template_name = "customers/tenant_list.html"
 
     def get_context_data(self, **kwargs):
-        context = {'list': get_customer_list(self.request.user)}
+        user = self.request.user
+        context = {'list': get_customer_list(user)}
         context['port'] = SERVER_PORT_STR
+        context['user'] = user
         return context
 
 
