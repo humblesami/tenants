@@ -9,6 +9,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.deprecation import MiddlewareMixin  # todo change
 from django_tenants.utils import remove_www_and_dev, get_tenant_model
 
+from main_app.settings import LOGOUT_URL, LOGIN_URL, ROOT_URL
+
 
 def create_public_tenant(tenant_model):
     try:
@@ -28,7 +30,7 @@ def create_public_tenant(tenant_model):
 class RequireLoginMiddleware(object):
     def __init__(self):
         self.urls = tuple([re.compile(url) for url in settings.LOGIN_REQUIRED_URLS])
-        self.require_login_path = getattr(settings, 'LOGIN_URL', '/accounts/login/')
+        self.require_login_path = getattr(settings, 'LOGIN_URL', LOGIN_URL)
 
     def process_request(self, request):
         for url in self.urls:
@@ -48,6 +50,9 @@ class TenantMiddleware(MiddlewareMixin):
         hostname_without_port = remove_www_and_dev(request.get_host().split(':')[0])
         selected_schema_name = 'public'
         tenant_model = get_tenant_model()
+        request.logout_url = LOGOUT_URL
+        request.root_url = ROOT_URL
+        request.login_url = LOGIN_URL
         try:
             if hostname_without_port.startswith('login.'):
                 hostname_without_port = hostname_without_port.replace('login.', '')

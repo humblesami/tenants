@@ -8,6 +8,7 @@ from django_tenants.utils import get_tenant_model
 
 from main_app import ws_methods
 from main_app.settings import SERVER_PORT_STR, TENANT_DOMAIN
+from tenant_only.models import TenantUser
 
 
 class Create(TemplateView):
@@ -95,27 +96,30 @@ def create_tenant(t_name, request):
         tenant_model = get_tenant_model()
         with transaction.atomic():
             if not tenant_model.objects.filter(schema_name=t_name):
-
-                owner = User.objects.create(username='admin@'+t_name, is_active=True, is_staff=True)
+                # create public user
+                owner = User.objects.create(username='admin@'+t_name, is_active=True)
                 owner.set_password('123')
                 owner.save()
 
+                # create tenant
                 domain_url = t_name + '.' + TENANT_DOMAIN
                 company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
                 company.save()
                 company.users.add(owner)
 
+                # select created tenant
                 request.tenant = company
                 connection.set_tenant(request.tenant)
                 ContentType.objects.clear_cache()
 
-                owner = User.objects.create(username='admin@' + t_name, is_superuser=True, is_staff=True, is_active=True)
+                # create tenant user
+                owner = TenantUser.objects.create(username='admin@' + t_name, is_superuser=True, is_staff=True,
+                                                  is_active=True, is_schema_owner=True, password='123')
                 owner.set_password('123')
                 owner.save()
 
-                company = tenant_model.objects.get(schema_name='public')
-                request.tenant = company
-                connection.set_tenant(request.tenant)
+                # set tenant back to public
+                connection.set_schema_to_public()
                 ContentType.objects.clear_cache()
 
                 res = 'done'

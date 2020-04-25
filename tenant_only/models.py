@@ -7,23 +7,19 @@ from django_tenants.utils import get_tenant_model
 class TenantUser(User):
     name = models.CharField(max_length=100)
     photo = models.ImageField()
+    is_schema_owner = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            tenant_model = get_tenant_model()
-            # company = tenant_model.objects.get(schema_name='public')
-            # connection.set_tenant(company)
-            # ContentType.objects.clear_cache()
-            #
-            # owner = User.objects.create(username=self.username, is_active=self.is_active, is_stff=self.is_staff)
-            # owner.set_password('123')
-            # owner.save()
-            #
-            # company = tenant_model.objects.get(schema_name='public')
-            # connection.set_tenant(company)
-            # ContentType.objects.clear_cache()
-
-        super(TenantUser, self).save(args, kwargs)
+        user = super(TenantUser, self).save(args, kwargs)
+        if not self.is_schema_owner:
+            user_tenant = connection.get_tenant()
+            connection.set_schema_to_public()
+            public_user = User.objects.create(username=self.username, is_active=True)
+            public_user.set_password(self.password)
+            public_user.save()
+            connection.set_tenant(user_tenant)
+            ContentType.objects.clear_cache()
+        return user
 
 
 class TableOne(models.Model):

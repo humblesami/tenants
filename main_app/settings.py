@@ -94,6 +94,7 @@ TEMPLATES = [
 
 SHARED_APPS = (
     'django_tenants',  # mandatory
+    'authentication',
     'customers',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -133,11 +134,13 @@ WSGI_APPLICATION = 'main_app.wsgi.application'
 
 TENANT_MODEL = "customers.Client"  # app.Model
 TENANT_DOMAIN_MODEL = "customers.Domain"  # app.Model
+PROTOCOL = 'http'
 TENANT_DOMAIN = 'localhost'
 SERVER_PORT = 8000
 SERVER_PORT_STR = ':' + str(SERVER_PORT)
-DOMAIN_NAME = TENANT_DOMAIN + SERVER_PORT_STR
-LOGIN_URL = '/admin/login'
+ROOT_URL = PROTOCOL + '://' + TENANT_DOMAIN + SERVER_PORT_STR
+LOGOUT_URL = ROOT_URL + '/logout'
+LOGIN_URL = ROOT_URL + '/login'
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 DATABASE_ROUTERS = (

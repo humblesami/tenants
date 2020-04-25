@@ -1,9 +1,12 @@
 {% extends 'base.html' %}
 {% block header %}
     <h4>
-        <a href="/">Customers</a> | <a href="/admin/">Admin</a> | <a href="/stripe/payments">Payments</a>
-        {% if user %}
+        {% if user.id %}
+            <a href="/">Customers</a> | <a href="/admin/">Admin</a> | <a href="/stripe/payments">Payments</a>
             | {{user.username}}
+            | <a href="{{request.logout_url}}">Logout</a>
+        {% else %}
+            <a href="{{request.login_url}}">Login</a>
         {% endif %}
     </h4>
 {% endblock %}

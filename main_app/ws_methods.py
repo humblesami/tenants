@@ -1,6 +1,8 @@
 import sys
 import traceback
 
+from main_app.settings import TENANT_DOMAIN, ROOT_URL
+
 
 def produce_exception():
     eg = traceback.format_exception(*sys.exc_info())
@@ -12,3 +14,7 @@ def produce_exception():
             error_message += er + '<br><br>'
     return error_message
 
+
+def get_company_url(schema_name):
+    url= ROOT_URL.replace(TENANT_DOMAIN, schema_name + '.' + TENANT_DOMAIN, 1)
+    return url

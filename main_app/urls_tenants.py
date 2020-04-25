@@ -1,8 +1,8 @@
+from django.conf.urls import url
 from django.contrib import admin
-from tenant_only.views import Index
 from django.urls import path, include
 
 urlpatterns = [
-    path('', Index.as_view(), name="index"),
+    url('', include('tenant_only.urls')),
     path('admin/', admin.site.urls),
 ]
