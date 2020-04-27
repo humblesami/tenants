@@ -1,11 +1,15 @@
+import uuid
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import transaction, connection
+from django.shortcuts import redirect, render
 from django.views.generic import TemplateView
 from django.contrib.contenttypes.models import ContentType
 
 from django_tenants.utils import get_tenant_model
 
+from authentication.models import UserAuthToken
 from main_app import ws_methods
 from main_app.settings import SERVER_PORT_STR, TENANT_DOMAIN
 from tenant_only.models import TenantUser
@@ -71,21 +75,38 @@ class TenantView(TemplateView):
         return context
 
 
+def my_companies(request):
+    template_name = "customers/index.html"
+    user = request.user
+    user_id = user.id
+    tenants_list = []
+    auth_token = ''
+    if user_id:
+        tenant_model = get_tenant_model()
+        tenants_list = tenant_model.objects.filter(users__email__in=[user.email]).exclude(schema_name='public')
+        if tenants_list:
+            auth_token = uuid.uuid4().hex[:20]
+            UserAuthToken.objects.create(username=user.username, token=auth_token)
+            auth_token = '/login/'+auth_token
+            if len(tenants_list) == 1:
+                my_company = tenants_list[0]
+                url = ws_methods.get_company_url(my_company['schema_name'])
+                return redirect(url+auth_token)
+    context = { 'list': tenants_list, 'auth_token': auth_token }
+    context['port'] = SERVER_PORT_STR
+    return render(request, template_name, context)
+
+
 def get_my_tenants(user):
     user_id = user.id
     tenants_list = []
     if user_id:
         tenants_list = get_tenant_model().objects.filter(users__in=[user_id])
-        tenants_list = tenants_list.prefetch_related('domains').all()
-        tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
-        tenants_list = list(tenants_list)
     return tenants_list
 
 
 def get_customer_list(user):
-    tenants_list = get_tenant_model().objects.prefetch_related('domains').all()
-    tenants_list = list(tenants_list.values('id', 'schema_name', 'domain_url'))
-    tenants_list = list(tenants_list)
+    tenants_list = get_tenant_model().objects.all()
     my_tenants = get_my_tenants(user)
     return {'all': tenants_list, 'mine': my_tenants, 'my_count': len(my_tenants)}
 
@@ -102,8 +123,7 @@ def create_tenant(t_name, request):
                 owner.save()
 
                 # create tenant
-                domain_url = t_name + '.' + TENANT_DOMAIN
-                company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
+                company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id)
                 company.save()
                 company.users.add(owner)
 

@@ -16,5 +16,8 @@ def produce_exception():
 
 
 def get_company_url(schema_name):
-    url= ROOT_URL.replace(TENANT_DOMAIN, schema_name + '.' + TENANT_DOMAIN, 1)
+    if schema_name == 'public':
+        url = ROOT_URL
+    else:
+        url = ROOT_URL.replace(TENANT_DOMAIN, schema_name + '.' + TENANT_DOMAIN, 1)
     return url

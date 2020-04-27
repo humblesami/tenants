@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% block header %}
     <h4>
-        <a href="/">Home</a>  | <a class="public_home_link" href="/">Public</a> | <a href="/admin/">Admin</a>
-        <script src="/static/url_without_sub_domain.js"></script>
+        <a href="{{request.root_url}}">Root</a> | <a href="/">Home</a>
+        {% if user.id %}
+            <a href="/admin/">Admin</a>
+            | {{user.username}}
+            | <a href="{{request.logout_url}}">Logout</a>
+        {% else %}
+            | <a href="{{request.login_url}}">Login</a>
+        {% endif %}
     </h4>
 {% endblock %}

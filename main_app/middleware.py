@@ -19,8 +19,7 @@ def create_public_tenant(tenant_model):
             owner.set_password('123')
             owner.save()
             t_name = 'public'
-            domain_url = settings.TENANT_DOMAIN
-            company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id, domain_url=domain_url)
+            company = tenant_model(schema_name=t_name, name=t_name, owner_id=owner.id)
             company.save()
             return company
     except:
@@ -47,27 +46,29 @@ class TenantMiddleware(MiddlewareMixin):
 
     def process_request(self, request):
         connection.set_schema_to_public()
-        hostname_without_port = remove_www_and_dev(request.get_host().split(':')[0])
-        selected_schema_name = 'public'
+        schema_name = remove_www_and_dev(request.get_host().split(':')[0])
+        if '.' in schema_name:
+            schema_name = schema_name.split('.')[0]
+            if schema_name == 'login':
+                schema_name = 'public'
+        else:
+            schema_name = 'public'
         tenant_model = get_tenant_model()
         request.logout_url = LOGOUT_URL
         request.root_url = ROOT_URL
         request.login_url = LOGIN_URL
         try:
-            if hostname_without_port.startswith('login.'):
-                hostname_without_port = hostname_without_port.replace('login.', '')
-
-            tenant = tenant_model.objects.filter(domain_url=hostname_without_port)
+            tenant = tenant_model.objects.filter(name=schema_name)
             if tenant:
                 tenant = tenant[0]
                 request.tenant = tenant
                 selected_schema_name = tenant.schema_name
             else:
                 res = {
-                    'error': 'Subdomain ' + hostname_without_port + ' does not exist',
+                    'error': 'Subdomain ' + schema_name + ' does not exist',
                     'status': 'Invalid Client'
                 }
-                if hostname_without_port != settings.TENANT_DOMAIN:
+                if schema_name != settings.TENANT_DOMAIN:
                     return render(request, 'error.html', {'error': 'Not found', 'error_code': 404})
                 tenant = tenant_model.objects.filter(schema_name='public')
                 if not tenant:

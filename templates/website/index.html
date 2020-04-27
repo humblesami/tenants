@@ -1,4 +1,15 @@
 {% extends 'base_public.html' %}
 {% block content %}
-    Home Page | <a href="/clients">Clients</a>
+    {% if request.user.id %}
+        <h3>My tenants</h3>
+        {% for customer in list %}
+        <ul>
+            <li>
+                {% if customer.schema_name != 'public' %}
+                    <a href="{{customer.domain_url}}">{{customer.schema_name}}</a>
+                {% endif %}
+            </li>
+        </ul>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

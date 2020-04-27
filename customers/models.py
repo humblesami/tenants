@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_tenants.models import TenantMixin
+
+from main_app.ws_methods import get_company_url
 from .model_files import payemts, plans
 
 
@@ -10,7 +12,11 @@ class Client(TenantMixin):
     created_on = models.DateField(auto_now_add=True)
     owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='superuser')
     users = models.ManyToManyField(User)
-    domain_url = models.CharField(max_length=64, default='')
+
+    @property
+    def domain_url(self):
+        res = get_company_url(self.schema_name)
+        return res
 
     def __str__(self):
         return self.domain_url + '-' + str(self.id)
