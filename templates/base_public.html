@@ -3,11 +3,13 @@
     <h4>
         <a href="/">Home</a>
         {% if user.id %}
-            | <a href="/clients">Customers</a> | <a href="/admin/">Admin</a> | <a href="/stripe/payments">Payments</a>
             | {{user.username}}
             | <a href="{{request.logout_url}}">Logout</a>
+            {% if user.is_staff %}
+                | <a href="/clients">Customers</a> | <a href="/admin/">Admin</a> | <a href="/stripe/payments">Payments</a>
+            {% endif %}
         {% else %}
-            <a href="{{request.login_url}}">Login</a>
+            | <a href="{{request.login_url}}">Login</a>
         {% endif %}
     </h4>
 {% endblock %}

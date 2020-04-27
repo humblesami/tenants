@@ -24,7 +24,7 @@ def login_view(request):
                 tenant_model = get_tenant_model()
                 tenants_list = tenant_model.objects.filter(users__email__in=[user.email]).exclude(schema_name='public')
                 if len(tenants_list) > 1:
-                    return redirect('/clients/my-companies')
+                    return redirect('/')
                 else:
                     if len(tenants_list) == 1:
                         my_company = tenants_list[0]
