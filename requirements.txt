@@ -1,4 +1,4 @@
-Django==2.2.8
+Django==2.2.24
 django-tenants==2.2.3
 django-bootstrap-form==3.4
 django-cors-headers==2.5.2
