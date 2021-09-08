@@ -19,5 +19,5 @@ signalwire==1.3
 #sudo apt install -y unoconv
 #sudo apt install build-essential libpoppler-cpp-dev pkg-config libjpeg8-dev zlib1g-dev libfreetype6-dev
 
-pillow==7.1.1
+pillow==8.3.2
 stripe
