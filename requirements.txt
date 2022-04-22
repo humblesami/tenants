@@ -11,7 +11,7 @@ django-seed==0.1.9
 fpdf==1.7.2
 httpagentparser==1.9.0
 psycopg2==2.8.4
-pypdf2==1.26.0
+pypdf2==1.27.5
 python-daemon==2.1.2
 signalwire==1.3
 
