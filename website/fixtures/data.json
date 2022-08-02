@@ -32,7 +32,7 @@
             "is_staff": true,
             "groups": [1],
             "user_permissions": [],
-            "password": "pbkdf2_sha256$150000$IcCUgVA4XXlg$zcfM9BdEPRQ3AR9J6A6jfRLnfT+2jUUvmp2XqLHj0ok=",
+            "password": "pbkdf2_sha256$216000$84ccRVhYWnIA$yeNUFbCojrkWB31kZubPWCm5dH0ZWNNXgwNYbz1vRSY=",
             "email": "muhammad.faizan@digitalnet.com"
         }
     },

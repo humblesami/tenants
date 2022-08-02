@@ -17,7 +17,7 @@
     },
     "default": {
         "ENGINE": "django_tenants.postgresql_backend",
-        "NAME": "tt",
+        "NAME": "tenants",
         "USER": "odoo",
         "PASSWORD": "123",
         "HOST": ""
