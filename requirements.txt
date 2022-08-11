@@ -1,4 +1,4 @@
-django==3.2
+django==3.2.15
 django-bootstrap-form==3.4
 django-cors-headers==2.5.2
 django_countries==5.3.3
