@@ -52,7 +52,7 @@ class CustomAdminSite(admin.AdminSite):
                 objects_count = model_obj.objects.count()
             except:
                 pass
-            model_dict['objects_count'] = objects_count
+            model_dict['objects_count'] = objects_count or 0
 
             if perms.get('change') or perms.get('view'):
                 model_dict['view_only'] = not perms.get('change')

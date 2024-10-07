@@ -1,0 +1,10 @@
+#nav-sidebar .module table caption{
+
+}
+
+.module caption.tenant-app {
+    background: #008000;
+}
+.module caption.public-disabled {
+    background: #c6c6c6;
+}

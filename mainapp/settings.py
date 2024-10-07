@@ -186,6 +186,7 @@ DATABASE_ROUTERS = (
     'django_tenants.routers.TenantSyncRouter',
 )
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'

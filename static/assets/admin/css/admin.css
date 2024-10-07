@@ -78,14 +78,15 @@ input:-webkit-autofill {
 	border-bottom: 1px solid #ddd;
 }
 
-
+.module h2, .inline-group h2{
+    padding: 0 0 1rem;
+    margin: 2rem 0px;
+}
 .module h2, .module caption, .inline-group h2{
 	color: #2B2B2B;
 	font-size: 30px;
 	background: transparent;
 	border-bottom: 1px solid #dadada;
-	margin: 2rem 0px;
-	padding: 0 0 1rem;
 	line-height: 1;
 }
 
@@ -168,4 +169,3 @@ td.field-type
 {
 	width: 120px;
 }
-
