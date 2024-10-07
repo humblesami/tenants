@@ -87,6 +87,8 @@ input:-webkit-autofill {
 	font-size: 30px;
 	background: transparent;
 	border-bottom: 1px solid #dadada;
+	margin: 2rem 0px;
+	padding: 0 0 1rem;
 	line-height: 1;
 }
 
@@ -169,3 +171,4 @@ td.field-type
 {
 	width: 120px;
 }
+

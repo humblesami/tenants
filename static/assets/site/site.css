@@ -54,6 +54,3 @@ body{
     #footer { background:#eee; overflow: auto; }
     #instructions { background:#f6f6f6; }
     #summary table { border:none; background:transparent; }
-    .error{
-        color: red;
-    }
