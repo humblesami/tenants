@@ -38,7 +38,7 @@ class SimpleMailThread(threading.Thread):
 
 def sample_send_email():
     thread_data = {
-        'audience' : ['sami.akram@digitalnet.com']
+        'audience' : ['sami.akram@digitalnet.com'],
         'subject': 'Marzi ka',
         'sender': 'Marzi ka',
         'html_message': 'Just marzi ki mail'

@@ -1,8 +1,8 @@
 {
-    "server_base_url": "http://localhost:8000",
+    "server_base_url": "http://localhost:port_no",
     "server_domain": "localhost",
-    "socket_url": "http://localhost:3000",
-    "auth_server_url": "http://localhost:8000",
+    "socket_url": "http://localhost:port_no",
+    "auth_server_url": "http://localhost:port_no",
     "ip2location":
     {
         "active":{
@@ -30,6 +30,6 @@
         "EMAIL_USE_TLS" : "True"
     },
     "domain": "localhost",
-    "port": "8000",
+    "port": "port_no",
     "https": 0
 }

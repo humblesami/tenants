@@ -1,0 +1,28 @@
+{% extends "admin/change_form.html" %}
+{% load i18n static %}
+{% block object-tools %}
+    {{ block.super }}
+    {% if npc_ids %}
+    <div class="extra admin row-navigation">
+        <style>
+            .prev_next> a{
+                margin: 5px;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+            fieldset div>input[type="text"]
+            {
+                width: calc(100% - 10px);
+            }
+        </style>
+        <input type="hidden" id="prev_record_id" value="{{npc_ids.prev}}"/>
+        <input type="hidden" id="current_record_id" value="{{npc_ids.current}}"/>
+        <input type="hidden" id="next_record_id" value="{{npc_ids.next}}"/>
+        <div class="prev_next navigate_recs" style="text-align:right">
+        </div>
+        <script defer="defer" src="{% static 'dj_utils/change_form_prev_next.js' %}"></script>
+    </div>
+    {% endif %}
+
+{% endblock %}

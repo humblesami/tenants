@@ -1,15 +1,12 @@
-import os
-import uuid
-from typing import Dict, List, Any, Union
-
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection
 from django_tenants.utils import get_tenant_model
 
+from dj_utils import pj_utils
 from .models_login import *
 from restoken.models import PostUserToken
-from mainapp.models import CustomModel
-from mainapp.settings import AUTH_SERVER_URL, server_base_url
+from dj_utils.models import CustomModel
 
 from rest_framework.authtoken.models import Token
 
@@ -89,7 +86,7 @@ class AuthUser(user_model, CustomModel):
     #         self.is_staff = True
     #         if self.email and not self.username:
     #             self.username = self.email
-    #         self.image = ws_methods.generate_default_image(self.fullname())
+    #         self.image = pj_utils.generate_default_image(self.fullname())
     #     self.name = self.fullname()
     #     if profile_obj:
     #         profile_obj = profile_obj[0]
@@ -102,7 +99,7 @@ class AuthUser(user_model, CustomModel):
     #                     os.remove(curr_dir + profile_obj.image.url)
     #                 except:
     #                     pass
-    #                 self.image = ws_methods.generate_default_image(self.name)
+    #                 self.image = pj_utils.generate_default_image(self.name)
     #
     #     random_password = None
     #     if self.password and len(self.password) <= 15:
@@ -140,7 +137,7 @@ class AuthUser(user_model, CustomModel):
                 'subject': 'Password Rest',
                 'audience': [self.id],
                 'template_data': {
-                    'url': server_base_url + '/user/reset-password/',
+                    'url': settings.server_base_url + '/user/reset-password/',
                     'password': random_password
                 },
                 'template_name': 'user/user_creation_password_reset.html',
@@ -151,10 +148,10 @@ class AuthUser(user_model, CustomModel):
                     'res_id': self.id
                 }
             }
-            ws_methods.send_email_on_creation(thread_data)
+            pj_utils.send_email_on_creation(thread_data)
             return 'done'
         except:
-            res = ws_methods.get_error_message()
+            res = pj_utils.get_error_message()
             return res
 
     @classmethod
@@ -175,12 +172,12 @@ class AuthUser(user_model, CustomModel):
         except:
             pass        
         """ Creating Peronsl Folder if not exists """
-        # folder_model = ws_methods.get_model('resources', 'Folder')
+        # folder_model = pj_utils.get_model('resources', 'Folder')
         # method_to_call =  getattr(folder_model, 'create_personal_folder')
         request.user = user
         # method_to_call(folder_model, request, {})
         """Deleting All Temp Files"""
-        ws_methods.delete_all_temp_files(request, user.id)
+        pj_utils.delete_all_temp_files(request, user.id)
         return user_data
 
     @classmethod
@@ -242,8 +239,8 @@ class AuthUser(user_model, CustomModel):
         if not address_to_send_code:
             return 'No address given to send code'
         auth_data = 'auth_type=' + auth_type + '&address=' + address_to_send_code
-        url = AUTH_SERVER_URL + '/auth-code/generate?' + auth_data
-        res = ws_methods.http_request(url)
+        url = settings.AUTH_SERVER_URL + '/auth-code/generate?' + auth_data
+        res = pj_utils.http_request(url)
         try:
             res = json.loads(res)
         except:
@@ -261,8 +258,8 @@ class AuthUser(user_model, CustomModel):
     def verify_code(cls, uuid, auth_code):
         if not uuid:
             return {'error': 'No request id found'}
-        url = AUTH_SERVER_URL + '/auth-code/verify?code=' + auth_code + '&uuid=' + uuid
-        res = ws_methods.http_request(url)
+        url = settings.AUTH_SERVER_URL + '/auth-code/verify?code=' + auth_code + '&uuid=' + uuid
+        res = pj_utils.http_request(url)
         if res != 'ok':
             return res
         dual_auth = DualAuth.objects.get(uuid=uuid)
@@ -300,7 +297,7 @@ class AuthUser(user_model, CustomModel):
 
     @classmethod
     def logout_user(cls, request, params):
-        ws_methods.delete_all_temp_files(request, request.user.id)
+        pj_utils.delete_all_temp_files(request, request.user.id)
         logout(request)
         return {'error': '', 'data': 'ok'}
 
@@ -352,7 +349,7 @@ class AuthUser(user_model, CustomModel):
             thread_data['subject'] = 'Password Rest'
             thread_data['audience'] = [user.id]
             thread_data['template_data'] = {
-                'url': server_base_url + '/user/reset-password/'
+                'url': settings.server_base_url + '/user/reset-password/'
             }
             thread_data['template_name'] = 'user/reset_password.html'
             thread_data['token_required'] = 1
@@ -361,8 +358,8 @@ class AuthUser(user_model, CustomModel):
                 'res_model': 'Profile',
                 'res_id': user.id
             }
-            ws_methods.send_email_on_creation(thread_data)
+            pj_utils.send_email_on_creation(thread_data)
             return 'done'
         except:
-            res = ws_methods.get_error_message()
+            res = pj_utils.get_error_message()
             return res

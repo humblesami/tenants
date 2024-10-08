@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.apps import apps
 from django.contrib import admin
 
-from mainapp import ws_methods
+from dj_utils import pj_utils
 from documents.file import File
 from authsignup.models import AuthUser
 
@@ -166,7 +166,7 @@ class Notification(models.Model):
                 events.append(emit_data)
             else:
                 events.append({'name': event_data['name'], 'data': event_data['data'], 'audience': audience})
-            res = ws_methods.emit_event(events)
+            res = pj_utils.emit_event(events)
         else:
             return 'No audience for the notification'
         return res
@@ -334,7 +334,7 @@ class Comment(models.Model):
             user = obj.user
             comment = obj.__dict__
             del comment['_state']
-            ws_methods.stringify_fields(comment)
+            pj_utils.stringify_fields(comment)
             comment['user'] = {
                 'id': user.id,
                 'photo': user.image.url,
@@ -377,7 +377,7 @@ class Comment(models.Model):
             'name': user.name
         }
         del comment['_state']
-        ws_methods.stringify_fields(comment)
+        pj_utils.stringify_fields(comment)
         comment['create_date'] = str(datetime.now())
         comment['children'] = []
         param = params
@@ -427,7 +427,7 @@ class ChatGroup(models.Model):
         events = [
             {'name': 'chat_group_created', 'data': created_chat_group, 'audience': member_ids}
         ]
-        res = ws_methods.emit_event(events)
+        res = pj_utils.emit_event(events)
         if res == 'done':
             return {'error': '', 'data': created_chat_group}
         else:
@@ -471,7 +471,7 @@ class ChatGroup(models.Model):
             'audience': member_ids
         }
         events = [event1]
-        res = ws_methods.emit_event(events)
+        res = pj_utils.emit_event(events)
         if res == 'done':
             return {'error': '', 'data': group}
         else:
@@ -526,7 +526,7 @@ class ChatGroup(models.Model):
             'audience': existing_members_ids
         }
         events = [event1, event2]
-        res = ws_methods.emit_event(events)
+        res = pj_utils.emit_event(events)
         if res == 'done':
             return {'error': '', 'data': group}
         else:
@@ -628,7 +628,7 @@ class Message(models.Model):
                 )
 
                 image_data = attachment['binary']
-                image_data = ws_methods.base64_str_to_file(image_data, file_name)
+                image_data = pj_utils.base64_str_to_file(image_data, file_name)
 
                 doc.attachment.save(file_name, image_data, save=True)
                 attachment_urls.append({
@@ -653,7 +653,7 @@ class Message(models.Model):
         message_dict['create_date'] = str(datetime.now())
 
         del message_dict['_state']
-        ws_methods.stringify_fields(message_dict)
+        pj_utils.stringify_fields(message_dict)
         message_dict['uuid'] = params['uuid']
         events = [
             {'name': 'chat_message_received', 'data': message_dict, 'audience': [target_id]}
@@ -666,7 +666,7 @@ class Message(models.Model):
                     'room': {'type': 'chat_room', 'id': group_id}
                 }
             ]
-        res = ws_methods.emit_event(events)
+        res = pj_utils.emit_event(events)
         if res == 'done':
             return message_dict
         else:
@@ -743,8 +743,8 @@ class Message(models.Model):
     def move_to_folder(cls, request, params):
         file_id_is = params['file_id']
 
-        Folder = ws_methods.get_model('resources', 'Folder')
-        ResourceDocument = ws_methods.get_model('resources', 'ResourceDocument')
+        Folder = pj_utils.get_model('resources', 'Folder')
+        ResourceDocument = pj_utils.get_model('resources', 'ResourceDocument')
 
         file = File.objects.get(pk=file_id_is)
         my_folder = Folder.objects.get(created_by_id=request.user.id, personal=True, parent_id__isnull=True)

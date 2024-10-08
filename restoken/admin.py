@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mainapp.admin import BaseAdmin
+from dj_utils.admin import BaseAdmin
 from restoken.models import PostUserToken
 
 

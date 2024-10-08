@@ -1,0 +1,103 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$84ccRVhYWnIA$yeNUFbCojrkWB31kZubPWCm5dH0ZWNNXgwNYbz1vRSY=",
+      "last_login": "2021-09-28T13:41:01.340Z",
+      "is_superuser": true,
+      "username": "sa",
+      "first_name": "Sami",
+      "last_name": "Akram",
+      "email": "aa@aa.aa",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2021-05-06T15:43:03.317Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$84ccRVhYWnIA$yeNUFbCojrkWB31kZubPWCm5dH0ZWNNXgwNYbz1vRSY=",
+      "last_login": "2021-09-28T13:41:01.340Z",
+      "username": "sa1",
+      "first_name": "Sami",
+      "last_name": "Akram",
+      "email": "aa@aa.aa",
+      "is_active": true,
+      "date_joined": "2021-05-06T15:43:03.317Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$216000$84ccRVhYWnIA$yeNUFbCojrkWB31kZubPWCm5dH0ZWNNXgwNYbz1vRSY=",
+      "last_login": "2021-09-28T13:41:01.340Z",
+      "username": "sa2",
+      "first_name": "Sami",
+      "last_name": "Akram",
+      "email": "aa@aa.aa",
+      "is_active": true,
+      "date_joined": "2021-05-06T15:43:03.317Z"
+    }
+  },
+  {
+    "model": "companies.ClientTenant",
+    "pk": 1,
+    "fields": {
+      "owner": 1,
+      "schema_name": "public",
+      "client_name": "provider",
+      "is_active": true,
+      "created_on": "2001-01-01"
+    }
+  },
+  {
+    "model": "companies.Domain",
+    "pk": 1,
+    "fields": {
+      "domain": "localhost",
+      "tenant": 1
+    }
+  },
+  {
+    "model": "companies.ClientTenant",
+    "pk": 2,
+    "fields": {
+      "owner": 2,
+      "schema_name": "blog1",
+      "client_name": "client1",
+      "is_active": true,
+      "created_on": "2001-01-01"
+    }
+  },
+  {
+    "model": "companies.Domain",
+    "pk": 2,
+    "fields": {
+      "domain": "blog1.localhost",
+      "tenant": 2
+    }
+  },
+  {
+    "model": "companies.ClientTenant",
+    "pk": 3,
+    "fields": {
+      "owner": 3,
+      "schema_name": "bog2",
+      "client_name": "client2",
+      "is_active": true,
+      "created_on": "2001-01-01"
+    }
+  },
+  {
+    "model": "companies.Domain",
+    "pk": 3,
+    "fields": {
+      "domain": "blog2.localhost",
+      "tenant": 3
+    }
+  }
+]

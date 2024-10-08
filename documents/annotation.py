@@ -8,8 +8,8 @@ from django.db.models import Q
 from authsignup.models import AuthUser
 from documents.file import File
 from chat.models import Notification
-from mainapp.ws_methods import set_obj_attrs
-from mainapp.models import CustomModel
+from dj_utils.pj_utils import set_obj_attrs
+from dj_utils.models import CustomModel
 from operator import itemgetter
 import bisect
 

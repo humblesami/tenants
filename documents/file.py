@@ -3,6 +3,8 @@ import re
 import base64
 import urllib
 import subprocess
+
+from django.conf import settings
 from fpdf import FPDF
 from PyPDF2 import PdfFileReader
 from urllib.request import urlopen
@@ -15,8 +17,8 @@ from django.core.files import File as DjangoFile
 from django.core.exceptions import ValidationError
 from django.core.files.temp import NamedTemporaryFile
 
-from mainapp.models import CustomModel
-from mainapp import settings, ws_methods
+from dj_utils import pj_utils
+from dj_utils.models import CustomModel
 
 
 def validate_file_extension(value):
@@ -98,8 +100,8 @@ class File(CustomModel):
                             url_opened = urlopen(request)
                         except Exception as ex:
                             try:
-                                my_bytes_value = ws_methods.http(cloud_url, headers)
-                                my_json = ws_methods.bytes_to_json(my_bytes_value)
+                                my_bytes_value = pj_utils.http(cloud_url, headers)
+                                my_json = pj_utils.bytes_to_json(my_bytes_value)
                                 my_json = my_json['error']
                                 raise Exception(my_json)
                             except:
@@ -157,18 +159,18 @@ class File(CustomModel):
                         self.content = text_extractor(self.pdf_doc)
                     except:
                         self.file_error = 'unable to extract file content '
-                        ws_methods.produce_exception(self.file_error + ' '+str(self.pk) + ' '+self.pdf_doc.url)
+                        pj_utils.produce_exception(self.file_error + ' '+str(self.pk) + ' '+self.pdf_doc.url)
                 self.pending_tasks = 0
                 self.save()
             pass
         except:
             try:
-                ws_methods.produce_exception(self.file_error)
+                pj_utils.produce_exception(self.file_error)
                 if self.new_file and self.pk:
                     self.delete()
             except:
                 pass
-            res = ws_methods.get_error_message()
+            res = pj_utils.get_error_message()
             raise Exception(res)
     file_error = None
 
@@ -183,7 +185,7 @@ class File(CustomModel):
         tmp = self.attachment.url.split('.')
         ext = tmp[len(tmp) - 1]
         filename = self.file_name
-        pth = settings.BASE_DIR + self.attachment.url
+        pth = os.path.join(settings.BASE_DIR, self.attachment.url)
         if ext in ('odt', 'doc', 'docx', 'ppt', 'pptx', 'pdf'):
             self.doc2pdf(pth, ext, filename)
         elif ext == "xls" or ext == "xlsx":
@@ -272,7 +274,7 @@ class File(CustomModel):
 
         kw = params.get('kw')
         if kw:
-            docs = ws_methods.search_db({'kw': kw, 'search_models': {params['app']: [params['model']]}})
+            docs = pj_utils.search_db({'kw': kw, 'search_models': {params['app']: [params['model']]}})
         else:
             docs = model.objects.filter(q_objects)
         invalid_docs = []
