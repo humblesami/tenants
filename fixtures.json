@@ -44,6 +44,16 @@
     }
   },
   {
+    "model": "companies.Plan",
+    "pk": 1,
+    "fields": {
+      "name": "Premium",
+      "cost": 100,
+      "description": "yearly",
+      "days": 360
+    }
+  },
+  {
     "model": "companies.ClientTenant",
     "pk": 1,
     "fields": {
