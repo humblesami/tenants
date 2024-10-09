@@ -7,18 +7,14 @@ from .model_files.plans import Plan
 
 class ClientTenant(TenantMixin):
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='own_tenant')
-    users = models.ManyToManyField(User,  related_name='tenants')
+    users = models.ManyToManyField(User,  related_name='tenants', blank=True)
     client_name = models.CharField(max_length=50)
     client_image = models.ImageField(null=True, blank=True, upload_to="profile")
-    active_plan = models.ForeignKey(Plan, on_delete=models.CASCADE, null=True)
+    active_plan = models.ForeignKey(Plan, on_delete=models.CASCADE, null=True, blank=True)
     featured = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now=True, null=True)
-
-    description = models.TextField(blank=True)
-
     is_active = models.BooleanField(default=False, blank=True)
     created_on = models.DateField(auto_now_add=True)
-
     # default true, schema will be automatically created and
     # synced when it is saved
     auto_create_schema = True

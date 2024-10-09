@@ -61,43 +61,5 @@
       "domain": "localhost",
       "tenant": 1
     }
-  },
-  {
-    "model": "companies.ClientTenant",
-    "pk": 2,
-    "fields": {
-      "owner": 2,
-      "schema_name": "blog1",
-      "client_name": "client1",
-      "is_active": true,
-      "created_on": "2001-01-01"
-    }
-  },
-  {
-    "model": "companies.Domain",
-    "pk": 2,
-    "fields": {
-      "domain": "blog1.localhost",
-      "tenant": 2
-    }
-  },
-  {
-    "model": "companies.ClientTenant",
-    "pk": 3,
-    "fields": {
-      "owner": 3,
-      "schema_name": "bog2",
-      "client_name": "client2",
-      "is_active": true,
-      "created_on": "2001-01-01"
-    }
-  },
-  {
-    "model": "companies.Domain",
-    "pk": 3,
-    "fields": {
-      "domain": "blog2.localhost",
-      "tenant": 3
-    }
   }
 ]
