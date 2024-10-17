@@ -12,10 +12,8 @@ class DomainInline(admin.TabularInline):
     model = Domain
     max_num = 1
     def get_readonly_fields(self, request, obj=None):
-        if obj and obj.pk == Domain.objects.order_by('pk').first().pk:
-            # Mark all fields as read-only for the first record
-            return [field.name for field in self.model._meta.fields]
-        return super().get_readonly_fields(request, obj)
+        return [field.name for field in self.model._meta.fields] if obj else []
+
 
 
 @admin.register(ClientTenant)
@@ -30,11 +28,17 @@ class TenantAdmin(TenantAdminMixin, admin.ModelAdmin):
     autocomplete_fields = ['users']
     inlines = [DomainInline]
 
+    def get_fields(self, request, obj=None):
+        fields = super().get_fields(request, obj)
+        if obj:
+            return [field for field in fields if field not in ['client_password', 'users']]
+        return fields
+
     def get_readonly_fields(self, request, obj=None):
-        if obj and obj.pk == ClientTenant.objects.order_by('pk').first().pk:
-            # Mark all fields as read-only for the first record
-            return [field.name for field in self.model._meta.fields]
-        return super().get_readonly_fields(request, obj)
+        if not obj:
+            return []
+        editable_fields = ['client_name']
+        return [field.name for field in self.model._meta.fields if field.name not in editable_fields]
 
 
 admin.site.register(Plan)

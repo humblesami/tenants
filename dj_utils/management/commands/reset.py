@@ -9,6 +9,7 @@ import psycopg2
 from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
+from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 
 def connect_postgresql():
@@ -30,7 +31,7 @@ class Command(BaseCommand):
         str = 'website\\management\\commands'
         base_directory = settings_dir.replace(str, '')
 
-    def drop_create_db(self, root_path, recreate):
+    def drop_create_db(self, root_path):
         database_info = {}
         res = 'Unknown'
         config_path = os.path.join(settings.BASE_DIR, 'config.json')
@@ -60,15 +61,23 @@ class Command(BaseCommand):
         else:
             db_con = None
             if db_engine.endswith('postgresql') or db_engine.endswith('postgresql_backend'):
-                db_con = psycopg2.connect(host="localhost", user=database_info['USER'], dbname='postgres',
-                                          password=database_info['PASSWORD'])
+                db_con = psycopg2.connect(
+                    host="localhost", user=database_info['USER'],
+                    dbname='postgres', password=database_info['PASSWORD']
+                )
+                db_con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
                 cur = db_con.cursor()
-                db_con.autocommit = True
-                sql_query = 'drop database if exists ' + database_info['NAME']
-                cur.execute(sql_query)
-                sql_query = 'create database ' + database_info['NAME']
-                cur.execute(sql_query)
-
+                disconnect_query = f"""
+                SELECT pg_terminate_backend(pg_stat_activity.pid)
+                FROM pg_stat_activity
+                WHERE pg_stat_activity.datname = '{database_info['NAME']}'
+                  AND pid <> pg_backend_pid();
+                """
+                cur.execute(disconnect_query)
+                drop_query = f"DROP DATABASE IF EXISTS {database_info['NAME']}"
+                cur.execute(drop_query)
+                create_query = f"CREATE DATABASE {database_info['NAME']}"
+                cur.execute(create_query)
             if db_con:
                 importlib.import_module('del')
                 db_con.close()
@@ -77,15 +86,15 @@ class Command(BaseCommand):
                 return ' failed to connect'
 
     def add_arguments(self, parser):
-        parser.add_argument('-hard', '--hard',
-                            action='store_true',
-                            help='drop database if exists and create new one')
+        parser.add_argument(
+            '-hard', '--hard', action='store_true',
+            help='drop database if exists and create new one'
+        )
 
     def handle(self, *args, **kwargs):
         try:
             root_path = settings.BASE_DIR
-            recreate = kwargs.get('hard')
-            res = self.drop_create_db(root_path, recreate)
+            res = self.drop_create_db(root_path)
             if res == 'created':
                 call_command('makemigrations')
                 call_command('migrate')

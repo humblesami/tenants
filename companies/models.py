@@ -1,8 +1,9 @@
-from django.db import models
+from django.db import models, connection
 from django.contrib.auth.models import User
 from django_tenants.models import DomainMixin, TenantMixin
+
+from .tools import switch_tenant
 from .plans.plan_models import Plan
-from .tools import create_tenant_root_user
 
 
 class ClientTenant(TenantMixin):
@@ -56,7 +57,14 @@ class ClientTenant(TenantMixin):
         res = super().create_schema(check_if_exists=check_if_exists, sync_schema=sync_schema)
         if self.creating_tenant:
             self.creating_tenant = 0
-            create_tenant_root_user(self.schema_name, self.client_email, self.client_password)
+            switch_tenant(self.schema_name)
+            new_user = User.objects.create(
+                username=self.client_email, email=self.client_email, is_staff=True,
+                is_active=True, is_superuser=True
+            )
+            new_user.set_password(self.client_password)
+            new_user.save()
+            switch_tenant('public')
         return res
 
 
