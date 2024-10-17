@@ -8,10 +8,10 @@ from django.db.models import Q
 from authsignup.models import AuthUser
 from documents.file import File
 from chat.models import Notification
-from dj_utils.pj_utils import set_obj_attrs
 from dj_utils.models import CustomModel
 from operator import itemgetter
-import bisect
+
+from py_utils.helpers import PyUtils
 
 
 class AnnotationDocument(CustomModel):
@@ -135,7 +135,7 @@ class AnnotationDocument(CustomModel):
                 annotation_to_save = DrawingAnnotation()
                 annotation_to_save.width=user_annot['width']
                 annotation_to_save.color=user_annot['color']
-                set_obj_attrs(new_annotation, annotation_to_save)
+                PyUtils.set_obj_attrs(new_annotation, annotation_to_save)
                 drawing_annotations.append(annotation_to_save)
             
             elif user_annot['type'] == 'point':
@@ -148,14 +148,14 @@ class AnnotationDocument(CustomModel):
                 annotation_to_save.created_by_id = user_id
                 annotation_to_save.sub_type = sub_type
 
-                set_obj_attrs(new_annotation, annotation_to_save)
+                PyUtils.set_obj_attrs(new_annotation, annotation_to_save)
                 point_annotations.append(annotation_to_save)
             
             elif user_annot['type'] in ('highlight','strikeout', 'underline'):
                 annotation_to_save = RectangleAnnotation()
                 annotation_to_save.color=user_annot['color']
 
-                set_obj_attrs(new_annotation, annotation_to_save)
+                PyUtils.set_obj_attrs(new_annotation, annotation_to_save)
                 rectangle_annotations.append(annotation_to_save)            
             else:
                 raise ValidationError('Invalid annotation type '+user_annot['type'])            

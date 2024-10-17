@@ -4,21 +4,22 @@ import base64
 import urllib
 import subprocess
 
-from django.conf import settings
+from PIL import Image
 from fpdf import FPDF
 from PyPDF2 import PdfFileReader
 from urllib.request import urlopen
 
+from django.apps import apps
 from django.db import models
 from django.db.models import Q
-
-from django.apps import apps
+from django.conf import settings
 from django.core.files import File as DjangoFile
 from django.core.exceptions import ValidationError
 from django.core.files.temp import NamedTemporaryFile
 
-from dj_utils import pj_utils
 from dj_utils.models import CustomModel
+from py_utils.helpers import LogUtils
+from py_utils.jango import DbUtils
 
 
 def validate_file_extension(value):
@@ -51,7 +52,7 @@ class File(CustomModel):
     upload_status = models.BooleanField(default=False)
     file_name = models.CharField(max_length=128, default='')
     cloud_url = models.CharField(max_length=512, null=True, blank=True)
-    extention = models.CharField(max_length=16, null=True, blank=True)
+    extension = models.CharField(max_length=16, null=True, blank=True)
     access_token = models.CharField(max_length=512, null=True, blank=True)
 
     def __str__(self):
@@ -95,17 +96,7 @@ class File(CustomModel):
                     self.file_name = re.sub('[^0-9a-zA-Z\.]+', '_', self.file_name)
                     try:
                         request = urllib.request.Request(cloud_url, headers=headers)
-                        url_opened = None
-                        try:
-                            url_opened = urlopen(request)
-                        except Exception as ex:
-                            try:
-                                my_bytes_value = pj_utils.http(cloud_url, headers)
-                                my_json = pj_utils.bytes_to_json(my_bytes_value)
-                                my_json = my_json['error']
-                                raise Exception(my_json)
-                            except:
-                                raise
+                        url_opened = urlopen(request)
                         file_content = url_opened.read()
                         file_temp = NamedTemporaryFile(delete=True)
                         file_temp.write(file_content)
@@ -114,7 +105,6 @@ class File(CustomModel):
                     except urllib.error.HTTPError as e:
                         msg = str(e.code) + e.reason
                         raise Exception(msg)
-
                     if 'https://www.googleapis.com' in cloud_url:
                         self.access_token = 'Google'
                     elif 'files.1drv.com' in cloud_url:
@@ -137,7 +127,7 @@ class File(CustomModel):
                         self.pending_tasks = 2
             if file_changed:
                 arr = os.path.splitext(self.attachment.url)               
-                self.extention = arr[1]
+                self.extension = arr[1]
 
             super(File, self).save(*args, **kwargs)
             if self.pending_tasks == 2:
@@ -159,18 +149,18 @@ class File(CustomModel):
                         self.content = text_extractor(self.pdf_doc)
                     except:
                         self.file_error = 'unable to extract file content '
-                        pj_utils.produce_exception(self.file_error + ' '+str(self.pk) + ' '+self.pdf_doc.url)
+                        LogUtils.log_error(self.file_error + ' '+str(self.pk) + ' '+self.pdf_doc.url)
                 self.pending_tasks = 0
                 self.save()
             pass
         except:
             try:
-                pj_utils.produce_exception(self.file_error)
+                LogUtils.log_error(self.file_error)
                 if self.new_file and self.pk:
                     self.delete()
             except:
                 pass
-            res = pj_utils.get_error_message()
+            res = LogUtils.get_error_message()
             raise Exception(res)
     file_error = None
 
@@ -274,7 +264,7 @@ class File(CustomModel):
 
         kw = params.get('kw')
         if kw:
-            docs = pj_utils.search_db({'kw': kw, 'search_models': {params['app']: [params['model']]}})
+            docs = DbUtils.search_db({'kw': kw, 'search_models': {params['app']: [params['model']]}})
         else:
             docs = model.objects.filter(q_objects)
         invalid_docs = []
@@ -285,8 +275,8 @@ class File(CustomModel):
                     is_valid = True
             if not is_valid:
                 invalid_docs.append(doc.id)
-        # docs = docs.filter(~(Q(id__in=invalid_docs))).values('id', 'name', 'access_token', 'extention')
-        docs = docs.values('id', 'name', 'access_token', 'extention')
+        # docs = docs.filter(~(Q(id__in=invalid_docs))).values('id', 'name', 'access_token', 'extension')
+        docs = docs.values('id', 'name', 'access_token', 'extension')
         documents = list(docs)
         for doc in documents:
             if doc['id'] in invalid_docs:

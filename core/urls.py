@@ -11,7 +11,6 @@ def home(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home),
-    path('blog/', include('blog.urls', namespace='blog')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 

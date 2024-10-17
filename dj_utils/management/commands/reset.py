@@ -11,14 +11,6 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
 
-def connect_mysql():
-    try:
-        from MySQLdb import connect
-        return connect
-    except:
-        a = 1
-
-
 def connect_postgresql():
     try:
         from psycopg2 import connect
@@ -67,18 +59,6 @@ class Command(BaseCommand):
             return 'created'
         else:
             db_con = None
-            if db_engine.endswith('mysql') or db_engine.endswith('mysql_backend'):
-                connector = connect_mysql()
-                if connector:
-                    db_con = connector(host="localhost", user=database_info['USER'], passwd=database_info['PASSWORD'])
-                    cur = db_con.cursor()
-                    sql_query = 'drop database if exists ' + database_info['NAME']
-                    cur.execute(sql_query)
-                    sql_query = 'create database ' + database_info['NAME']
-                    cur.execute("SET GLOBAL default_storage_engine = 'InnoDB'")
-                    sql_query += " DEFAULT CHARACTER set utf8mb4 collate utf8mb4_unicode_ci"
-                    cur.execute(sql_query)
-
             if db_engine.endswith('postgresql') or db_engine.endswith('postgresql_backend'):
                 db_con = psycopg2.connect(host="localhost", user=database_info['USER'], dbname='postgres',
                                           password=database_info['PASSWORD'])
@@ -104,7 +84,6 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         try:
             root_path = settings.BASE_DIR
-
             recreate = kwargs.get('hard')
             res = self.drop_create_db(root_path, recreate)
             if res == 'created':

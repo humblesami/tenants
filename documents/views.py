@@ -1,13 +1,16 @@
 import os
 import json
-from mainapp import ws_methods
-from documents.file import File
+
+from django.apps import apps
 from django.db import transaction
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from django.core.files import File as DjangoFile
-from documents.annotation import AnnotationDocument
 from django.views.decorators.csrf import csrf_exempt
+
+from documents.file import File
+from documents.annotation import AnnotationDocument
+from py_utils.helpers import LogUtils, PyUtils
 
 
 @csrf_exempt
@@ -19,7 +22,7 @@ def upload_files(request):
         res_app = req['res_app']
         res_model = req['res_model']
         res_id = req['res_id']
-        model = ws_methods.get_model(res_app, res_model)
+        model = apps.get_model(res_app, res_model)
         if res_id != 'undefined':
             obj = model.objects.get(pk=res_id)
         cloud_data = req.get('cloud_data')
@@ -50,7 +53,7 @@ def upload_files(request):
 
         docs = json.dumps(docs)
     except:
-        docs = ws_methods.get_error_message()
+        docs = LogUtils.get_error_json()
     return HttpResponse(docs)
 
 @csrf_exempt
@@ -64,7 +67,7 @@ def upload_single_file(request):
         res_id = req['res_id']
         file_field = req['res_field']
         file_type = req['file_type']
-        model = ws_methods.get_model(res_app, res_model)
+        model = apps.get_model(res_app, res_model)
         obj = model.objects.get(pk=res_id)
         cloud_data = req.get('cloud_data')
 
@@ -73,7 +76,7 @@ def upload_single_file(request):
             for file in cloud_data:
                 with transaction.atomic():
                     if file_type == 'image':
-                        img_temp = ws_methods.download_image(file)
+                        img_temp = PyUtils.download_image(file)
                         if type(img_temp) == str:
                             res = {
                                 'error': {'data': img_temp, 'message': 'unable to upload file.'}
@@ -106,7 +109,7 @@ def upload_single_file(request):
                         if file_obj.id:
                             obj.save()
                         else:
-                            res = ws_methods.get_error_message()
+                            res = LogUtils.get_error_json()
                             return {'error': {'data': res, 'message': 'unable to upload file.'}}
                         # created_file = obj.resume.attachment.save(name=file.name, attachment=file)
                         docs.append({'id':created_file.id, 'name': file.name, 'access_token': "Local"})
@@ -114,7 +117,7 @@ def upload_single_file(request):
         docs = json.dumps(docs)
         return HttpResponse(docs)
     except:
-        docs = ws_methods.get_error_message()
+        docs = LogUtils.get_error_json()
     return HttpResponse(docs)
 
 
@@ -129,20 +132,19 @@ def upload_single_image_file(request):
         res_id = req['res_id']
         file_field = req['res_field']
         file_type = req['file_type']
-        model = ws_methods.get_model(res_app, res_model)
+        model = apps.get_model(res_app, res_model)
         obj = model.objects.get(pk=res_id)
         cloud_data = req.get('cloud_data')
 
         if file_type != 'image':
             docs = json.dumps(docs)
             return HttpResponse(docs)
-            return {'error': 'Invalid'}
         if cloud_data:
             cloud_data = json.loads(cloud_data)
             with transaction.atomic():
                 for file in cloud_data:
                     if file_type == 'image':
-                        img_temp = ws_methods.download_image(file)
+                        img_temp = PyUtils.download_image(file)
                         if type(img_temp) == str:
                             res = {
                                 'error': {'data': img_temp, 'message': 'unable to upload file.'}
@@ -177,7 +179,7 @@ def upload_single_image_file(request):
         docs = json.dumps(docs)
         return HttpResponse(docs)
     except:
-        docs = ws_methods.get_error_message()
+        docs = LogUtils.get_error_json()
     return HttpResponse(docs)
 
 

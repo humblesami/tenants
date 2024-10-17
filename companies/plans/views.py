@@ -1,5 +1,5 @@
 from django.views.generic import TemplateView
-from companies.model_files.plans import Plan
+from .plan_models import Plan
 
 
 class PlansList(TemplateView):

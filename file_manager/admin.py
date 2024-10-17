@@ -1,8 +1,7 @@
 from django.contrib import admin
 from documents.admin import FileAdmin, FileInlineAdmin
 from .models import Folder, ResourceDocument
-import nested_admin
-from mainapp.admin import BaseInlineAdmin, BaseAdmin
+from dj_utils.admin import BaseInlineAdmin, BaseAdmin
 
 
 class FolderInline(BaseInlineAdmin):

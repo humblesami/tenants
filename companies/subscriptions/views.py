@@ -9,13 +9,12 @@ from django_tenants.utils import get_tenant_model
 from django.contrib.contenttypes.models import ContentType
 
 from authsignup.models import AuthUser
-from companies.models import Client
-from companies.model_files.plans import Plan, PlanCost
-from companies.model_files.subscription import Subscription
-from companies.model_files.payemts import Payment, PaymentMethod, PaymentInProgress
+from py_utils.helpers import LogUtils, DateUtils
+from ..models import ClientTenant
+from ..plans.plan_models import Plan, PlanCost
+from ..subscriptions.subscription_models import Subscription
+from ..payments.payment_models import Payment, PaymentMethod, PaymentInProgress
 
-
-from dj_utils import pj_utils
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -55,7 +54,7 @@ def check_sub_domain(request):
 
 
 def check_schema_name(sub_domain, payment_token=None):
-    existing = Client.objects.filter(schema_name=sub_domain)
+    existing = ClientTenant.objects.filter(schema_name=sub_domain)
     if existing:
         return 'Sub domain "'+sub_domain+'" has been already taken'
     else:
@@ -72,25 +71,18 @@ def check_schema_name(sub_domain, payment_token=None):
 def post_subscription(request, payment_token=None):
     template_name = 'companies/subscription/form.html'
     req_url_postfix = ''
-    payment_promise_obj = None
     try:
         req_data = request.POST
-        if not payment_token:
-            res = check_schema_name(req_data['sub_domain'])
-            if res != 'ok':
-                context = get_response(req_data['plan_id'], res, payment_token)
-                return render(request, template_name, context)
+        res = check_schema_name(req_data['sub_domain'], payment_token)
+        if res != 'ok':
+            context = get_response(req_data['plan_id'], res, payment_token)
+            return render(request, template_name, context)
 
-            obj = PaymentInProgress(company=req_data['sub_domain'], plan_id=req_data['plan_id'])
-            payment_token = uuid.uuid4().hex[:20]
-            obj.amount=req_data['amount']
-            obj.token = payment_token
-            obj.save()
-        else:
-            res = check_schema_name(req_data['sub_domain'], payment_token)
-            if res != 'ok':
-                context = get_response(req_data['plan_id'], res, payment_token)
-                return render(request, template_name, context)
+        obj = PaymentInProgress(company=req_data['sub_domain'], plan_id=req_data['plan_id'])
+        payment_token = uuid.uuid4().hex[:20]
+        obj.amount=req_data['amount']
+        obj.token = payment_token
+        obj.save()
 
         payment_promise_obj = obj
         req_url_postfix += '/' + req_data['plan_id'] + '/' + payment_token
@@ -108,7 +100,7 @@ def post_subscription(request, payment_token=None):
                 res = create_tenant(payment_promise['email'], subscription_id, request)
             return redirect('/')
     except:
-        res = pj_utils.produce_exception()
+        res = LogUtils.get_error_message()
         context = get_response(req_data['plan_id'], res, payment_token)
         return render(request, template_name, context)
 
@@ -153,7 +145,7 @@ def create_related_entries(req_data, payment_promise):
     plan_cost = plan_cost[len(plan_cost) - 1]
     subscription = Subscription(plan_id=plan_id, plan_cost_id=plan_cost['id'])
     subscription.amount = plan_cost['cost']
-    end_date = pj_utils.add_interval('days', plan_cost['days'])
+    end_date = DateUtils.add_interval('days', plan_cost['days'])
     subscription.end_date = end_date
     subscription.save()
 
@@ -203,9 +195,9 @@ def create_tenant(email, subscription_id, request):
                     print('\n\n\n Error while creating user\n\n\n')
                 res = 'done'
             else:
-                res = 'Client with name "' + sub_domain + '" already exists'
+                res = 'cusomer with name "' + sub_domain + '" already exists'
     except:
-        res = pj_utils.produce_exception()
+        res = LogUtils.get_error_message()
     request.tenant = public_tenant
     connection.set_tenant(request.tenant, False)
     ContentType.objects.clear_cache()

@@ -1,6 +1,5 @@
 from django.db import models
-# from companies.model_files.payemts import Payment
-from companies.model_files.plans import Plan, PlanCost
+from ..plans.plan_models import Plan, PlanCost
 
 
 class Subscription(models.Model):

@@ -1,12 +1,5 @@
-import json
-import httpagentparser
-
-from mainapp import ws_methods
-from mainapp.settings import ip2location
-
 from django.db import models
-from django.dispatch import receiver
-from django.contrib.auth.signals import user_logged_in
+from py_utils.helpers import HttpUtils
 
 
 class LoginLocation(models.Model):
@@ -60,44 +53,15 @@ class LoginEntry(models.Model):
             return 'No login info'
 
 
-def get_location_from_ip(ip):
-    req_url = ip2location['prefix'] + ip + ip2location['postfix']
-    print(req_url)
-    res = ws_methods.http_request(req_url)
-    res = json.loads(res)
-    return res
-
-#tobe changed
-# @receiver(user_logged_in)
-# def user_logged_in_callback(sender, request, user, **kwargs):
-#     if request.tenant and request.tenant.schema_name != 'public':
-#         ws_methods.threaded_operation(make_login_entry, args=(request, user))
-
-
-def get_browser(agent):
-    browser = httpagentparser.detect(agent)
-    if not browser:
-        browser = agent.split('/')[0]
-    else:
-        browser = browser['browser']['name']
-
-    return browser
-
-
 def make_login_entry(request, user):
     meta = request.META
-    ip = get_client_ip(request)
+    ip = HttpUtils.get_client_ip(request.META)
     operating_system = meta.get('SESSION')
-
     time_zone = meta.get('TZ')
     agent = meta.get('HTTP_USER_AGENT')
-    print('\n\n\n\n')
-    print(meta)
-    print(operating_system)
-    print('\n\n\n\n')
-    browser = get_browser(agent)
+    browser = HttpUtils.get_browser(agent)
     path_info = meta.get('PATH_INFO')
-    res = get_location_from_ip(ip)
+    res = HttpUtils.get_location_from_ip(ip)
     location = LoginLocation.objects.filter(
         time_zone=time_zone,
         ip=ip,
@@ -131,11 +95,3 @@ def make_login_entry(request, user):
         login_entry.path_info = path_info
     login_entry.save()
 
-
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip

@@ -1,12 +1,9 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Profile, Tag, Article
-
-from django_tenants.utils import remove_www
-from companies.models import Domain
-
-# Django Q objects use to create complex queries
-# https://docs.djangoproject.com/en/3.2/topics/db/queries/#complex-lookups-with-q-objects
 from django.db.models import Q
+from .models import Tag, Article
+from django_tenants.utils import remove_www
+from django.shortcuts import render, get_object_or_404
+
+from companies.models import Domain
 
 
 def home(request):
@@ -33,33 +30,27 @@ def articles(request):
     query = request.GET.get('query')
     # print(query)
     # Set query to '' if None
-    if query == None:
+    if not query:
         query = ''
 
-    # articles = Article.articlemanager.all()
+    # stories = Article.articlemanager.all()
     # search for query in headline, sub headline, body
-    articles = Article.articlemanager.filter(
+    stories = Article.articlemanager.filter(
         Q(headline__icontains=query) |
         Q(sub_headline__icontains=query) |
         Q(body__icontains=query)
     )
-
     tags = Tag.objects.all()
-
     context = {
-        'articles': articles,
+        'articles': stories,
         'tags': tags,
     }
-
     return render(request, 'articles.html', context)
 
 
-def article(request, article):
-
-    article = get_object_or_404(Article, slug=article, status='published')
-
+def article(request, story):
+    res = get_object_or_404(Article, slug=story, status='published')
     context = {
-        'article': article
+        'article': res
     }
-
     return render(request, 'article.html', context)

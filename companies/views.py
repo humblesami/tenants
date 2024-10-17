@@ -1,19 +1,15 @@
-import uuid
-
+from django.views import View
 from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from django.views import View
 from django.contrib.auth.models import User
 from django.db import transaction, connection
 from django.views.generic import TemplateView
 from django_tenants.utils import get_tenant_model
 from django.contrib.contenttypes.models import ContentType
 
-from companies.model_files.payemts import PaymentInProgress
+from py_utils.helpers import LogUtils
+from .payments.payment_models import PaymentInProgress
 
-
-from dj_utils import pj_utils
 
 
 class CheckForExisting(View):
@@ -53,7 +49,7 @@ class Create(TemplateView):
             else:
                 context['message'] = 'Successfully created '+tenant_name
         except:
-            context['error'] = pj_utils.produce_exception()
+            context['error'] = LogUtils.get_error_message()
         context['list'] = get_customer_list(self.request.user)
         context['port'] = settings.SERVER_PORT_STR
         return context
@@ -72,7 +68,7 @@ class Delete(TemplateView):
             TenantModel.objects.get(pk = customer_id).delete_tenant()
             context = {'list': get_customer_list(self.request.user)}
         except:
-            res = pj_utils.produce_exception()
+            res = LogUtils.get_error_message()
             context = {'error': res, 'list': get_customer_list(self.request.user)}
         context['port'] = settings.SERVER_PORT_STR
         return context
@@ -130,6 +126,6 @@ def create_tenant(t_name, request):
             else:
                 res = 'Client with id' + t_name + ' already exists'
     except:
-        res = pj_utils.produce_exception()
+        res = LogUtils.get_error_message()
     return res
 

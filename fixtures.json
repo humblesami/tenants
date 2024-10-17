@@ -16,34 +16,6 @@
     }
   },
   {
-    "model": "auth.user",
-    "pk": 2,
-    "fields": {
-      "password": "pbkdf2_sha256$216000$84ccRVhYWnIA$yeNUFbCojrkWB31kZubPWCm5dH0ZWNNXgwNYbz1vRSY=",
-      "last_login": "2021-09-28T13:41:01.340Z",
-      "username": "sa1",
-      "first_name": "Sami",
-      "last_name": "Akram",
-      "email": "aa@aa.aa",
-      "is_active": true,
-      "date_joined": "2021-05-06T15:43:03.317Z"
-    }
-  },
-  {
-    "model": "auth.user",
-    "pk": 3,
-    "fields": {
-      "password": "pbkdf2_sha256$216000$84ccRVhYWnIA$yeNUFbCojrkWB31kZubPWCm5dH0ZWNNXgwNYbz1vRSY=",
-      "last_login": "2021-09-28T13:41:01.340Z",
-      "username": "sa2",
-      "first_name": "Sami",
-      "last_name": "Akram",
-      "email": "aa@aa.aa",
-      "is_active": true,
-      "date_joined": "2021-05-06T15:43:03.317Z"
-    }
-  },
-  {
     "model": "companies.Plan",
     "pk": 1,
     "fields": {

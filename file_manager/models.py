@@ -1,8 +1,6 @@
 import re
 
 from django.conf import settings
-
-from dj_utils import pj_utils
 from documents.file import File
 from dj_utils.models import CustomModel
 
@@ -11,6 +9,9 @@ from django.db import transaction, models
 from django.contrib.auth.models import User
 from django.db.models.signals import m2m_changed
 from django_currentuser.middleware import get_current_user
+
+from py_utils.helpers import PyUtils
+from py_utils.jango import DbUtils, DjangoUtils, EmailUtils
 
 
 class Folder(CustomModel):
@@ -373,7 +374,7 @@ class Folder(CustomModel):
         folders = []
         parent_id = params.get('parent_id')
         if kw:
-            folders = pj_utils.search_db({'kw': kw, 'search_models': {'resources': ['Folder']}})
+            folders = DbUtils.search_db({'kw': kw, 'search_models': {'resources': ['Folder']}})
             if parent_id:
                 folders = folders.filter(Q(parent_id=parent_id) & Q(users__id=user_id))
             else:
@@ -396,7 +397,7 @@ class Folder(CustomModel):
             folder.total_files = 0
             folder.files_in_folder(folder, user_id)
             total_files = folder.total_files
-            cd = pj_utils.obj_to_dict(folder, fields=['name', 'id'])
+            cd = DjangoUtils.obj_to_dict(folder, fields=['name', 'id'])
             cd['total_files'] = total_files
             records.append(cd)
         current_cnt = len(records)
@@ -447,7 +448,7 @@ class Folder(CustomModel):
             'template_name': template_name,
             'token_required': token_required
         }
-        pj_utils.send_email_on_creation(email_data)
+        EmailUtils.send_mail_data(email_data)
 
 
 def save_folder_users(sender, instance, action, pk_set, **kwargs):

@@ -12,18 +12,6 @@ config local
     "server_base_url": "http://localhost:8000",
     "socket_url": "http://localhost:3000",
     "auth_server_url": "http://localhost:8000",
-    "ip2location":
-    {
-        "active":{
-            "base_url": "http://api.ipstack.com/",
-            "params": {
-                "access_key":"94bfb283cce53facd307167d1596b8c8"
-            },
-            "prefix": "http://api.ipstack.com/",
-            "postfix":"?access_key=94bfb283cce53facd307167d1596b8c8"
-        },
-        "other": {}
-    }
 }
 
 config live
@@ -31,20 +19,6 @@ config live
     "server_base_url": "https://www.boardsheet.com",
     "socket_url": "https://chat.brainpbx.com",
     "auth_server_url": "https://www.boardsheet.com",
-    "ip2location":
-    {
-        "active":
-        {
-            "base_url": "http://api.ipstack.com/",
-            "params": 
-            {
-                "access_key":"94bfb283cce53facd307167d1596b8c8"
-            },
-            "prefix": "http://api.ipstack.com/",
-            "postfix":"?access_key=94bfb283cce53facd307167d1596b8c8"
-        },
-        "other": {}
-    }
 }
 
 apt-get install python3-pypdf2

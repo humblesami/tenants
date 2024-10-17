@@ -1,6 +1,6 @@
 import stripe
 from django.views.generic import TemplateView
-from companies.model_files.payemts import Payment
+from .payment_models import Payment
 
 
 class PaymentListLocal(TemplateView):

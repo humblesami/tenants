@@ -59,8 +59,6 @@ TENANT_APPS = [
     'django.contrib.admin',
     'django.contrib.sessions',
     'django.contrib.messages',
-    # tenant-specific apps
-    'blog',
 ]
 
 INSTALLED_APPS = list(SHARED_APPS) + [
@@ -71,10 +69,8 @@ MIDDLEWARE = [
     # add this add the top
     # django tenant middleware
     'django_tenants.middleware.main.TenantMainMiddleware',
-
     # custom tenant middleware
     'core.middleware.TenantMiddleware',
-
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -219,3 +215,12 @@ server_domain = config_info.get('server_domain')
 MAIN_URL = PROTOCOL + '://' + server_domain + SERVER_PORT_STR
 LOGIN_URL = MAIN_URL + '/accounts/login'
 SOCKET_SERVER_URL = 'http://localhost:3000'
+AUTH_PASSWORD_VALIDATORS = []
+IP2LOC = {
+    "base_url": "http://api.ipstack.com/",
+    "params": {
+        "access_key":"94bfb283cce53facd307167d1596b8c8"
+    },
+    "prefix": "http://api.ipstack.com/",
+    "postfix":"?access_key=94bfb283cce53facd307167d1596b8c8"
+}

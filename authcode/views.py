@@ -1,9 +1,10 @@
 import json
 from django.http import HttpResponse
 from django.utils.crypto import get_random_string
-from .models import TwoFactorAuthenticate, ThreadEmail
+
+from py_utils.jango import EmailUtils
+from .models import TwoFactorAuthenticate
 from signalwire.rest import Client as signalwire_client
-from twilio.twiml.messaging_response import Message, MessagingResponse
 
 def generate_code(request):
     req = request.GET
@@ -29,7 +30,7 @@ def generate_code(request):
         }
         email_data['emails'] = [address]
         email_data['template_name'] = 'code_verification.html'
-        ThreadEmail(email_data).start()
+        EmailUtils.send_mail_data(email_data)
     elif auth_type == 'phone':
         try:
             send_sms(code, address)

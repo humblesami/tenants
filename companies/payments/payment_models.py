@@ -1,10 +1,10 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import UniqueConstraint
+from django.core.exceptions import ValidationError
 
-from companies.model_files.subscription import Subscription
-from companies.model_files.plans import Plan
-from dj_utils.pj_utils import diff_seconds
+from ..plans.plan_models import Plan
+from ..subscriptions.subscription_models import Subscription
+from py_utils.helpers import DateUtils
 
 
 class PaymentMethod(models.Model):
@@ -62,7 +62,7 @@ class PaymentInProgress(models.Model):
         if company and obj.company != company:
             return False
         if not obj.transaction_id:
-            diff = diff_seconds(obj.date_time)
+            diff = DateUtils.diff_seconds(obj.date_time)
             if diff > 6000:
                 return False
             else:
