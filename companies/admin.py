@@ -15,7 +15,6 @@ class DomainInline(admin.TabularInline):
         return [field.name for field in self.model._meta.fields] if obj else []
 
 
-
 @admin.register(ClientTenant)
 class TenantAdmin(TenantAdminMixin, admin.ModelAdmin):
     list_display = (

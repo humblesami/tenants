@@ -204,13 +204,11 @@ def create_tenant(email, subscription_id, request):
     return res
 
 
-def create_public_user(user_tenant, email, password):
-    public_user = User.objects.filter(email=email)
+def create_public_user(email, password):
+    public_user = User.objects.filter(email=email).firs()
     if not public_user:
         public_user = User.objects.create(email=email, username=email, is_active=True)
         public_user.set_password(password)
         public_user.save()
     else:
-        public_user = public_user [0]
-    user_tenant.users.add(public_user)
-    user_tenant.save()
+        raise Exception('User already exists with email '+email)
