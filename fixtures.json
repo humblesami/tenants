@@ -28,7 +28,7 @@
     "model": "companies.AppModule",
     "pk": 2,
     "fields": {
-      "app_name": "resources",
+      "app_name": "documents",
       "base_cost": 20,
       "description": "File management"
     }

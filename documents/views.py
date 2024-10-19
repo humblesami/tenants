@@ -8,8 +8,7 @@ from rest_framework.decorators import api_view
 from django.core.files import File as DjangoFile
 from django.views.decorators.csrf import csrf_exempt
 
-from documents.file import File
-from documents.annotation import AnnotationDocument
+from .models import File
 from py_utils.helpers import LogUtils, PyUtils
 
 
@@ -181,29 +180,3 @@ def upload_single_image_file(request):
     except:
         docs = LogUtils.get_error_json()
     return HttpResponse(docs)
-
-
-def reset_annotations(request):
-    try:
-        if request.user.is_superuser:
-            id = request.GET['id']
-            code = request.GET['code']
-            user_id = request.GET['for']
-            if user_id == 'me':
-                user_id = request.user.id
-            if code != 't5g':
-                return HttpResponse('Invalid code')
-            docs = []
-            if user_id == 'all':
-                docs = AnnotationDocument.objects.filter(document__id=id)
-            else:
-                docs = AnnotationDocument.objects.filter(document__id=id, user__id=user_id)
-            with transaction.atomic():
-                for doc in docs:
-                    for obj in doc.annotation_set.all():
-                        obj.delete()
-            return HttpResponse('done')
-        else:
-            return HttpResponse('Unauthorized')
-    except:
-        return HttpResponse('Error')

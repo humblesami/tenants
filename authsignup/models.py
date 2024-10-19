@@ -169,7 +169,7 @@ class AuthUser(user_model, CustomModel):
             user_data['user_photo'] = user_data['photo']
         except:
             pass        
-        """ Creating Peronsl Folder if not exists """
+        """ Creating Personal Folder if not exists """
         # folder_model = apps.get_model('resources', 'Folder')
         # method_to_call =  getattr(folder_model, 'create_personal_folder')
         request.user = user
