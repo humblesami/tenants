@@ -61,6 +61,47 @@ class ClientUser(models.Model):
     def __str__(self):
         return f'{self.client_name}-{self.schema_name}'
 
+
+class ClientTenant(TenantMixin):
+    owner = models.OneToOneField(ClientUser, on_delete=models.RESTRICT, unique=True)
+    is_active = models.BooleanField(default=True, blank=True)
+    users = models.ManyToManyField(User, related_name='tenants', blank=True)
+    featured = models.BooleanField(default=False)
+    created_on = models.DateField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+    auto_create_schema = True
+    auto_drop_schema = True
+    creating_tenant = 0
+
+    class Meta:
+        ordering = ('-featured', '-updated_at')
+
+    def __str__(self):
+        return f"{self.owner.client_name}"
+
+    def save(self, verbosity=1, *args, **kwargs):
+        if not self.pk:
+            schema_name = ClientTenant.objects.filter(schema_name=self.schema_name)
+            if not schema_name:
+                self.creating_tenant = 1
+        return super().save(verbosity=1, *args, **kwargs)
+
+    def create_schema(self, check_if_exists=False, sync_schema=True, verbosity=1):
+        res = super().create_schema(check_if_exists=check_if_exists, sync_schema=sync_schema)
+        if self.creating_tenant:
+            self.creating_tenant = 0
+            switch_tenant(self.schema_name)
+            new_user = User.objects.create(
+                username=self.owner.client_email, email=self.owner.client_email, is_staff=True,
+                is_active=True, is_superuser=True
+            )
+            # tobe changed
+            new_user.set_password('123')
+            new_user.save()
+            switch_tenant('public')
+        return res
+
+
 class Subscription(models.Model):
     client_user = models.ForeignKey(ClientUser, on_delete=models.RESTRICT)
     chosen_apps = models.ManyToManyField(AppModule)
@@ -70,6 +111,7 @@ class Subscription(models.Model):
     cost = models.IntegerField(default=0)
     is_demo = models.BooleanField(default=False)
     request_time = models.DateTimeField(auto_now=True)
+    client_tenant = models.ForeignKey(ClientTenant, on_delete=models.SET_NULL, null=True, blank=True)
     activation_time = models.DateTimeField(null=True, blank=True)
     discounted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     remarks = models.CharField(max_length=511, null=True, blank=True)
@@ -92,9 +134,9 @@ class Subscription(models.Model):
             force_insert=force_insert, force_update=force_update,
             using=using, update_fields=update_fields
         )
-        if self.is_demo and not self.activation_time:
+        if self.is_demo and not self.client_tenant:
             create_tenant(self)
-            self.client_user.demo_used=True
+            self.client_user.demo_used = True
             self.client_user.save()
 
     def calculate_cost(self):
@@ -144,60 +186,22 @@ class Payment(models.Model):
 
 def create_tenant(sub_obj):
     sub_user = sub_obj.client_user
-    client_tenant = ClientTenant.objects.filter(owner_id=sub_user.pk).first()
-    if not client_tenant:
+    ct = ClientTenant.objects.filter(owner_id=sub_user.pk).first()
+    if not ct:
         obj = ClientTenant.objects.create(
             owner=sub_user,
             is_active=True,
             schema_name=sub_user.schema_name,
         )
-        domin_value = sub_user.schema_name+settings.PUBLIC_DOMAIN,
+        domain_value = sub_user.schema_name+'.'+settings.PUBLIC_DOMAIN
         Domain.objects.create(
-            domain=domin_value,
+            domain=domain_value,
             tenant_id=obj.pk
         )
+        sub_obj.client_tenant = obj
         sub_obj.activation_time = datetime.now(tz=timezone.utc)
         sub_obj.save()
-
-class ClientTenant(TenantMixin):
-    owner = models.OneToOneField(ClientUser, on_delete=models.RESTRICT, unique=True)
-    is_active = models.BooleanField(default=True, blank=True)
-    users = models.ManyToManyField(User, related_name='tenants', blank=True)
-    featured = models.BooleanField(default=False)
-    created_on = models.DateField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
-    auto_create_schema = True
-    auto_drop_schema = True
-    creating_tenant = 0
-
-    class Meta:
-        ordering = ('-featured', '-updated_at')
-
-    def __str__(self):
-        return f"{self.owner.client_name}"
-
-    def save(self, verbosity=1, *args, **kwargs):
-        if not self.pk:
-            schema_name = ClientTenant.objects.filter(schema_name=self.schema_name)
-            if not schema_name:
-                self.creating_tenant = 1
-        return super().save(verbosity=1, *args, **kwargs)
-
-
-    def create_schema(self, check_if_exists=False, sync_schema=True, verbosity=1):
-        res = super().create_schema(check_if_exists=check_if_exists, sync_schema=sync_schema)
-        if self.creating_tenant:
-            self.creating_tenant = 0
-            switch_tenant(self.schema_name)
-            new_user = User.objects.create(
-                username=self.owner.client_email, email=self.owner.client_email, is_staff=True,
-                is_active=True, is_superuser=True
-            )
-            # tobe changed
-            new_user.set_password('123')
-            new_user.save()
-            switch_tenant('public')
-        return res
+    return ct
 
 
 class Domain(DomainMixin):
