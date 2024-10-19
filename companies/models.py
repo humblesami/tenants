@@ -17,6 +17,9 @@ class AppModule(models.Model):
     is_active = models.BooleanField(default=True)
     base_cost = models.IntegerField(default=1)
 
+    class Meta:
+        verbose_name_plural = '01. Tenant Apps'
+
     def __str__(self):
         return self.app_name
 
@@ -24,6 +27,9 @@ class AppModule(models.Model):
 class Duration(models.Model):
     days = models.IntegerField(default=1)
     cost_factor = models.IntegerField(default=1)
+
+    class Meta:
+        verbose_name_plural = '02. Package Days'
 
     def __str__(self):
         return str(self.days)
@@ -35,6 +41,9 @@ class UserWindow(models.Model):
     max_user_count = models.IntegerField(default=1, unique=True)
     cost_factor = models.IntegerField(default=1)
 
+    class Meta:
+        verbose_name_plural = '03. User Limit Windows'
+
     def __str__(self):
         return self.window_name
 
@@ -44,6 +53,9 @@ class AppCost(models.Model):
     duration = models.ForeignKey(Duration, on_delete=models.RESTRICT)
     user_window = models.ForeignKey(UserWindow, on_delete=models.RESTRICT)
     cost = models.IntegerField()
+
+    class Meta:
+        verbose_name_plural = '04. App Costs'
 
     def __str__(self):
         return f'{self.app_module.app_name}-{self.duration.days}-{self.user_window.window_name}'
@@ -57,6 +69,9 @@ class ClientUser(models.Model):
     client_name = models.CharField(max_length=127)
     demo_used = models.BooleanField(default=False)
     balance = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name_plural = '05. Potential Clients'
 
     def __str__(self):
         return f'{self.client_name}-{self.schema_name}'
@@ -74,6 +89,7 @@ class ClientTenant(TenantMixin):
     creating_tenant = 0
 
     class Meta:
+        verbose_name_plural = '07. Client Tenants'
         ordering = ('-featured', '-updated_at')
 
     def __str__(self):
@@ -116,6 +132,8 @@ class Subscription(models.Model):
     discounted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     remarks = models.CharField(max_length=511, null=True, blank=True)
 
+    class Meta:
+        verbose_name_plural = '06. Subscriptions'
 
     def __str__(self):
         return f"{self.client_user.client_name.title()} -- {DateUtils.string_format('', self.request_time)}"
@@ -155,6 +173,9 @@ class Subscription(models.Model):
 class PaymentMethod(models.Model):
     name = models.CharField(max_length=63)
 
+    class Meta:
+        verbose_name_plural = '08. Payment Methods'
+
     def __str__(self):
         return self.name
 
@@ -166,6 +187,9 @@ class Payment(models.Model):
     transaction_id = models.CharField(max_length=255)
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = '09. Payments'
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         user = self.subscription.client_user
@@ -220,8 +244,10 @@ def create_or_update_app_cost(sender, instance, created, **kwargs):
     for item1 in app_modules:
         for item2 in user_windows:
             for item3 in durations:
-                cost = item1.base_cost * item2.cost_factor * item3.cost_factor
-                AppCost.objects.get_or_create(app_module=item1, user_window=item2, duration=item3, cost=cost)
+                app_cost = AppCost.objects.filter(app_module=item1, user_window=item2, duration=item3)
+                if not app_cost:
+                    cost = item1.base_cost * item2.cost_factor * item3.cost_factor
+                    AppCost.objects.create(app_module=item1, user_window=item2, duration=item3, cost=cost)
 
 @receiver(pre_save, sender=AppModule)
 @receiver(pre_save, sender=Duration)
@@ -229,9 +255,6 @@ def create_or_update_app_cost(sender, instance, created, **kwargs):
 def update_existing_app_costs(sender, instance, **kwargs):
     if instance.pk:
         if not AppModule or not Duration or not UserWindow:
-            return
-        old_instance = sender.objects.filter(pk=instance.pk).first()
-        if not old_instance:
             return
         durations = Duration.objects.filter(pk=instance.pk) if sender == Duration else Duration.objects.all()
         user_windows = UserWindow.objects.filter(pk=instance.pk) if sender == UserWindow else UserWindow.objects.all()
@@ -242,14 +265,15 @@ def update_existing_app_costs(sender, instance, **kwargs):
                 for item3 in durations:
                     app_cost = AppCost.objects.filter(app_module=item1, user_window=item2, duration=item3).first()
                     if not app_cost:
-                        raise Exception('App Cost does not exist')
+                        continue
                     old_cost = app_cost.cost
                     new_cost = app_cost.cost
                     if sender == AppModule:
-                        new_cost = old_cost * (item1.base_cost / old_instance.base_cost)
+                        new_cost = old_cost * (instance.base_cost / item1.base_cost)
                     elif sender == UserWindow:
-                        new_cost = old_cost * (item2.cost_factor / old_instance.cost_factor)
+                        new_cost = old_cost * (instance.cost_factor / item2.cost_factor)
                     elif sender == Duration:
-                        new_cost = old_cost * (item3.cost_factor / old_instance.cost_factor)
+                        new_cost = old_cost * (instance.cost_factor / item3.cost_factor)
                     if old_cost != new_cost:
-                        app_cost.save(cost=new_cost)
+                        app_cost.cost = new_cost
+                        app_cost.save()

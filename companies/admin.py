@@ -12,6 +12,23 @@ class DomainInline(admin.TabularInline):
     def get_readonly_fields(self, request, obj=None):
         return [field.name for field in self.model._meta.fields] if obj else []
 
+
+class AppModuleAdmin(admin.ModelAdmin):
+    list_display = ['app_name', 'base_cost']
+
+
+class DurationAdmin(admin.ModelAdmin):
+    list_display = ['days', 'cost_factor']
+
+
+class UserWindowAdmin(admin.ModelAdmin):
+    list_display = ['window_name', 'cost_factor']
+
+class AppCostAdmin(admin.ModelAdmin):
+    list_display = ['app_module', 'user_window', 'duration', 'cost']
+    ordering = ['app_module', 'user_window', 'duration']
+
+
 class SubscriptionAdmin(admin.ModelAdmin):
     readonly_fields = ['cost']
 
@@ -42,10 +59,10 @@ class TenantAdmin(TenantAdminMixin, admin.ModelAdmin):
 # admin.site.register(Plan)
 # admin.site.register(PlanCost)
 # admin.site.register(PaymentInProgress)
-admin.site.register(AppModule)
-admin.site.register(Duration)
-admin.site.register(UserWindow)
-admin.site.register(AppCost)
+admin.site.register(AppModule, AppModuleAdmin)
+admin.site.register(Duration, DurationAdmin)
+admin.site.register(UserWindow, UserWindowAdmin)
+admin.site.register(AppCost, AppCostAdmin)
 admin.site.register(Payment)
 admin.site.register(ClientUser)
 admin.site.register(PaymentMethod)
