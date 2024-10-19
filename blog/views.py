@@ -3,21 +3,14 @@ from .models import Tag, Article
 from django_tenants.utils import remove_www
 from django.shortcuts import render, get_object_or_404
 
-from companies.models import Domain
-
 
 def home(request):
-
     hostname_without_port = remove_www(request.get_host().split(':')[0])
-    domain = Domain.objects.get(domain=hostname_without_port)
-    name = domain.tenant.client_name
-    print(name)
-
     # feature articles on the home page
     featured = Article.articlemanager.filter(featured=True)[0:3]
 
     context = {
-        'name': name,
+        'name': hostname_without_port,
         'articles': featured
     }
 

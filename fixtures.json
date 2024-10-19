@@ -16,13 +16,63 @@
     }
   },
   {
-    "model": "companies.Plan",
+    "model": "companies.AppModule",
     "pk": 1,
     "fields": {
-      "name": "Premium",
-      "cost": 100,
-      "description": "yearly",
-      "days": 360
+      "app_name": "blog",
+      "base_cost": 10,
+      "description": "Blogs App"
+    }
+  },
+  {
+    "model": "companies.AppModule",
+    "pk": 2,
+    "fields": {
+      "app_name": "resources",
+      "base_cost": 20,
+      "description": "File management"
+    }
+  },
+  {
+    "model": "companies.Duration",
+    "pk": 1,
+    "fields": {
+      "days": "10"
+    }
+  },
+  {
+    "model": "companies.Duration",
+    "pk": 2,
+    "fields": {
+      "days": "100"
+    }
+  },
+  {
+    "model": "companies.UserWindow",
+    "pk": 1,
+    "fields": {
+      "window_name": "1-2",
+      "max_user_count": "2"
+    }
+  },
+  {
+    "model": "companies.UserWindow",
+    "pk": 2,
+    "fields": {
+      "window_name": "3-5",
+      "max_user_count": "5",
+      "cost_factor": 5
+    }
+  },
+  {
+    "model": "companies.ClientUser",
+    "pk": 1,
+    "fields": {
+      "user": "1",
+      "client_name": "Provider",
+      "client_email": "admin@app.com",
+      "client_password": "admin",
+      "schema_name": "public"
     }
   },
   {
@@ -31,7 +81,6 @@
     "fields": {
       "owner": 1,
       "schema_name": "public",
-      "client_name": "provider",
       "is_active": true,
       "created_on": "2001-01-01"
     }

@@ -1,10 +1,8 @@
 from django.contrib import admin
 from django_tenants.admin import TenantAdminMixin
 
-from .models import Domain, ClientTenant
-# from .plans.plan_models import Plan, PlanCost
-# from .subscriptions.subscription_models import Subscription
-# from .payments.payment_models import Payment, PaymentMethod, PaymentInProgress
+from .models import Domain, ClientTenant, Subscription, Payment, \
+    PaymentMethod, ClientUser, AppCost, AppModule, Duration, UserWindow
 
 
 class DomainInline(admin.TabularInline):
@@ -14,8 +12,10 @@ class DomainInline(admin.TabularInline):
     def get_readonly_fields(self, request, obj=None):
         return [field.name for field in self.model._meta.fields] if obj else []
 
+class SubscriptionAdmin(admin.ModelAdmin):
+    readonly_fields = ['cost']
 
-@admin.register(ClientTenant)
+
 class TenantAdmin(TenantAdminMixin, admin.ModelAdmin):
     list_display = (
         "owner",
@@ -41,7 +41,13 @@ class TenantAdmin(TenantAdminMixin, admin.ModelAdmin):
 
 # admin.site.register(Plan)
 # admin.site.register(PlanCost)
-# admin.site.register(Payment)
 # admin.site.register(PaymentInProgress)
-# admin.site.register(PaymentMethod)
-# admin.site.register(Subscription)
+admin.site.register(AppModule)
+admin.site.register(Duration)
+admin.site.register(UserWindow)
+admin.site.register(AppCost)
+admin.site.register(Payment)
+admin.site.register(ClientUser)
+admin.site.register(PaymentMethod)
+admin.site.register(ClientTenant, TenantAdmin)
+admin.site.register(Subscription, SubscriptionAdmin)

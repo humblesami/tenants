@@ -1,44 +1,32 @@
+from datetime import datetime
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
 from django_tenants.models import DomainMixin, TenantMixin
 
+from py_utils.helpers import DateUtils
 from .tools import switch_tenant
-
-
-class ClientUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-    client_email = models.EmailField(unique=True)
-    client_password = models.CharField(max_length=127)  # Store hash here, or remove this field
-    client_image = models.ImageField(null=True, blank=True, upload_to="client_logos/%Y/%m/%d/")
-    schema_name = models.CharField(max_length=63, unique=True)
-    client_name = models.CharField(max_length=127)
-    balance = models.IntegerField(default=0)
-
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        if not self.user:  # Create user in public schema if not already linked
-            public_user = User.objects.create(username=self.client_email, email=self.client_email, is_active=True)
-            public_user.set_password(self.client_password)  # Set hashed password
-            public_user.save()
-            self.user = public_user
-
-        super().save(
-            force_insert=force_insert, force_update=force_update,
-            using=using, update_fields=update_fields
-        )
 
 
 class AppModule(models.Model):
     app_name = models.CharField(max_length=63)
+    description = models.CharField(max_length=1023)
     is_active = models.BooleanField(default=True)
     base_cost = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.app_name
 
 
 class Duration(models.Model):
     days = models.IntegerField(default=1)
     cost_factor = models.IntegerField(default=1)
+
+    def __str__(self):
+        return str(self.days)
 
 
 class UserWindow(models.Model):
@@ -47,6 +35,9 @@ class UserWindow(models.Model):
     max_user_count = models.IntegerField(default=1, unique=True)
     cost_factor = models.IntegerField(default=1)
 
+    def __str__(self):
+        return self.window_name
+
 
 class AppCost(models.Model):
     app_module = models.ForeignKey(AppModule, on_delete=models.RESTRICT)
@@ -54,17 +45,57 @@ class AppCost(models.Model):
     user_window = models.ForeignKey(UserWindow, on_delete=models.RESTRICT)
     cost = models.IntegerField()
 
+    def __str__(self):
+        return f'{self.app_module.app_name}-{self.duration.days}-{self.user_window.window_name}'
+
+
+class ClientUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    client_email = models.EmailField(unique=True)
+    client_image = models.ImageField(null=True, blank=True, upload_to="client_logos/%Y/%m/%d/")
+    schema_name = models.CharField(max_length=63, unique=True)
+    client_name = models.CharField(max_length=127)
+    demo_used = models.BooleanField(default=False)
+    balance = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.client_name}-{self.schema_name}'
 
 class Subscription(models.Model):
     client_user = models.ForeignKey(ClientUser, on_delete=models.RESTRICT)
     chosen_apps = models.ManyToManyField(AppModule)
-    is_demo = models.BooleanField(default=False)
     user_window = models.ForeignKey(UserWindow, on_delete=models.RESTRICT)
     duration = models.ForeignKey(Duration, on_delete=models.RESTRICT)
-    approved = models.BooleanField(verbose_name='Request Status')
     discount = models.FloatField(default=0)
-    remarks = models.CharField(max_length=511)
     cost = models.IntegerField(default=0)
+    is_demo = models.BooleanField(default=False)
+    request_time = models.DateTimeField(auto_now=True)
+    activation_time = models.DateTimeField(null=True, blank=True)
+    discounted_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    remarks = models.CharField(max_length=511, null=True, blank=True)
+
+
+    def __str__(self):
+        return f"{self.client_user.client_name.title()} -- {DateUtils.string_format('', self.request_time)}"
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        if self.is_demo:
+            if self.client_user.demo_used:
+                raise Exception(f' This user already have used demo')
+        if self.discount:
+            if not self.remarks:
+                raise Exception('There must be remarks for discount')
+            if not self.discounted_by:
+                raise Exception('There must be user log for discount')
+
+        super().save(
+            force_insert=force_insert, force_update=force_update,
+            using=using, update_fields=update_fields
+        )
+        if self.is_demo and not self.activation_time:
+            create_tenant(self)
+            self.client_user.demo_used=True
+            self.client_user.save()
 
     def calculate_cost(self):
         total_cost = 0
@@ -81,6 +112,7 @@ class Subscription(models.Model):
 
 class PaymentMethod(models.Model):
     name = models.CharField(max_length=63)
+
     def __str__(self):
         return self.name
 
@@ -89,7 +121,7 @@ class Payment(models.Model):
     amount = models.PositiveIntegerField()
     date_time = models.DateTimeField(auto_now_add=True)
     method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
-    transaction_id = models.CharField(max_length=127)
+    transaction_id = models.CharField(max_length=255)
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
 
@@ -115,14 +147,17 @@ def create_tenant(sub_obj):
     client_tenant = ClientTenant.objects.filter(owner_id=sub_user.pk).first()
     if not client_tenant:
         obj = ClientTenant.objects.create(
-            owener=sub_user.user,
+            owner=sub_user,
             is_active=True,
             schema_name=sub_user.schema_name,
         )
+        domin_value = sub_user.schema_name+settings.PUBLIC_DOMAIN,
         Domain.objects.create(
-            domain=sub_user.schema_name+settings.PUBLIC_DOMAIN,
+            domain=domin_value,
             tenant_id=obj.pk
         )
+        sub_obj.activation_time = datetime.now(tz=timezone.utc)
+        sub_obj.save()
 
 class ClientTenant(TenantMixin):
     owner = models.OneToOneField(ClientUser, on_delete=models.RESTRICT, unique=True)
@@ -158,7 +193,8 @@ class ClientTenant(TenantMixin):
                 username=self.owner.client_email, email=self.owner.client_email, is_staff=True,
                 is_active=True, is_superuser=True
             )
-            new_user.set_password(self.client_password)
+            # tobe changed
+            new_user.set_password('123')
             new_user.save()
             switch_tenant('public')
         return res
@@ -181,15 +217,18 @@ def create_or_update_app_cost(sender, instance, created, **kwargs):
         for item2 in user_windows:
             for item3 in durations:
                 cost = item1.base_cost * item2.cost_factor * item3.cost_factor
-                AppCost.objects.get_or_create(app_module=item1, duration=item2, user_window=item3, cost=cost)
+                AppCost.objects.get_or_create(app_module=item1, user_window=item2, duration=item3, cost=cost)
 
 @receiver(pre_save, sender=AppModule)
 @receiver(pre_save, sender=Duration)
 @receiver(pre_save, sender=UserWindow)
 def update_existing_app_costs(sender, instance, **kwargs):
     if instance.pk:
-        old_instance = sender.objects.get(pk=instance.pk)
-
+        if not AppModule or not Duration or not UserWindow:
+            return
+        old_instance = sender.objects.filter(pk=instance.pk).first()
+        if not old_instance:
+            return
         durations = Duration.objects.filter(pk=instance.pk) if sender == Duration else Duration.objects.all()
         user_windows = UserWindow.objects.filter(pk=instance.pk) if sender == UserWindow else UserWindow.objects.all()
         app_modules = AppModule.objects.filter(pk=instance.pk) if sender == AppModule else AppModule.objects.all()
@@ -197,7 +236,9 @@ def update_existing_app_costs(sender, instance, **kwargs):
         for item1 in app_modules:
             for item2 in user_windows:
                 for item3 in durations:
-                    app_cost = AppCost.objects.filter(app_module=item1, duration=item2, user_window=item3)
+                    app_cost = AppCost.objects.filter(app_module=item1, user_window=item2, duration=item3).first()
+                    if not app_cost:
+                        raise Exception('App Cost does not exist')
                     old_cost = app_cost.cost
                     new_cost = app_cost.cost
                     if sender == AppModule:

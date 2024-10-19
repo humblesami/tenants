@@ -50,9 +50,7 @@ class DateUtils:
     @classmethod
     def now_str(cls):
         now = str(datetime.now())
-        now = now.replace(' ', '-')
-        now = now.replace(':', '-')
-        now = now.replace('.', '-')
+        now = now[:-7]
         return now
 
     @classmethod
@@ -128,7 +126,9 @@ class DateUtils:
         return res
 
     @classmethod
-    def string_format(cls, style='%Y-%m-%d %I:%M:%S %p', dt=None):
+    def string_format(cls, style='', dt=None):
+        if not style:
+            style = '%Y-%m-%d %I:%M:%S %p'
         if not dt:
             dt = datetime.now()
         if style == '14':

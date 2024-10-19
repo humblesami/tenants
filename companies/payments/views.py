@@ -1,6 +1,6 @@
 import stripe
 from django.views.generic import TemplateView
-from .payment_models import Payment
+from ..models import Payment
 
 
 class PaymentListLocal(TemplateView):
@@ -13,9 +13,8 @@ class PaymentListLocal(TemplateView):
         for item in payment_list:
             name = item['billing_details']['name']
             amount = item['amount']
-            currency = item['currency']
             status = item['status']
-            details[i] = {'name':name ,'amount':amount, 'currency': currency, 'status': status}
+            details[i] = {'name':name ,'amount':amount, 'status': status}
             i = i + 1
 
         context = {'list': details}
@@ -32,9 +31,8 @@ class PaymentList(TemplateView):
         for item in payment_list:
             name = item['billing_details']['name']
             amount = item['amount']
-            currency = item['currency']
             status = item['status']
-            details[i] = {'name':name ,'amount':amount, 'currency': currency, 'status': status}
+            details[i] = {'name':name ,'amount':amount, 'status': status}
             i = i + 1
 
         context = {'list': details}
