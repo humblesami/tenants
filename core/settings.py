@@ -136,6 +136,7 @@ MAIN_URL = PROTOCOL + '://' + server_domain + SERVER_PORT_STR
 LOGIN_URL = MAIN_URL + '/accounts/login'
 SOCKET_SERVER_URL = 'http://localhost:3000'
 AUTH_PASSWORD_VALIDATORS = []
+PUBLIC_DOMAIN = config_info.get('public_host_name') or 'localhost'
 IP2LOC = {
     "base_url": "http://api.ipstack.com/",
     "params": {

@@ -69,7 +69,7 @@ class AuthUser(user_model, CustomModel):
             self.username = self.email
         elif self.username:
             self.email = self.username
-        super(AuthUser, self).save(args, kwargs)
+        super().save(*args, **kwargs)
         if not self.on_schema_creating:
             self.create_public_user(password)
 
