@@ -45,8 +45,7 @@ python manage.py runserver
 Open /admin
 create a tenant
 remember the domain
-e.g you an give
-client1.localhot
+client1.localhost
 it will auto create a user  admin with password 123
 open http://client1.localhot:8000/admin
 

@@ -3,7 +3,7 @@ from django.apps import apps
 from django.db import models
 from datetime import datetime
 from django.db.models import Q
-from documents.file import File
+from documents.models import File
 from django.conf import settings
 from django.contrib import admin
 from authsignup.models import AuthUser

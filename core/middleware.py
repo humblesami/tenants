@@ -3,7 +3,7 @@ from django_tenants.middleware.main import TenantMainMiddleware
 
 class TenantMiddleware(TenantMainMiddleware):
     """
-    Field is_active can be used to temporary disable tenant and
+    Field is_active can be used to temporarily disable tenant and
     block access to their site. Modifying get_tenant method from
     TenantMiddleware allows us to check if tenant should be available
     """

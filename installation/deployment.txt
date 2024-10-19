@@ -12,7 +12,7 @@ cd boardsheet
 git init
 git remote add origin https://github.com/DigitalNet/HopeVUE.git
 git checkout -b meet
-git config credential.helper store
+git config credential. Helper store
 git pull origin meet
 
 ---------------------------------
