@@ -17,9 +17,9 @@ from django.core.files import File as DjangoFile
 from django.core.exceptions import ValidationError
 from django.core.files.temp import NamedTemporaryFile
 
-from dj_utils.models import CustomModel
-from dj_utils.tools import DbUtils
-from py_utils.helpers import LogUtils
+from dj_utils.admin import CustomModel
+from dj_utils.dj import DbUtils
+from dj_utils.py import LogUtils
 
 
 def validate_file_extension(value):

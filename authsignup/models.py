@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User as user_model
 
-from dj_utils.models import CustomModel
-from py_utils.helpers import HttpUtils
+from dj_utils.admin import CustomModel
+from dj_utils.py import HttpUtils
 
 
 TWO_FACTOR_CHOICES = (

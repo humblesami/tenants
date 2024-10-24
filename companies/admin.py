@@ -46,7 +46,7 @@ class TenantAdmin(TenantAdminMixin, admin.ModelAdmin):
     def get_fields(self, request, obj=None):
         fields = super().get_fields(request, obj)
         if obj:
-            return [field for field in fields if field not in ['client_password', 'users']]
+            return [field for field in fields if field not in ['users']]
         return fields
 
     def get_readonly_fields(self, request, obj=None):

@@ -7,7 +7,7 @@
 # from django_tenants.utils import get_tenant_model
 # from django.contrib.contenttypes.models import ContentType
 #
-# from py_utils.helpers import LogUtils
+# from dj_utils.py import LogUtils
 # from .payments.payment_models import PaymentInProgress
 #
 #

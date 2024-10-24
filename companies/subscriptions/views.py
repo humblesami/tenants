@@ -9,7 +9,7 @@ from django_tenants.utils import get_tenant_model
 from django.contrib.contenttypes.models import ContentType
 
 from authsignup.models import AuthUser
-from py_utils.helpers import LogUtils, DateUtils
+from dj_utils.py import LogUtils, DateUtils
 from ..models import ClientTenant, Subscription, Payment, PaymentMethod, AppCost
 
 stripe.api_key = settings.STRIPE_SECRET_KEY

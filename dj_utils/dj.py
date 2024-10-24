@@ -11,18 +11,7 @@ from django.core.paginator import Paginator
 from django.forms.models import model_to_dict
 from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
-from py_utils.helpers import LogUtils, RtcUtils
-
-
-class ModelFiles:
-
-    @classmethod
-    def delete_all_temp_files(cls, request, app_name, model_name, user_id):
-        file_model = apps.get_model(app_name, model_name)
-        method_to_call = getattr(file_model, 'delete_all_tem_files')
-        params = {'user_id': user_id}
-        method_to_call(request, params)
-        return 'done'
+from .py import LogUtils, RtcUtils
 
 
 class EmailUtils:
@@ -48,11 +37,6 @@ class EmailUtils:
         thread.start()
 
 
-search_apps = {
-
-}
-
-
 class DbUtils:
 
     @classmethod
@@ -60,6 +44,11 @@ class DbUtils:
         results = None
         search_text = params['kw'].lower()
         search_models = params.get('search_models')
+        param_search_apps = params.get('search_apps')
+        if not param_search_apps:
+            if hasattr(settings, 'SEARCH_APPS'):
+                param_search_apps = settings.SEARCH_APPS
+        search_apps = param_search_apps or {}
 
         for app_name in search_models:
             for model_name in search_models[app_name]:

@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate, login, logout
 
-from py_utils.helpers import HttpUtils, LogUtils
-from dj_utils.tools import EmailUtils
+from dj_utils.py import HttpUtils, LogUtils
+from dj_utils.dj import EmailUtils
 from .models import AuthUser, DualAuth
 from restoken.models import PostUserToken
 

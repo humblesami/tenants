@@ -71,7 +71,6 @@
       "user": "1",
       "client_name": "Provider",
       "client_email": "admin@app.com",
-      "client_password": "admin",
       "schema_name": "public"
     }
   },

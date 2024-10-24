@@ -4,7 +4,7 @@
 #
 # from ..plans.plan_models import Plan
 # from ..subscriptions.subscription_models import Subscription
-# from py_utils.helpers import DateUtils
+# from dj_utils.py import DateUtils
 #
 #
 # class PaymentMethod(models.Model):

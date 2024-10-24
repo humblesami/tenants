@@ -6,5 +6,4 @@ class ClientTenantForm(forms.ModelForm):
     class Meta:
         model = ClientTenant
         widgets = {
-            'client_password': forms.PasswordInput(),
         }

@@ -9,7 +9,7 @@ from django.core.files import File as DjangoFile
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import File
-from py_utils.helpers import LogUtils, PyUtils
+from dj_utils.py import LogUtils, PyUtils
 
 
 @csrf_exempt
