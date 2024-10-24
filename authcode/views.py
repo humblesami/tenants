@@ -2,7 +2,7 @@ import json
 from django.http import HttpResponse
 from django.utils.crypto import get_random_string
 
-from py_utils.jango import EmailUtils
+from dj_utils.tools import EmailUtils
 from .models import TwoFactorAuthenticate
 from signalwire.rest import Client as signalwire_client
 

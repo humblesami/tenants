@@ -8,18 +8,26 @@
             .prev_next> a{
                 margin: 5px;
                 padding: 10px;
-                border: 1px solid #ddd;
                 border-radius: 4px;
+                background-color: #5b80b2;
+                color: white;
             }
-            fieldset div>input[type="text"]
+            fieldset div > input[type="text"]
             {
                 width: calc(100% - 10px);
+            }
+            .prev_next.navigate_recs {
+                display: flex;
+                justify-content: flex-end;
+                font-weight: bold;
             }
         </style>
         <input type="hidden" id="prev_record_id" value="{{npc_ids.prev}}"/>
         <input type="hidden" id="current_record_id" value="{{npc_ids.current}}"/>
         <input type="hidden" id="next_record_id" value="{{npc_ids.next}}"/>
         <div class="prev_next navigate_recs" style="text-align:right">
+            <a class="prev" href="">Prev</a>
+            <a class="next" href="">Next</a>
         </div>
         <script defer="defer" src="{% static 'dj_utils/change_form_prev_next.js' %}"></script>
     </div>

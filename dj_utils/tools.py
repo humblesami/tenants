@@ -11,9 +11,7 @@ from django.core.paginator import Paginator
 from django.forms.models import model_to_dict
 from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
-
-
-from py_utils.helpers import LogUtils, RtcUtils, PyUtils
+from py_utils.helpers import LogUtils, RtcUtils
 
 
 class ModelFiles:
@@ -35,7 +33,7 @@ class EmailUtils:
         cls.send_email_thread(mail_data['emails'], mail_data['subject'], html_message)
 
     @classmethod
-    def send_email_thread(cls, receiver_emails, subject, html_message, sender_email="sami@gmai.com"):
+    def send_email_thread(cls, receiver_emails, subject, html_message, sender_email="sami@gmail.com"):
 
         def sender_method():
             try:
@@ -67,7 +65,7 @@ class DbUtils:
             for model_name in search_models[app_name]:
                 if not search_apps.get(app_name):
                     raise 'App '+ app_name+' not found in search_apps'
-                fields = search_apps[app_name][model_name]
+                fields = search_fields or search_apps[app_name][model_name]
                 kwargs = {}
                 q_objects = Q()
                 for field in fields:
@@ -106,8 +104,9 @@ class DbUtils:
         else:
             cr.execute(query)
         desc = cr.description
-        res = [dict(zip([col[0].replace('.', '=>') for col in desc], row)) for row in cr.fetchall()]
-        return res
+        res = [row for row in cr.fetchall()]
+        dict_list = [dict(zip([col[0].replace('.', '=>') for col in desc], row)) for row in res]
+        return dict_list
 
     @classmethod
     def get_fields_for_tables(cls, tables):
@@ -208,40 +207,40 @@ class DjangoUtils:
     @classmethod
     def obj_to_dict(cls, obj, fields=None, to_str=None, related=None):
         if fields:
-            dict = model_to_dict(obj, fields)
+            dict_obj = model_to_dict(obj, fields)
             for field in fields:
                 if field.find("__") != -1:
                     val = getattr(obj, field.split("__")[0])
                     if val:
                         val = getattr(val, field.split("__")[1])
-                    dict[field] = val
+                    dict_obj[field] = val
         else:
-            dict = model_to_dict(obj)
+            dict_obj = model_to_dict(obj)
 
-        for field in dict:
+        for field in dict_obj:
             # handled non url file fields (saved as binary string)
-            if type(dict[field]) is not str and type(dict[field]) is not int:
-                if dict[field]:
-                    if str(type(dict[field])) in ["<class \'datetime.datetime\'>", "<class 'datetime.date'>"]:
-                        dict[field] = str(dict[field])
-                    elif str(type(dict[field])) in ["<class \'django.db.models.fields.files.FieldFile\'>",
+            if type(dict_obj[field]) is not str and type(dict_obj[field]) is not int:
+                if dict_obj[field]:
+                    if str(type(dict_obj[field])) in ["<class \'datetime.datetime\'>", "<class 'datetime.date'>"]:
+                        dict_obj[field] = str(dict_obj[field])
+                    elif str(type(dict_obj[field])) in ["<class \'django.db.models.fields.files.FieldFile\'>",
                                                     '<class \'django.db.models.fields.files.ImageFieldFile\'>']:
                         try:
-                            file_url = dict[field].url
+                            file_url = dict_obj[field].url
                             if not file_url:
-                                dict[field] = str(dict[field])
+                                dict_obj[field] = str(dict_obj[field])
                             else:
-                                dict[field] = file_url
+                                dict_obj[field] = file_url
                         except:
-                            if dict[field].startswith('/media/data'):
-                                dict[field] = dict[field][7:]
-                                dict[field] = unquote(dict[field])
+                            if dict_obj[field].startswith('/media/data'):
+                                dict_obj[field] = dict_obj[field][7:]
+                                dict_obj[field] = unquote(dict_obj[field])
                 else:
-                    dict[field] = None
+                    dict_obj[field] = None
         if to_str:
             for field in to_str:
-                if dict[field]:
-                    dict[field] = str(dict[field])
+                if dict_obj[field]:
+                    dict_obj[field] = str(dict_obj[field])
 
         if related:
             for field in related:
@@ -250,9 +249,9 @@ class DjangoUtils:
                 _related = related[field].get("related")
                 rel_obj = getattr(obj, field)
                 if rel_obj._queryset_class:
-                    dict[field] = cls.queryset_to_list(rel_obj.filter(), fields=_fields, to_str=_to_str, related=_related)
+                    dict_obj[field] = cls.queryset_to_list(rel_obj.filter(), fields=_fields, to_str=_to_str, related=_related)
 
-        return dict
+        return dict_obj
 
 
     @classmethod

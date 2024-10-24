@@ -8,7 +8,7 @@ from django.conf import settings
 from django.contrib import admin
 from authsignup.models import AuthUser
 from py_utils.helpers import PyUtils
-from py_utils.jango import DjangoUtils
+from dj_utils.tools import DjangoUtils
 
 
 class PostAddress(models.Model):

@@ -18,31 +18,18 @@ from datetime import datetime, timezone
 from dateutil import parser as dt_parser
 from dateutil.relativedelta import relativedelta
 
-from core.settings import IP2LOC
-
 
 class RtcUtils:
 
     @classmethod
     def emit_event(cls, data, socket_server_url='', req_url=None):
-        url = ''
-        try:
-            if not data:
-                data = []
-            data = json.dumps(data)
-            data = quote(data)
-            req_url = '/odoo_event'
-            try:
-                url = socket_server_url + req_url
-            except:
-                return 'Error socket server url'
-            url += '?data=' + data
-        except:
-            return 'Error in given data ' + str(data)
-        try:
-            return HttpUtils.http_get(url)
-        except:
-            return 'Error in url ' + url
+        if not data:
+            data = []
+        data = json.dumps(data)
+        data = quote(data)
+        req_url = req_url or '/odoo_event'
+        url = socket_server_url + req_url + '?data=' + data
+        return HttpUtils.http_get(url)
 
 
 class DateUtils:
@@ -61,8 +48,8 @@ class DateUtils:
         return diff.seconds
 
     @classmethod
-    def add_interval(cls, interval_type, inc : int, dt=None):
-        inc = float(inc)
+    def add_interval(cls, interval_type, inc, dt=None):
+        inc = int(inc)
         if not dt:
             dt = datetime.now()
         elif type(dt) == str:
@@ -84,46 +71,13 @@ class DateUtils:
         return dt
 
     @classmethod
-    def time_difference(cls, interval_type, start_time, end_time=None):
+    def time_difference(cls, start_time, end_time=None):
         if not end_time:
             end_time = datetime.now()
         start_time = start_time.replace(tzinfo=pytz.utc)
         end_time = end_time.replace(tzinfo=pytz.utc)
         diff = relativedelta(end_time, start_time)
-        res = 0
-        if interval_type == 's':
-            res = diff.seconds
-        elif interval_type == 'm':
-            res = diff.minutes
-        elif interval_type == 'h':
-            res = diff.hours
-        elif interval_type == 'd':
-            res = diff.days
-        elif interval_type == 'w':
-            res = diff.weeks
-        elif interval_type == 'mm':
-            res = diff.months
-        elif interval_type == 'y':
-            res = diff.years
-        else:
-            res = ''
-            if diff.years:
-                res += f', {diff.years} years'
-            if diff.months:
-                res += f', {diff.months} months'
-            if diff.weeks:
-                res += f', {diff.weeks} weeks'
-            if diff.days:
-                res += f', {diff.days} days'
-            if diff.hours:
-                res += f', {diff.hours} hours'
-            if diff.minutes:
-                res += f', {diff.minutes} minutes'
-            if diff.seconds:
-                res += f', {diff.seconds} seconds'
-            if res[:2] == ', ':
-                res = res[2:]
-        return res
+        return diff
 
     @classmethod
     def string_format(cls, style='', dt=None):
@@ -237,23 +191,23 @@ class LogUtils:
         fle = Path(file_path)
         fle.touch(exist_ok=True)
         with open(file_path, 'r') as my_file:
-            i = 0
+            ii = 0
             prev_content = ''
-            while i < take_lines:
-                try:
-                    line = next(my_file)
+            while ii < take_lines:
+                line = next(my_file)
+                if line:
                     prev_content += '\n' + line.strip()
-                except:
-                    break
-                i += 1
+                ii += 1
         with open(file_path, 'w') as my_file:
             new_content = dt_now + '\t' + txt + prev_content
             my_file.write(new_content)
 
 
 class Async:
-    def background(cls, bg_fun):
-        def wrapped(*args, **kwargs):
+
+    @classmethod
+    def run_in_background(cls, bg_fun):
+        def wrapped(*args):
             looper = None
             try:
                 looper = asyncio.get_event_loop()
@@ -283,11 +237,10 @@ class Async:
 class HttpUtils:
 
     @classmethod
-    def get_location_from_ip(cls, ip):
-        req_url = IP2LOC['prefix'] + ip + IP2LOC['postfix']
+    def get_location_from_ip(cls, server_url, ip, query_string):
+        req_url = server_url + ip + query_string
         print(req_url)
-        res = cls.http_request(req_url)
-        res = json.loads(res)
+        res = cls.http_get_json(req_url)
         return res
 
     @classmethod
@@ -310,43 +263,27 @@ class HttpUtils:
         return ip
 
     @classmethod
-    def http_get(cls, req_url, timeout=5):
-        res = requests.get(req_url, timeout=timeout)
+    def http_get(cls, req_url, headers=None, timeout=5):
+        res = requests.get(req_url, headers=headers, timeout=timeout)
+        res = res._content.decode("utf-8")
         return res
 
     @classmethod
-    def http_request(cls, req_url, headers=None):
-        try:
-            if headers:
-                res = requests.get(req_url, headers=headers)
-            else:
-                res = requests.get(req_url)
-            res = res._content.decode("utf-8")
-            return res
-        except:
-            res = LogUtils.get_error_message()
-            return res
+    def http_get_json(cls, req_url, headers=None, timeout=5):
+        res = requests.get(req_url, headers=headers, timeout=timeout)
+        res = res.json()
+        return res
 
     @classmethod
     def get_str_from_post(cls, req_url, args=None):
-        try:
-            res = cls.post_data(req_url, args)
-            res = res._content.decode("utf-8")
-            return res
-        except Exception as ex:
-            res = LogUtils.get_error_message()
-            res = str(ex)
-            return res
+        res = cls.post_data(req_url, args)
+        res = res._content.decode("utf-8")
+        return res
 
     @classmethod
     def get_json_from_post(cls, req_url, args=None):
-        try:
-            res = cls.post_data(req_url, args)
-            return res.json()
-        except Exception as ex:
-            res = LogUtils.get_error_message()
-            res = {'details': str(ex)}
-            return res
+        res = cls.post_data(req_url, args)
+        return res.json()
 
     @classmethod
     def post_data(cls, req_url, args):
@@ -375,14 +312,9 @@ class PyUtils:
             return str(e.code) + e.reason
 
     @classmethod
-    def bytes_to_json(cls, my_bytes_value):
-        my_json = {'error': 'Invalid bytes value to get json'}
-        try:
-            my_json = my_bytes_value.decode('utf8').replace("'", '"')
-            my_json = json.loads(my_json)
-        except:
-            pass
-        return my_json
+    def decode_bytes(cls, my_bytes_value):
+        res = my_bytes_value.decode('utf8').replace("'", '"')
+        return res
 
     @classmethod
     def set_obj_attrs(cls, dict_key_values, py_obj):
