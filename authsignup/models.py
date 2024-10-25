@@ -124,15 +124,5 @@ class AuthUser(user_model, CustomModel):
     image_updated = models.BooleanField(default=False)
 
     def fullname(self):
-        user = self
-        name = False
-        if user.first_name:
-            name = user.first_name
-        if user.last_name:
-            name += ' ' + user.last_name
-        if not name:
-            if not self.name:
-                name = user.username
-            else:
-                name = self.name
-        return name
+        arr = [self.first_name or '', self.last_name or '']
+        return ' '.join(arr) or self.username

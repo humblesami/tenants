@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,6 +21,7 @@ SHARED_APPS = [
     'django.contrib.staticfiles',
     'ckeditor',
     'ckeditor_uploader',
+    'authsignup',
     'restoken',
 ]
 """These app's data are stored on their specific schemas"""
@@ -133,7 +135,7 @@ if config_info.get('https'):
 
 server_domain = config_info.get('server_domain')
 MAIN_URL = PROTOCOL + '://' + server_domain + SERVER_PORT_STR
-LOGIN_URL = MAIN_URL + '/accounts/login'
+LOGIN_URL = MAIN_URL + '/auth/login'
 SOCKET_SERVER_URL = 'http://localhost:3000'
 AUTH_PASSWORD_VALIDATORS = []
 PUBLIC_DOMAIN = config_info.get('public_host_name') or 'localhost'
@@ -145,3 +147,4 @@ IP2LOC = {
     "prefix": "http://api.ipstack.com/",
     "postfix":"?access_key=94bfb283cce53facd307167d1596b8c8"
 }
+IS_LOCALHOST = (len(sys.argv) > 1 and sys.argv[1] == 'runserver')

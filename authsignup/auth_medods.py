@@ -43,88 +43,40 @@ class AuthMethods:
 
 
     @classmethod
-    def do_login(cls, request, user, name):
-        token = Token.objects.filter(user=user)
-        if token:
-            token = token[0]
-
-        login(request, user)
-        token.delete()
-        token = Token.objects.create(user=user)
-
-        user_groups = list(user.groups.all().values())
-        user_data = {'username': user.username, 'name': name, 'id': user.id, 'token': token.key, 'groups': user_groups}
-        try:
-            user_data['photo'] = user.authuser.image.url
-            user_data['user_photo'] = user_data['photo']
-        except:
-            pass
-        request.user = user
-        return user_data
-
-
-    @classmethod
-    def login_user(cls, request, params):
+    def authenticate_user(cls, request):
+        params = HttpUtils.get_params(request)
         username = params.get('login')
         password = params.get('password')
-        auth_code = params.get('auth_code')
-        referer_address = request.META.get('HTTP_REFERER') or ''
-        auth_user = None
-        if auth_code:
-            uuid = params.get('uuid')
-            res = cls.verify_code(uuid, auth_code)
-            if type(res) is str:
-                return res
-            auth_user = res
-        else:
-            user = authenticate(request, username=username, password=password)
-            if user and user.id:
-                auth_user = AuthUser.objects.filter(pk=user.id).first()
-                if not auth_user:
-                    return 'User has not been assigned any role yet'
-            else:
-                return 'Invalid credentials'
-
-            auth_type = None
-            if auth_user.two_factor_auth:
-                auth_type = auth_user.two_factor_auth
-            if auth_type:
-                if not referer_address.endswith('localhost:4200/'):
-                    auth_type = auth_type.lower()
-                    address_to_send_code = ''
-                    if auth_type == 'phone':
-                        if not user.mobile_phone:
-                            return 'User phone does not exist to send code, please ask admin to set it for you'
-                        address_to_send_code = user.mobile_phone
-                    else:
-                        if not user.email:
-                            return 'User email does not exist to send code, please ask admin to set it for you'
-                        address_to_send_code = user.email
-                    res = cls.send_verification_code(auth_type, address_to_send_code, user.id)
-                    return res
-        if user and user.id:
-            name = ''
-            try:
-                name = user.fullname()
-            except:
-                if user.first_name:
-                    name = user.first_name
-                if user.last_name:
-                    name += user.last_name
-                if not name:
-                    name = user.username
-            return cls.do_login(request, user, name, referer_address)
+        auth_user = authenticate(request, username=username, password=password)
+        if auth_user and auth_user.id:
+            auth_user = AuthUser.objects.filter(pk=auth_user.pk).first()
+            if not auth_user:
+                return {'error': 'User has not been assigned any role yet'}
         else:
             return {'error': 'Invalid credentials'}
+        auth_type = (auth_user.two_factor_auth or '').lower()
+        if auth_type and not settings.IS_LOCALHOST:
+            res = cls.send_verification_code(auth_user, auth_type)
+            return res
+        if auth_user and auth_user.id:
+            return cls.acknowledge_user(request, auth_user)
+        else:
+            return 'Invalid credentials'
 
 
     @classmethod
-    def send_verification_code(cls, auth_type, address_to_send_code, user_id):
-        if not address_to_send_code:
-            return 'No address given to send code'
+    def send_verification_code(cls, auth_user, auth_type):
+        address_to_send_code = auth_user.email
+        if auth_type == 'phone':
+            if not auth_user.mobile_phone:
+                return {'error': 'User phone does not exist to send code, please ask admin to set it for you'}
+            address_to_send_code = auth_user.mobile_phone
+        else:
+            if not auth_user.email:
+                return {'error': 'User email does not exist to send code, please ask admin to set it for you'}
         auth_data = 'auth_type=' + auth_type + '&address=' + address_to_send_code
         url = settings.AUTH_SERVER_URL + '/auth-code/generate?' + auth_data
-        res = HttpUtils.http_request(url)
+        res = HttpUtils.http_get(url)
         try:
             res = json.loads(res)
         except:
@@ -132,24 +84,47 @@ class AuthMethods:
         res['address'] = address_to_send_code[:2] + '****' + address_to_send_code[-2:]
         res['auth_type'] = auth_type
         dual_auth = DualAuth(
-            user_id=user_id,
+            user_id=auth_user.pk,
             uuid=res['uuid']
         )
         dual_auth.save()
         return res
 
-
     @classmethod
-    def verify_code(cls, uuid, auth_code):
-        if not uuid:
-            return {'error': 'No request id found'}
+    def verify_code(cls, request):
+        params = HttpUtils.get_params(request)
+        auth_code = params.get('auth_code')
+        uuid = params.get('uuid')
+        if not uuid or not auth_code:
+            return {'error': 'Please provide code and uuid'}
         url = settings.AUTH_SERVER_URL + '/auth-code/verify?code=' + auth_code + '&uuid=' + uuid
-        res = HttpUtils.http_request(url)
+        res = HttpUtils.http_get(url)
         if res != 'ok':
             return res
         dual_auth = DualAuth.objects.get(uuid=uuid)
         user = dual_auth.user
         return user
+
+    @classmethod
+    def acknowledge_user(cls, request, user):
+        login(request, user)
+        token = Token.objects.filter(user=user)
+        if token:
+            token = token[0]
+        token.delete()
+        token = Token.objects.create(user=user)
+        user_groups = list(user.groups.all().values())
+        user_data = {
+            'username': user.username, 'name': user.full_name(),
+            'id': user.id, 'token': token.key, 'groups': user_groups
+        }
+        try:
+            user_data['photo'] = user.authuser.image.url
+            user_data['user_photo'] = user_data['photo']
+        except:
+            pass
+        request.user = user
+        return user_data
 
 
     @classmethod
@@ -166,27 +141,14 @@ class AuthMethods:
 
 
     @classmethod
-    def send_mobile_verfication_code(cls, request, params):
-        user = request.user
-        user = AuthUser.objects.get(pk=user.id)
-        mobile_phone = params['mobile_phone']
-        if mobile_phone:
-            user.mobile_phone = mobile_phone
-            user.save()
-            auth_type = 'phone'
-            auth_type = auth_type.lower()
-            address_to_send_code = mobile_phone
-            user_id = user.id
-            res = cls.send_verification_code(auth_type, address_to_send_code, user_id)
-            return res
-        else:
-            return 'Please provide mobile number.'
-
-
-    @classmethod
     def logout_user(cls, request, params):
         logout(request)
         return {'error': '', 'data': 'ok'}
+
+
+    @classmethod
+    def register_user(cls, request):
+        return {}
 
 
     @classmethod

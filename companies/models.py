@@ -71,10 +71,29 @@ class ClientUser(models.Model):
     balance = models.IntegerField(default=0)
 
     class Meta:
-        verbose_name_plural = '05. Potential Clients'
+        verbose_name_plural = '05. Client Users'
 
     def __str__(self):
         return f'{self.client_name}-{self.schema_name}'
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if not self.user:
+            new_user = User.objects.create(
+                username=self.client_email, email=self.client_email, is_staff=True,
+                is_active=True
+            )
+            # tobe changed
+            new_user.set_password('123')
+            new_user.save()
+            self.user = new_user
+        elif not self.pk:
+            if self.user.email:
+                self.client_email = self.user.email
+        return super().save(
+            force_insert=force_insert, force_update=force_update, using=using,
+            update_fields=update_fields
+        )
 
 
 class ClientTenant(TenantMixin):
@@ -89,7 +108,7 @@ class ClientTenant(TenantMixin):
     creating_tenant = 0
 
     class Meta:
-        verbose_name_plural = '07. Client Tenants'
+        verbose_name_plural = '06. Client Tenants'
         ordering = ('-featured', '-updated_at')
 
     def __str__(self):
@@ -97,9 +116,10 @@ class ClientTenant(TenantMixin):
 
     def save(self, verbosity=1, *args, **kwargs):
         if not self.pk:
-            schema_name = ClientTenant.objects.filter(schema_name=self.schema_name)
-            if not schema_name:
+            s_name = self.owner.schema_name
+            if not ClientTenant.objects.filter(schema_name=s_name):
                 self.creating_tenant = 1
+                self.schema_name = self.owner.schema_name
         return super().save(verbosity=1, *args, **kwargs)
 
     def create_schema(self, check_if_exists=False, sync_schema=True, verbosity=1):
@@ -133,7 +153,7 @@ class Subscription(models.Model):
     remarks = models.CharField(max_length=511, null=True, blank=True)
 
     class Meta:
-        verbose_name_plural = '06. Subscriptions'
+        verbose_name_plural = '07. Subscriptions'
 
     def __str__(self):
         return f"{self.client_user.client_name.title()} -- {DateUtils.string_format('', self.request_time)}"
@@ -217,9 +237,9 @@ def create_tenant(sub_obj):
             is_active=True,
             schema_name=sub_user.schema_name,
         )
-        domain_value = sub_user.schema_name+'.'+settings.PUBLIC_DOMAIN
+        dom_value = sub_user.schema_name+'.'+settings.PUBLIC_DOMAIN
         Domain.objects.create(
-            domain=domain_value,
+            domain=dom_value,
             tenant_id=obj.pk
         )
         sub_obj.client_tenant = obj

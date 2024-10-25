@@ -128,4 +128,3 @@
 #     except:
 #         res = LogUtils.get_error_message()
 #     return res
-#

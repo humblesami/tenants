@@ -237,6 +237,15 @@ class Async:
 class HttpUtils:
 
     @classmethod
+    def get_params(cls, request):
+        params = {}
+        if request.content_type == 'application/x-www-form-urlencoded':
+            params = request.POST
+        if request.content_type == 'application/json':
+            params = request.body.json
+        return params
+
+    @classmethod
     def get_location_from_ip(cls, server_url, ip, query_string):
         req_url = server_url + ip + query_string
         print(req_url)

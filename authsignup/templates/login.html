@@ -15,7 +15,7 @@
     <div class="wrapper fadeInDown">
         <div id="formContent">
         
-            <form id="login-form" action="{{request.login_url}}" method="post">
+            <form id="login-form" action="{{login_url}}" method="post">
                 {% csrf_token %}
                 <div>
                     {% if error %}

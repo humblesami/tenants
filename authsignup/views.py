@@ -1,6 +1,10 @@
+from lib2to3.fixes.fix_input import context
+
+from django.conf import settings
 from django.http import HttpResponse
 from django.contrib.auth import logout
 
+from authsignup.auth_medods import AuthMethods
 from authsignup.models import AuthUser
 from restoken.models import PostUserToken
 from django.shortcuts import render, redirect
@@ -8,8 +12,37 @@ from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 
 
-def login(request, next=None):
-    redirect(request.login_url)
+def login_page(request, next=None):
+    context = {'error': '', 'loin_url': settings.LOGIN_URL}
+    if request.method == 'POST':
+        res = AuthMethods.authenticate_user(request)
+        if res.get('error'):
+            context['error'] = res.get('error')
+        elif res.get('auth_type'):
+            return render(request, 'auth_otp.html', res)
+    return render(request, 'login.html', context)
+
+
+def register_page(request):
+    context = {'error': '', 'loin_url': settings.LOGIN_URL}
+    if request.method == 'POST':
+        res = AuthMethods.register_user(request)
+        if res.get('error'):
+            context['error'] = res.get('error')
+        elif res.get('auth_type'):
+            return render(request, 'auth_otp.html', res)
+    return render(request, 'register.html', context)
+
+
+def login_top_page(request, next=None):
+    context = {'error': '', 'loin_url': settings.LOGIN_URL}
+    if request.method == 'POST':
+        res = AuthMethods.verify_code(request)
+        if res.get('error'):
+            context['error'] = res.get('error')
+        elif res.get('message') == 'code sent':
+            return render(request, 'login_otp.html', context)
+    return render(request, 'login_otp.html', context)
 
 
 def logout_user(request):

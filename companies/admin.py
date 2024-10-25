@@ -51,9 +51,10 @@ class TenantAdmin(TenantAdminMixin, admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if not obj:
-            return []
+            return ['schema_name']
         editable_fields = ['client_name']
-        return [field.name for field in self.model._meta.fields if field.name not in editable_fields]
+        res = [field.name for field in self.model._meta.fields if field.name not in editable_fields]
+        return res
 
 
 # admin.site.register(Plan)
