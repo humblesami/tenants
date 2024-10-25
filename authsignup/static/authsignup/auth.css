@@ -1,6 +1,11 @@
 .auth-form-wrapper{
     padding-top: 50px;
 }
+#feedback.error{
+    color: red;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
 .auth-form-wrapper input.form-control{
     margin-bottom: 10px;
     margin-top: 5px;

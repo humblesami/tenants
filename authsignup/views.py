@@ -2,15 +2,20 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
+from django.views.generic import FormView
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 
-from authsignup.models import AuthUser
+from .forms import UserCreationForm
+from .models import AuthUser
+from .auth_medods import AuthMethods
 from restoken.models import PostUserToken
-from authsignup.auth_medods import AuthMethods
 
 
-def login_page(request, next=None):
+def go_to_home_page(request):
+    return HttpResponse(str(request.user.id))
+
+def login_page(request, next_url=None):
     context = {'error': '', 'register_url': '/auth/register/', 'forgot_url': '/auth/forgot-password/'}
     if request.method == 'POST':
         res = AuthMethods.authenticate_user(request)
@@ -18,7 +23,17 @@ def login_page(request, next=None):
             context['error'] = res.get('error')
         elif res.get('auth_type'):
             return render(request, 'auth_otp.html', res)
+        else:
+            if next:
+                return redirect(next_url)
+            else:
+                return go_to_home_page(request)
     return render(request, 'login.html', context)
+
+
+class RegisterUser(FormView):
+    template_name = 'register.html'
+    form_class = UserCreationForm
 
 
 def register_page(request):

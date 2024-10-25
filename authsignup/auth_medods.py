@@ -16,11 +16,11 @@ class AuthMethods:
     @classmethod
     def authenticate_user(cls, request):
         params = HttpUtils.get_params(request)
-        username = params.get('login')
+        username = params.get('username')
         password = params.get('password')
-        auth_user = authenticate(request, username=username, password=password)
-        if auth_user and auth_user.id:
-            auth_user = AuthUser.objects.filter(pk=auth_user.pk).first()
+        sys_user = authenticate(request, username=username, password=password)
+        if sys_user and sys_user.pk:
+            auth_user = AuthUser.objects.filter(pk=sys_user.pk).first()
             if not auth_user:
                 return {'error': 'User has not been assigned any role yet'}
         else:
