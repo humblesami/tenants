@@ -72,8 +72,7 @@ python3 manage.py runserver
 python3 manage.py startapp mymodule
 
 ng build --aot --source-map=false --prod=true --output-path=../static/angular
-mv ../static/static/assets/  ../static/
-move ../static/static/assets/  ../static/
+
 
   server {
     listen 8000;

@@ -1,19 +1,17 @@
-from lib2to3.fixes.fix_input import context
-
 from django.conf import settings
 from django.http import HttpResponse
 from django.contrib.auth import logout
-
-from authsignup.auth_medods import AuthMethods
-from authsignup.models import AuthUser
-from restoken.models import PostUserToken
 from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
 
+from authsignup.models import AuthUser
+from restoken.models import PostUserToken
+from authsignup.auth_medods import AuthMethods
+
 
 def login_page(request, next=None):
-    context = {'error': '', 'loin_url': settings.LOGIN_URL}
+    context = {'error': '', 'register_url': '/auth/register/', 'forgot_url': '/auth/forgot-password/'}
     if request.method == 'POST':
         res = AuthMethods.authenticate_user(request)
         if res.get('error'):
@@ -24,7 +22,7 @@ def login_page(request, next=None):
 
 
 def register_page(request):
-    context = {'error': '', 'loin_url': settings.LOGIN_URL}
+    context = {'error': '', 'loin_url': '/auth/login/', 'forgot_url': '/auth/forgot-password/'}
     if request.method == 'POST':
         res = AuthMethods.register_user(request)
         if res.get('error'):
@@ -32,6 +30,19 @@ def register_page(request):
         elif res.get('auth_type'):
             return render(request, 'auth_otp.html', res)
     return render(request, 'register.html', context)
+
+def forgot_password_page(request):
+    context = {'error': '', 'loin_url': '/auth/login/', 'register_url': '/auth/register/'}
+    return render(request, 'forgot_password.html', context)
+
+def reset_password_page(request, token):
+    context = {'error': '', 'loin_url': '/auth/login/'}
+    if not token:
+        context['error'] = 'Invalid Token'
+    user_token = PostUserToken.validate_token(token, do_not_expire=True)
+    if not user_token:
+        context['error'] = 'Invalid Token'
+    return render(request, 'reset_password.html', context)
 
 
 def login_top_page(request, next=None):
@@ -54,15 +65,6 @@ def ping(request):
     return HttpResponse('available')
 
 
-def offline_layout(request):
-    return render(request, 'offline.html')
-
-
-def forgot_password(request):
-    context = {}
-    return render(request, 'password_reset.html', context)
-
-
 def load_verify_code_page(request):
     context = {}
     username = request.session.get('username')
@@ -83,12 +85,3 @@ def load_verify_code_page(request):
 def verify_token(request):
     return HttpResponse('done')
 
-
-def reset_password(request, token):
-    context = {}
-    if not token:
-        context['error'] = 'Invalid Token'
-    user_token = PostUserToken.validate_token(token, do_not_expire=True)
-    if not user_token:
-        context['error'] = 'Invalid Token'
-    return render(request, 'password_reset.html', context)

@@ -1,0 +1,62 @@
+body, td, th, input, textarea, select, .form-row p, form .button{
+    font-family: system-ui;
+    font-weight: 500;
+}
+
+a, button, input[type="checkbox"]{
+    cursor: pointer;
+}
+input[type="checkbox"].bigger
+{
+    height: 1.2rem;
+    width: 1.2rem;
+}
+.d-flex{
+    display: flex;
+}
+.d-flex-wrap{
+    display: flex;
+    flex-wrap: wrap;
+}
+.d-flex-wrap>div{
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.action-icons-container>a{
+    padding: 5px;
+    cursor: pointer;
+}
+
+#changelist.module{
+    margin-bottom:0;
+}
+#container > .main{
+    padding: 2px;
+    overflow-x:hidden;
+}
+.toggle-nav-sidebar
+{
+    border:0;
+}
+#content{
+    padding: 5px 0 5px 5px;
+}
+#footer {
+    display: none;
+}
+#nav-sidebar.sticky{
+    max-height: calc(100vh - 91px);
+}
+#changelist .results{
+    overflow: auto;
+}
+
+#result_list td span{
+    display:inline-block;
+    width:100%;
+    word-wrap:break-word;
+}
+.submit-row a.deletelink{
+    height: auto;
+}

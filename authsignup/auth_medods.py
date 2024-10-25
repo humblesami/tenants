@@ -14,35 +14,6 @@ from restoken.models import PostUserToken
 class AuthMethods:
 
     @classmethod
-    def password_reset_on_creation_email(cls, user_obj, random_password):
-        try:
-            if not user_obj.email:
-                return 'User email not exists in system'
-
-            thread_data = {
-                'subject': 'Password Rest',
-                'audience': [user_obj.id],
-                'template_data': {
-                    'url': settings.server_base_url + '/user/reset-password/',
-                    'password': random_password
-                },
-                'template_name': 'user/user_creation_password_reset.html',
-                'token_required': 1,
-                'post_info': {
-                    'res_app': 'authsignup',
-                    'res_model': 'AuthUser',
-                    'res_id': user_obj.id
-                }
-            }
-
-            EmailUtils.send_mail_data(thread_data)
-            return 'done'
-        except:
-            res = LogUtils.get_error_message()
-            return res
-
-
-    @classmethod
     def authenticate_user(cls, request):
         params = HttpUtils.get_params(request)
         username = params.get('login')
@@ -62,7 +33,6 @@ class AuthMethods:
             return cls.acknowledge_user(request, auth_user)
         else:
             return 'Invalid credentials'
-
 
     @classmethod
     def send_verification_code(cls, auth_user, auth_type):
@@ -210,6 +180,34 @@ class AuthMethods:
                 'res_model': 'Profile',
                 'res_id': user.id
             }
+            EmailUtils.send_mail_data(thread_data)
+            return 'done'
+        except:
+            res = LogUtils.get_error_message()
+            return res
+
+    @classmethod
+    def password_reset_on_creation_email(cls, user_obj, random_password):
+        try:
+            if not user_obj.email:
+                return 'User email not exists in system'
+
+            thread_data = {
+                'subject': 'Password Rest',
+                'audience': [user_obj.id],
+                'template_data': {
+                    'url': settings.server_base_url + '/user/reset-password/',
+                    'password': random_password
+                },
+                'template_name': 'user/user_creation_password_reset.html',
+                'token_required': 1,
+                'post_info': {
+                    'res_app': 'authsignup',
+                    'res_model': 'AuthUser',
+                    'res_id': user_obj.id
+                }
+            }
+
             EmailUtils.send_mail_data(thread_data)
             return 'done'
         except:

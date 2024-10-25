@@ -1,0 +1,49 @@
+.auth-form-wrapper{
+    padding-top: 50px;
+}
+.auth-form-wrapper input.form-control{
+    margin-bottom: 10px;
+    margin-top: 5px;
+    padding: .375rem 5px;
+    margin-left: -5px;
+}
+.page_links {
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+}
+button[type="submit"]:disabled{
+    background-color: grey;
+}
+.auth-box{
+    background: #f9f9f9;
+    border: 1px solid #eaeaea;
+    padding: 15px;
+    border-radius: 10px;
+}
+.page_title{
+    text-align: center;
+}
+.pass_show{position: relative}
+
+.pass_show .ptxt {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    z-index: 1;
+    color: #f36c01;
+    margin-top: -10px;
+    cursor: pointer;
+    transition: .3s ease all;
+}
+
+.pass_show .ptxt:hover{color: #333333;}
+
+.pass_rules li{
+    color: red;
+    font-weight: 700;
+}
+
+.valid-password{
+    color: Green !important;
+}

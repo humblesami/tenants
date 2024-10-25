@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{app_title}}</title>
+    <!-- Path to manifest.json -->
+    <link rel="apple-touch-icon" href="/static/dj_utils/test.jpg" sizes="160x160">
+    <meta name="theme-color" content="#0A0302">
+    <meta name="apple-mobile-web-app-title" content="Board Sheet">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <script type="text/javascript" src="/static/dj_utils/libs/jquery/jquery-2.2.4.js"></script>
+    <script type="text/javascript">
+        (function(){            
+            function exec_service_worker(){
+                var service_worker = localStorage.getItem('service_worker');
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/sw.js', {
+
+                    }).then(function (registration) {
+                        localStorage.setItem('service_worker', 1);
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    }, function (err) {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+                }
+            }
+            //exec_service_worker();
+        })()
+    </script> 
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Boardsheet">
+    <meta name="description" content="Boardsheet">
+    <meta name="theme-color" content="#2F3BA2" />    
+	<link rel="shortcut icon" href="">
+    <link rel="icon" type="image/x-icon" href="/static/dj_utils/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="/static/dj_utils/libs/bootstrap/bootstrap-5.2.3.min.css" />
+    <link rel="stylesheet" href="/static/authsignup/auth.css"/>
+    {% block headcontent %}
+    {% endblock %}
+
+</head>
+<body>
+    <div class="router-outlet auth-form-wrapper">
+
+        <h2 class="page_title">
+            {% block page_title %}
+                {% if page_title %}
+                    {{page_title}}
+                {% else %}
+                    No Title
+                {% endif %}
+            {% endblock %}
+        </h2>
+
+        <div class="container">
+            <div class="auth-box">
+                {% if error %}
+                    <div id="feedback" class="error" style="padding: 10px;">{{error}}</div>
+                {% endif %}
+                <div class="page_content">
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        {% block page_content %}
+                        <h3>Page Content</h3>
+                        {% endblock %}
+                    </form>
+                </div>
+            </div>
+            <script type="text/javascript" src="/static/dj_utils/libs/date_utils/dt.js"></script>
+            <script type="text/javascript" src="/static/dj_utils/libs/bootstrap/bootstrap.min.js"></script>
+            <script type="text/javascript" src="/static/dj_utils/libs/bootstrap/popper-1.14.3.js"></script>
+            <div class="page_links">
+                <a class="underlineHover" href="/auth/login">Login with existing account</a>
+                <a class="underlineHover" href="/auth/register">Signup</a>
+                <a class="underlineHover" href="/auth/forgot-password">Forgot Password?</a>
+            </div>
+            {% block page_footer %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>
