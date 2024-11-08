@@ -1,9 +1,8 @@
-from django.core.management.base import BaseCommand
-from django.db import connection
-from django.core.management import call_command
-from companies.models import ClientTenant, Domain
-
 from django.conf import settings
+from django.core.management import call_command
+from django.core.management.base import BaseCommand
+
+from companies.models import ClientTenant, Domain
 
 
 class Command(BaseCommand):

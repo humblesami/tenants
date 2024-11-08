@@ -2,22 +2,15 @@ import os
 import sys
 import json
 import shutil
+import psycopg2
 import importlib
 import traceback
 
-import psycopg2
+import sam_pytools
 from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-
-
-def connect_postgresql():
-    try:
-        from psycopg2 import connect
-        return connect
-    except:
-        a = 1
 
 
 class Command(BaseCommand):
@@ -32,26 +25,8 @@ class Command(BaseCommand):
         base_directory = settings_dir.replace(str, '')
 
     def drop_create_db(self, root_path):
-        database_info = {}
         res = 'Unknown'
-        config_path = os.path.join(settings.BASE_DIR, 'config.json')
-        config_path = config_path.format(self.base_directory)
-        config_info = False
-        if not os.path.exists(config_path):
-            example_config_path = os.path.join(settings.BASE_DIR, 'example.config.json')
-            if os.path.exists(example_config_path):
-                shutil.copyfile(example_config_path, config_path)
-        if os.path.exists(config_path):
-            with open(config_path, 'r') as config:
-                config_info = json.load(config)
-                active_db = config_info.get('active_conn')
-                if active_db:
-                    db_config = config_info.get(active_db)
-                    if db_config:
-                        database_info = config_info[active_db]
-
-        if not config_info:
-            database_info = settings.DATABASES['default']
+        database_info = settings.DATABASES['default']
         db_engine = database_info['ENGINE']
         if db_engine.endswith('sqlite3') or db_engine.endswith('sqlite3_backend'):
             db_path = root_path + '/db.sqlite3'
@@ -98,7 +73,7 @@ class Command(BaseCommand):
             if res == 'created':
                 call_command('makemigrations')
                 call_command('migrate')
-                fixture_path = os.path.join(root_path, 'fixtures.json')
+                fixture_path = './fixtures.json'
                 if os.path.isfile(fixture_path):
                     call_command('loaddata', fixture_path)
                 print('Dropped, Created, Migrated, loaded successfully')
@@ -107,11 +82,5 @@ class Command(BaseCommand):
             else:
                 print('Failed because ' + res)
         except:
-            eg = traceback.format_exception(*sys.exc_info())
-            error_message = ''
-            cnt = 0
-            for er in eg:
-                cnt += 1
-                if not 'lib/python' in er and not 'lib\site-packages' in er:
-                    error_message += " " + er
+            error_message = sam_pytools.LogUtils.get_error_message()
             print('Error ' + error_message)

@@ -31,6 +31,15 @@ class LogoutView(NextRedirectMixin, LogoutFunctionalityMixin, TemplateView):
         response = redirect(url)
         return _ajax_response(self.request, response)
 
+class IndexView(TemplateView):
+    template_name = 'index.html'
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
+
+index = IndexView.as_view()
 logout = LogoutView.as_view()
 social_views.signup = SocialSignupView.as_view()
 account_views.signup = AccountSignupView.as_view()

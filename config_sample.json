@@ -11,13 +11,6 @@
         "prefix": "http://api.ipstack.com/",
         "postfix":"?access_key=94bfb283cce53facd307167d1596b8c8"
     },
-    "default": {
-        "ENGINE": "django_tenants.postgresql_backend",
-        "NAME": "tenants",
-        "USER": "odoo",
-        "PASSWORD": "123",
-        "HOST": ""
-    },
     "email": {
         "EMAIL_HOST" : "smtp.gmail.com",
         "EMAIL_PORT" : "587",

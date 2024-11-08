@@ -1,31 +1,25 @@
-{% extends 'base_public.html' %}
+{% extends 'dj_utils/base_public.html' %}
 {% block content %}
-<hr>
+    <hr>
 
-<table class="table">
-            <thead>
-                <tr>
-                <th scope="col">Amount</th>
-                <th scope="col">Status</th>
-                <th scope="col">User</th>
-                <th scope="col">Type</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for key, values in list.items %}
-                <tr>
-                {% for k, v in values.items %}
-                    <td>    {{ v }} </td> 
-                {% endfor %}
-                </tr>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">Amount</th>
+            <th scope="col">Status</th>
+            <th scope="col">User</th>
+            <th scope="col">Type</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for key, values in list.items %}
+            <tr>
+            {% for k, v in values.items %}
+                <td>    {{ v }} </td>
             {% endfor %}
-            </tbody>
-        </table>
-
-<table>
-
-
-
-</table>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

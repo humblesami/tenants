@@ -31,8 +31,6 @@ TENANT_APPS = [
     'blog'
 ]
 
-INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
-
 MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
     # custom tenant middleware
@@ -50,22 +48,20 @@ TENANT_MODEL = "companies.ClientTenant"
 TENANT_DOMAIN_MODEL = "companies.Domain"
 ROOT_URLCONF = 'core.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                # django_tenant finds tenant upon request
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
+TEMPLATES = [{
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'DIRS': [],
+    'APP_DIRS': True,
+    'OPTIONS': {
+        'context_processors': [
+            'django.template.context_processors.debug',
+            # django_tenant finds tenant upon request
+            'django.template.context_processors.request',
+            'django.contrib.auth.context_processors.auth',
+            'django.contrib.messages.context_processors.messages',
+        ],
     },
-]
+}]
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
@@ -113,7 +109,6 @@ DATABASES = {
 config_info = {}
 config_path = str(BASE_DIR) + '/config.json'
 if os.path.exists(config_path):
-    print('\nNo file found => ' + config_path)
     with open(config_path, 'r') as site_config:
         config_info = json.load(site_config)
 
@@ -152,7 +147,7 @@ ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SOCIALACCOUNT_PROVIDERS = {}
-INSTALLED_APPS += [
+SHARED_APPS += [
     "auth_signup",
     "allauth",
     "allauth.account",
@@ -291,7 +286,8 @@ def add_social_provider_apps():
             "secret": config_obj['secret'],
         }
         SOCIALACCOUNT_PROVIDERS[social_provider] = provider_candidates[social_provider]
-        INSTALLED_APPS.append("allauth.socialaccount.providers." + social_provider)
+        SHARED_APPS.append("allauth.socialaccount.providers." + social_provider)
 
 add_social_provider_apps()
-INSTALLED_APPS.append("allauth.usersessions")
+SHARED_APPS.append("allauth.usersessions")
+INSTALLED_APPS = SHARED_APPS + [app for app in TENANT_APPS if app not in SHARED_APPS]
