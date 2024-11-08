@@ -11,7 +11,7 @@ from django.core.paginator import Paginator
 from django.forms.models import model_to_dict
 from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
-from .py import LogUtils, RtcUtils
+from sam_pytools import LogUtils
 
 
 class EmailUtils:
@@ -271,7 +271,4 @@ class DjangoUtils:
     def full_url(cls, request):
         return request.build_absolute_uri()
 
-    @classmethod
-    def emit_socket_event(cls, data):
-        RtcUtils.emit_event(data, settings.SOCKET_SERVER_URL)
 

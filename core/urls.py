@@ -10,9 +10,8 @@ def home(request):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include('authsignup.urls')),
     path('blog/', include('blog.urls')),
-    path('', home),
+    path('', include('auth_signup.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

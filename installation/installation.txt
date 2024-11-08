@@ -1,7 +1,5 @@
-pip3 install Django==2.2
-django-admin startproject myproject
+pip freeze | xargs pip uninstall -y
 pip3 install -r requirements.txt
-
 
 sudo apt-get --purge remove postgresql-*
 sudo rm -Rf /etc/postgresql /var/lib/postgresql

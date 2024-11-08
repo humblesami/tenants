@@ -1,0 +1,26 @@
+{% load static %}
+{% load allauth socialaccount %}
+{% get_providers as socialaccount_providers %}
+{% if socialaccount_providers %}
+    <h4 style="margin: 0; margin-top:-5px; text-align:center">Social Accounts</h4>
+    {% element provider_list %}
+        {% for provider in socialaccount_providers %}
+            {% if provider.id == "openid" %}
+                {% for brand in provider.get_brands %}
+                    {% provider_login_url provider openid=brand.openid_url process=process as href %}
+                    {% element provider name=brand.name provider_id=provider.id href=href %}
+                    {% endelement %}
+                {% endfor %}
+            {% endif %}
+            {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
+            <hr style="margin: 0.5rem 0"/>
+            <form class="" method="post" action="{{href}}">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                <button type="submit" class="btn btn-primary w-100">
+                    Sign in with {{provider.name}}
+                </button>
+            </form>
+        {% endfor %}
+    {% endelement %}
+    <script src="/static/allauth/js/providers_html.js"></script>
+{% endif %}

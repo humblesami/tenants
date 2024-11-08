@@ -1,3 +1,4 @@
+import json
 import sys
 from pathlib import Path
 
@@ -6,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 """These app's data are stored on the public schema"""
 SHARED_APPS = [
@@ -19,10 +20,6 @@ SHARED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ckeditor',
-    'ckeditor_uploader',
-    'authsignup',
-    'restoken',
 ]
 """These app's data are stored on their specific schemas"""
 TENANT_APPS = [
@@ -98,7 +95,6 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 import os
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
@@ -114,17 +110,14 @@ DATABASES = {
     }
 }
 
-CKEDITOR_UPLOAD_PATH = 'uploads/'
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 300,
-        'width': '100%',
-    },
-}
+config_info = {}
+config_path = str(BASE_DIR) + '/config.json'
+if os.path.exists(config_path):
+    print('\nNo file found => ' + config_path)
+    with open(config_path, 'r') as site_config:
+        config_info = json.load(site_config)
 
-config_info= {'port': 8000, 'server_domain': 'localhost'}
-SERVER_PORT = config_info['port']
+SERVER_PORT = config_info.get('port') or 8000
 SERVER_PORT_STR = ''
 if SERVER_PORT:
     SERVER_PORT_STR = ':' + str(SERVER_PORT)
@@ -148,3 +141,157 @@ IP2LOC = {
     "postfix":"?access_key=94bfb283cce53facd307167d1596b8c8"
 }
 IS_LOCALHOST = (len(sys.argv) > 1 and sys.argv[1] == 'runserver')
+
+
+MFA_PASSKEY_LOGIN_ENABLED = True
+MFA_PASSKEY_SIGNUP_ENABLED = True
+MFA_SUPPORTED_TYPES = ["webauthn", "totp", "recovery_codes",]
+ACCOUNT_LOGIN_BY_CODE_ENABLED = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION_BY_CODE_ENABLED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SOCIALACCOUNT_PROVIDERS = {}
+INSTALLED_APPS += [
+    "auth_signup",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.mfa"
+]
+MIDDLEWARE += [
+    "allauth.account.middleware.AccountMiddleware",
+]
+
+def read_social_apps_credentials():
+    try:
+        social_auth_cred = config_info.get('social_auth')
+        return social_auth_cred
+    except:
+        print('\nError in reading ' + config_path)
+        return {}
+
+def add_social_provider_apps():
+    provider_candidates = {
+        "amazon": {
+            "SCOPE": ["profile"],
+        },
+        "apple": {
+            "SCOPE": ["email", "name"],
+        },
+        "atlassian": {
+            "SCOPE": ["read:jira-user"],
+        },
+        "baidu": {
+            "SCOPE": ["basic"],
+        },
+        "bitbucket_oauth2": {
+            "SCOPE": ["account"],
+        },
+        "dropbox": {
+            "SCOPE": ["account_info.read"],
+        },
+        "dingtalk": {
+            "SCOPE": ["user"],
+        },
+        "edx": {
+            "SCOPE": ["email", "profile"],
+        },
+        "evernote": {
+            "SCOPE": ["basic", "notes"],
+        },
+        "facebook": {
+            "SCOPE": ["public_profile"],
+            "FIELDS": [
+                "id", "email", "name", "first_name", "last_name", "verified", "locale",
+                "gender", "link", "picture.type(large)"
+            ],
+        },
+        "figma": {
+            "SCOPE": ["file_read"],
+        },
+        "flickr": {
+            "SCOPE": ["read"],
+        },
+        "github": {
+            "SCOPE": ["user", "user:email"],
+        },
+        "gitlab": {
+            "SCOPE": ["read_user"],
+        },
+        "google": {
+            "SCOPE": ["email", "profile"],
+            "AUTH_PARAMS": {"access_type": "online"},
+        },
+        "instagram": {
+            "SCOPE": ["user_profile", "user_media"],
+        },
+        "linkedin_oauth2": {
+            "SCOPE": ["r_liteprofile", "r_emailaddress"],
+        },
+        "microsoft": {
+            "SCOPE": ["openid", "email", "profile", "User.Read"],
+        },
+        "nextcloud": {
+            "SCOPE": ["read"],
+        },
+        "paypal": {
+            "SCOPE": ["profile"],
+        },
+        "pinterest": {
+            "SCOPE": ["read_public"],
+        },
+        "reddit": {
+            "SCOPE": ["identity", "read", "submit"],
+        },
+        "shopify": {
+            "SCOPE": ["read_products"],
+        },
+        "slack": {
+            "SCOPE": ["users:read"],
+        },
+        "snapchat": {
+            "SCOPE": ["snaps.read"],
+        },
+        "soundcloud": {
+            "SCOPE": ["non-expiring"],
+        },
+        "stackexchange": {
+            "SCOPE": ["no-expiry"],
+        },
+        "telegram": {
+            "SCOPE": ["user"],
+        },
+        "tiktok": {
+            "SCOPE": ["user.info.basic"],
+        },
+        "twitter_oauth2": {
+            "SCOPE": ["read"],
+        },
+        "vimeo": {
+            "SCOPE": ["public"],
+        },
+        "weibo": {
+            "SCOPE": ["all"],
+        },
+        "xing": {
+            "SCOPE": ["read_profiles"],
+        },
+    }
+    social_auth_cred = read_social_apps_credentials()
+    for social_provider in social_auth_cred:
+        config_obj = social_auth_cred[social_provider]
+        if not provider_candidates.get(social_provider):
+            continue
+        if not config_obj.get('key') or config_obj.get('key') == 'xx':
+            print('No key provided for ' + social_provider)
+            continue
+        provider_candidates[social_provider]['APP'] = {
+            "client_id": config_obj['key'],
+            "secret": config_obj['secret'],
+        }
+        SOCIALACCOUNT_PROVIDERS[social_provider] = provider_candidates[social_provider]
+        INSTALLED_APPS.append("allauth.socialaccount.providers." + social_provider)
+
+add_social_provider_apps()
+INSTALLED_APPS.append("allauth.usersessions")

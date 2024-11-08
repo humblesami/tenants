@@ -3,11 +3,12 @@ from django.apps import apps
 from django.db import models
 from datetime import datetime
 from django.db.models import Q
-from documents.models import File
 from django.conf import settings
 from django.contrib import admin
-from authsignup.models import AuthUser
-from dj_utils.py import PyUtils
+from django.contrib.auth.models import User as AuthUser
+
+from documents.models import File
+from sam_pytools import CoreUtils
 from dj_utils.dj import DjangoUtils
 
 
@@ -334,7 +335,7 @@ class Comment(models.Model):
             user = obj.user
             comment = obj.__dict__
             del comment['_state']
-            PyUtils.stringify_fields(comment)
+            CoreUtils.stringify_fields(comment)
             comment['user'] = {
                 'id': user.id,
                 'photo': user.image.url,
@@ -377,7 +378,7 @@ class Comment(models.Model):
             'name': user.name
         }
         del comment['_state']
-        PyUtils.stringify_fields(comment)
+        CoreUtils.stringify_fields(comment)
         comment['create_date'] = str(datetime.now())
         comment['children'] = []
         param = params

@@ -1,0 +1,17 @@
+
+.page-content .btn-lg {
+    --bs-btn-padding-y: 0;
+    --bs-btn-padding-x: 0;
+    --bs-btn-font-size: 1.5rem;
+}
+
+.page-content hr {
+    margin: 0.75rem 0;
+}
+
+.page-content .form-floating > .form-control {
+    height: inherit;
+    min-height: inherit;
+    line-height: inherit;
+
+}

@@ -3,8 +3,6 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from ckeditor_uploader.fields import RichTextUploadingField
-
 
 
 class Profile(models.Model):
@@ -44,7 +42,7 @@ class Article(models.Model):
     headline = models.CharField(max_length=200)
     sub_headline = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(null=True, blank=True, upload_to="article", default="placeholder.png")
-    body = RichTextUploadingField(null=True, blank=True)
+    body = models.TextField(null=True, blank=True)
     featured = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag, blank=True)
 

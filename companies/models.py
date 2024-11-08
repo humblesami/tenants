@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
 from django_tenants.models import DomainMixin, TenantMixin
 
-from dj_utils.py import DateUtils
+from sam_pytools import DateUtils
 from .tools import switch_tenant
 
 
